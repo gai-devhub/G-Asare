@@ -5,7 +5,7 @@
         <div class="site-footer-grid">
             <div class="site-footer-brand">
                 <div class="site-footer-logo">
-                    <span class="site-footer-logo-icon"><img src="{{ asset($profile->image_url ?? 'images/logo.jpeg') }}" alt="Logo" class="nav-logo-img" style="border-radius: 50%; object-fit: cover;"></span>
+                    <span class="site-footer-logo-icon"><img src="{{ asset($profile->image_url ?? 'images/logo.png') }}" alt="Logo" class="nav-logo-img" style="border-radius: 50%; object-fit: cover;"></span>
                     <span class="logo-text" style="color: #ffffff !important;">{{ explode(' ', $profile->name ?? 'G - BASE')[0] }} <span>{{ implode(' ', array_slice(explode(' ', $profile->name ?? 'G - BASE'), 1)) }}</span></span>
                 </div>
                 <p class="site-footer-tagline">Building modern application solutions with clean code, creativity, and a commitment to excellence.</p>
