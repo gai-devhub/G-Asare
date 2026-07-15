@@ -19,6 +19,7 @@ use App\Http\Controllers\WebContentController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\SubscriberController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 // Free routes
@@ -28,6 +29,7 @@ Route::post('/subscribe', [SubscriberController::class, 'store'])->name('subscri
 Route::get('/unsubscribe/{email}', [SubscriberController::class, 'unsubscribe'])->name('unsubscribe');
 
 Route::get('/skills', [SkillController::class, 'publicIndex'])->name('skills');
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/journey', [ExperienceController::class, 'publicIndex'])->name('journey');
 Route::get('/gallery', [GalleryController::class, 'publicIndex'])->name('gallery');
 Route::get('/gallery/folder/{galleryFolder}', [App\Http\Controllers\GalleryFolderController::class, 'publicShow'])->name('gallery.folder');

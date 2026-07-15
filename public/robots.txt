@@ -1,2 +1,4 @@
 User-agent: *
 Disallow:
+# Replace the placeholder below with your actual site URL (include https://)
+Sitemap: https://your-domain.com/sitemap.xml
