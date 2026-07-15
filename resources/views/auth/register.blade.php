@@ -9,6 +9,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+    <style>
+        .password-wrapper{position:relative}
+        .password-wrapper input{padding-right:40px}
+        .password-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;padding:4px;cursor:pointer;color:#4b5563}
+        .password-toggle:focus{outline:2px solid rgba(59,130,246,0.25);border-radius:4px}
+    </style>
 </head>
 <body>
     <div class="auth-wrapper">
@@ -40,14 +46,24 @@
                     </div>
                     <div class="form-group">
                         <label for="register-password">Create Password</label>
-                        <input type="password" id="register-password" name="password" placeholder="" required>
+                        <div class="password-wrapper">
+                            <input type="password" id="register-password" name="password" placeholder="" required>
+                            <button type="button" class="password-toggle" data-target="register-password" aria-label="Show password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
                         @error('password')
                             <span class="form-error">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for="register-password-confirm">Confirm Password</label>
-                        <input type="password" id="register-password-confirm" name="password_confirmation" placeholder="" required>
+                        <div class="password-wrapper">
+                            <input type="password" id="register-password-confirm" name="password_confirmation" placeholder="" required>
+                            <button type="button" class="password-toggle" data-target="register-password-confirm" aria-label="Show password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="passcode-section">
@@ -110,6 +126,25 @@
 
             form.addEventListener('submit', function() {
                 updateHidden();
+            });
+
+            const toggles = document.querySelectorAll('.password-toggle');
+            toggles.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const input = document.getElementById(targetId);
+                    if (!input) return;
+                    const icon = this.querySelector('i');
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        if (icon) { icon.classList.remove('fa-eye'); icon.classList.add('fa-eye-slash'); }
+                        this.setAttribute('aria-label', 'Hide password');
+                    } else {
+                        input.type = 'password';
+                        if (icon) { icon.classList.remove('fa-eye-slash'); icon.classList.add('fa-eye'); }
+                        this.setAttribute('aria-label', 'Show password');
+                    }
+                });
             });
         });
     </script>
