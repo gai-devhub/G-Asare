@@ -51,7 +51,7 @@
             <div class="site-footer-col">
                 <h4>Contact</h4>
                 <ul class="site-footer-contact">
-                    <li><i class="fas fa-envelope"></i><a href="mailto:gaicorporation.official@gmail.com">gaicorporation.official@gmail.com</a></li>
+                    <li><i class="fas fa-envelope"></i><a href="mailto:gasare5326@gmail.com">gasare5326@gmail.com</a></li>
                     <li><i class="fas fa-phone"></i><span>+233 (59) 921-5326</span></li>
                     <li><i class="fas fa-map-marker-alt"></i><span>Accra, Ghana</span></li>
                 </ul>
