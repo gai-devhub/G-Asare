@@ -7,8 +7,8 @@
 </script>
 
 @php
-    $faviconProfile = \App\Models\Profile::first();
-    $faviconUrl = $faviconProfile && $faviconProfile->image_url ? asset($faviconProfile->image_url) : asset('images/favicon.jpg');
+    $profile = \App\Models\Profile::first();
+    $faviconUrl = $profile && $profile->image_url ? asset($profile->image_url) : asset('images/favicon.jpg');
 @endphp
 <link rel="icon" href="{{ $faviconUrl }}">
 @php
@@ -17,7 +17,7 @@
         $siteName = $profile->name ?? 'G-BASE Portfolio';
         $metaDescription = $webContent->meta_description ?? ($profile->tagline ?? 'Software engineering portfolio showcasing projects, education, and professional certifications.');
         $ogImage = asset($webContent->hero_image_url ?? ($profile->image_url ?? 'images/og-image.png'));
-        $sameAs = \App\Models\SocialLink::pluck('url')->filter()->values()->all();
+        $sameAs = collect($profile->social_links ?? [])->filter()->values()->all();
         $searchUrl = url('/search');
 @endphp
 
@@ -40,23 +40,23 @@
 <!-- JSON-LD structured data for Person and WebSite (helps search engines create sitelinks) -->
 <script type="application/ld+json">
 {
-    "@context": "https://schema.org",
-    "@graph": [
+    "@@context": "https://schema.org",
+    "@@graph": [
         {
-            "@type": "Person",
+            "@@type": "Person",
             "name": "{{ $profile->name ?? 'Gilbert Asare' }}",
             "url": "{{ $siteUrl }}",
             "sameAs": {{ json_encode($sameAs) }},
             "jobTitle": "{{ $profile->headline ?? 'Software Engineer' }}",
             "image": "{{ asset($profile->image_url ?? 'images/og-image.png') }}",
-            "worksFor": { "@type": "Organization", "name": "G-BASE" }
+            "worksFor": { "@@type": "Organization", "name": "G-BASE" }
         },
         {
-            "@type": "WebSite",
+            "@@type": "WebSite",
             "url": "{{ $siteUrl }}",
             "name": "{{ $siteName }}",
             "potentialAction": {
-                "@type": "SearchAction",
+                "@@type": "SearchAction",
                 "target": "{{ $searchUrl }}?q={search_term_string}",
                 "query-input": "required name=search_term_string"
             }
