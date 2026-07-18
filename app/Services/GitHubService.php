@@ -32,7 +32,7 @@ class GitHubService
             return $defaultStats;
         }
 
-        return Cache::remember('github_stats_' . $username . '_v3', now()->addHours(24), function () use ($username, $token, $defaultStats) {
+        return Cache::remember('github_stats_' . $username . '_v3', now()->addMinutes(5), function () use ($username, $token, $defaultStats) {
             try {
                 $query = '
                 query($login: String!) {
