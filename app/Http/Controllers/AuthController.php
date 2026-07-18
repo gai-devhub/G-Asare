@@ -96,7 +96,7 @@ class AuthController extends Controller
 
         $request->session()->forget(['login_email', 'code_sent']);
 
-        return redirect()->intended(route('admin.overview'));
+        return redirect()->intended(route('login.passcode'));
     }
 
     public function showRegister()
@@ -132,5 +132,28 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
+    }
+
+    public function showPasscodeForm(Request $request)
+    {
+        if ($request->session()->get('passcode_verified', false)) {
+            return redirect()->route('admin.overview');
+        }
+
+        return view('auth.passcode');
+    }
+
+    public function verifyPasscode(Request $request)
+    {
+        $request->validate([
+            'passcode' => 'required|string|size:6|regex:/^\d{6}$/',
+        ]);
+
+        if (Hash::check($request->passcode, Auth::user()->passcode)) {
+            $request->session()->put('passcode_verified', true);
+            return redirect()->intended(route('admin.overview'));
+        }
+
+        return back()->withErrors(['passcode' => 'Incorrect passcode.']);
     }
 }

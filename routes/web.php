@@ -52,8 +52,13 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/login/passcode', [AuthController::class, 'showPasscodeForm'])->name('login.passcode');
+    Route::post('/login/passcode', [AuthController::class, 'verifyPasscode'])->name('login.passcode.verify');
+});
+
 // Admin routes (protected)
-Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', \App\Http\Middleware\EnsurePasscodeVerified::class])->group(function () {
     Route::get('/', [AdminController::class, 'overview'])->name('overview');
 
     // Messages
