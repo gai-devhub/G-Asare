@@ -303,14 +303,6 @@
                 <div class="news-content">
                     <h2>Stay Updated with <span class="title-light">Portfolio</span> News</h2>
 
-                    <div class="news-subscribers">
-                        <div class="subscriber-avatars">
-                            <img src="{{ asset('images/yaw.jpg') }}" alt="Yaw">
-                            <img src="{{ asset('images/joe.JPG') }}" alt="Joe">
-                            <img src="{{ asset('images/Rhon.jpg') }}" alt="Rhon">
-                        </div>
-                        <span>24K subscribers</span>
-                    </div>
                     <p>Get the latest insights on web development, design trends, and project updates. Join thousands of readers who stay ahead of the curve.</p>
                     <p>Subscribe to receive articles, tips, and exclusive content delivered straight to your inbox.</p>
                     <form id="news-subscribe-form" class="news-subscribe-form" action="{{ route('subscribe') }}" method="POST">
