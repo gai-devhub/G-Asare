@@ -37,7 +37,7 @@
                 @if($webContent->hero_image_url)
                 <img src="{{ asset($webContent->hero_image_url) }}" alt="Gilbert Asare" style="width: 100%; max-width: 500px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); object-fit: cover; aspect-ratio: 4/5;">
                 @else
-                <img src="{{ asset('images/logo.png') }}" alt="Gilbert Asare" style="width: 100%; max-width: 500px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); object-fit: cover; aspect-ratio: 4/5;">
+                <img src="{{ asset('images/1783462869_file_00000000e6a4720a83f356bfb12d61a3.png') }}" alt="Gilbert Asare" style="width: 100%; max-width: 500px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); object-fit: cover; aspect-ratio: 4/5;">
                 @endif
             </div>
         </div>
@@ -303,6 +303,14 @@
                 <div class="news-content">
                     <h2>Stay Updated with <span class="title-light">Portfolio</span> News</h2>
 
+                    <div class="news-subscribers">
+                        <div class="subscriber-avatars">
+                            <img src="{{ asset('images/yaw.jpg') }}" alt="Yaw">
+                            <img src="{{ asset('images/joe.JPG') }}" alt="Joe">
+                            <img src="{{ asset('images/Rhon.jpg') }}" alt="Rhon">
+                        </div>
+                        <span>24K subscribers</span>
+                    </div>
                     <p>Get the latest insights on web development, design trends, and project updates. Join thousands of readers who stay ahead of the curve.</p>
                     <p>Subscribe to receive articles, tips, and exclusive content delivered straight to your inbox.</p>
                     <form id="news-subscribe-form" class="news-subscribe-form" action="{{ route('subscribe') }}" method="POST">
