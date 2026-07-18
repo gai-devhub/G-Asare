@@ -98,7 +98,7 @@
         @php $profile = \App\Models\Profile::first(); @endphp
         <div class="sidebar">
             <div class="sidebar-profile">
-                <img src="{{ asset($profile->image_url ?? 'images/afia.jpg') }}" alt="Profile" class="sidebar-avatar" style="object-fit: cover;">
+                <img src="{{ asset($profile->image_url ?? 'images/gilly.jpeg') }}" alt="Profile" class="sidebar-avatar" style="object-fit: cover;">
                 <h3 class="sidebar-username">{{ $profile->name ?? 'G-BASE' }}</h3>
                 <p class="sidebar-role">Administrator</p>
             </div>
