@@ -249,10 +249,10 @@
                 <p class="impact-desc">A snapshot of my continuous learning and hands-on experience building projects as a Software Engineering student.</p>
             </div>
             <div class="impact-stats">
-                <div class="impact-stat"><span class="stat-num">142</span><span class="stat-label">Repository Contributions</span></div>
-                <div class="impact-stat"><span class="stat-num">1.2K+</span><span class="stat-label">Commits This Year</span></div>
-                <div class="impact-stat"><span class="stat-num">89</span><span class="stat-label">Project Stars</span></div>
-                <div class="impact-stat"><span class="stat-num">42k+</span><span class="stat-label">Lines of Code</span></div>
+                <div class="impact-stat"><span class="stat-num">{{ $githubStats['repositories'] ?? '142' }}</span><span class="stat-label">Repositories</span></div>
+                <div class="impact-stat"><span class="stat-num">{{ $githubStats['commits'] ?? '1.2K+' }}</span><span class="stat-label">Commits This Year</span></div>
+                <div class="impact-stat"><span class="stat-num">{{ $githubStats['collaborations'] ?? '89' }}</span><span class="stat-label">Collaborations</span></div>
+                <div class="impact-stat"><span class="stat-num">{{ $githubStats['lines_of_code'] ?? '42k+' }}</span><span class="stat-label">Lines of Code</span></div>
             </div>
         </div>
     </section>

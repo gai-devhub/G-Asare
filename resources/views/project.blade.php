@@ -144,10 +144,10 @@
                 <p class="impact-desc impact-desc-light">My coding contributions and project statistics</p>
             </div>
             <div class="impact-stats">
-                <div class="impact-stat"><span class="stat-num stat-light">142</span><span class="stat-label stat-muted">Repository Contributions</span></div>
-                <div class="impact-stat"><span class="stat-num stat-light">1,248</span><span class="stat-label stat-muted">Commits This Year</span></div>
-                <div class="impact-stat"><span class="stat-num stat-light">89</span><span class="stat-label stat-muted">Project Stars</span></div>
-                <div class="impact-stat"><span class="stat-num stat-light">42k+</span><span class="stat-label stat-muted">Lines of Code</span></div>
+                <div class="impact-stat"><span class="stat-num stat-light">{{ $githubStats['repositories'] ?? '142' }}</span><span class="stat-label stat-muted">Repositories</span></div>
+                <div class="impact-stat"><span class="stat-num stat-light">{{ $githubStats['commits'] ?? '1,248' }}</span><span class="stat-label stat-muted">Commits This Year</span></div>
+                <div class="impact-stat"><span class="stat-num stat-light">{{ $githubStats['collaborations'] ?? '89' }}</span><span class="stat-label stat-muted">Collaborations</span></div>
+                <div class="impact-stat"><span class="stat-num stat-light">{{ $githubStats['lines_of_code'] ?? '42k+' }}</span><span class="stat-label stat-muted">Lines of Code</span></div>
             </div>
         </div>
     </section>

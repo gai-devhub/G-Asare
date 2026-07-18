@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\BlogPost;
 use App\Models\Profile;
+use App\Services\GitHubService;
 use Illuminate\Support\Str;
 
 class WelcomeController extends Controller
 {
-    public function __invoke()
+    public function __invoke(GitHubService $githubService)
     {
         $latestPosts = $this->getLatestBlogPosts(3);
         $webContent = \App\Models\WebContent::first() ?? new \App\Models\WebContent;
+        $githubStats = $githubService->getStats();
         
         $galleryFolders = \App\Models\GalleryFolder::where('is_active', true)
             ->with(['items' => function($query) {
@@ -21,7 +23,8 @@ class WelcomeController extends Controller
         return view('welcome', [
             'latestPosts' => $latestPosts, 
             'webContent' => $webContent,
-            'galleryFolders' => $galleryFolders
+            'galleryFolders' => $galleryFolders,
+            'githubStats' => $githubStats
         ]);
     }
 

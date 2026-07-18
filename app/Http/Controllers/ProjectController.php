@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\ActivityLog;
+use App\Services\GitHubService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -15,14 +16,17 @@ class ProjectController extends Controller
         return view('admin.pages.projects', compact('projects'));
     }
 
-    public function publicIndex()
+    public function publicIndex(GitHubService $githubService)
     {
         $projects = Project::where('is_active', true)->ordered()->get();
         $featuredProject = Project::where('is_active', true)->where('is_featured', true)->first();
         if (!$featuredProject && $projects->count() > 0) {
             $featuredProject = $projects->first();
         }
-        return view('project', compact('projects', 'featuredProject'));
+        
+        $githubStats = $githubService->getStats();
+        
+        return view('project', compact('projects', 'featuredProject', 'githubStats'));
     }
 
     public function store(Request $request)
