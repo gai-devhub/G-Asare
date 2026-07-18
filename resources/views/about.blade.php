@@ -47,7 +47,7 @@
                     @if($webContent->hero_image_url)
                         <img src="{{ asset($webContent->hero_image_url) }}" alt="Gilbert Asare" style="width: 100%; max-width: 500px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); object-fit: cover; aspect-ratio: 4/5;">
                     @else
-                    <img src="{{ asset('images/1783462869_file_00000000e6a4720a83f356bfb12d61a3.png') }}" alt="Gilbert at work - developer workspace" style="width: 100%; border-radius: 20px; object-fit: cover; aspect-ratio: 4/5;">
+                    <img src="{{ asset('images/logo.png') }}" alt="Gilbert at work - developer workspace" style="width: 100%; border-radius: 20px; object-fit: cover; aspect-ratio: 4/5;">
                     @endif
                 </div>
             </div>

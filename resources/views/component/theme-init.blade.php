@@ -8,7 +8,7 @@
 
 @php
     $profile = \App\Models\Profile::first();
-    $faviconUrl = $profile && $profile->image_url ? asset($profile->image_url) : asset('images/favicon.jpg');
+    $faviconUrl = asset('images/logo.png');
 @endphp
 <link rel="icon" href="{{ $faviconUrl }}">
 @php

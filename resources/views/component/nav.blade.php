@@ -3,7 +3,7 @@
     @php $profile = \App\Models\Profile::first(); @endphp
     <div class="nav-inner">
         <a href="{{ url('/') }}" class="nav-logo">
-            <span class="logo-icon"><img src="{{ asset($profile->image_url ?? 'images/logo.png') }}" alt="Logo" class="nav-logo-img" style="border-radius: 50%; object-fit: cover;"></span>
+            <span class="logo-icon"><img src="{{ asset('images/logo.png') }}" alt="Logo" class="nav-logo-img" style="border-radius: 50%; object-fit: cover;"></span>
             <span class="logo-text">{{ explode(' ', $profile->name ?? 'G - BASE')[0] }} <span>{{ implode(' ', array_slice(explode(' ', $profile->name ?? 'G - BASE'), 1)) }}</span></span>
         </a>
         <ul class="nav-links" id="nav-links">
