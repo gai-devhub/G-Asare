@@ -101,7 +101,6 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="logo">
-                    <span class="logo-icon"><i class="fab fa-google-drive"></i></span>
                     <span class="logo-text">Portfolio</span>
                 </div>
             </div>
