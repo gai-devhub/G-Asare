@@ -26,6 +26,11 @@ use Illuminate\Support\Facades\Route;
 // Free routes
 Route::get('/', [App\Http\Controllers\WelcomeController::class, '__invoke']);
 
+Route::get('/fix-storage', function () {
+    \Illuminate\Support\Facades\Artisan::call('storage:link');
+    return 'Storage link created successfully! Your images and documents should now work. You can remove this route later.';
+});
+
 Route::post('/subscribe', [SubscriberController::class, 'store'])->name('subscribe');
 Route::get('/unsubscribe/{email}', [SubscriberController::class, 'unsubscribe'])->name('unsubscribe');
 
