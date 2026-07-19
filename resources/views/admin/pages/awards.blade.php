@@ -68,18 +68,7 @@
                                         <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($award->title) }}', category: '{{ addslashes($award->issuer) }}', type: 'Award', owner: 'me', modified: '{{ $award->updated_at ? $award->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $award->created_at ? $award->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes(str_replace(["\r","\n"], ' ', $award->description ?? '')) }}', imageUrl: '' })"><i class="fas fa-history"></i> Activity</button></li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu">
-                                    <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
-                                    <ul class="kebab-submenu kebab-submenu-left">
-                                        <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
-                                        <li class="has-submenu">
-                                            <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
-                                            <ul class="kebab-submenu kebab-submenu-left">
-                                                <li><button type="button" onclick="copyToClipboard('{{ route('admin.awards') }}')"><i class="fas fa-external-link-alt"></i> Copy Link</button></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
+
                                 <li class="divider"></li>
                                 <li><button type="button" data-modal-open="edit-award-modal" data-award-id="{{ $award->id }}" data-award-title="{{ $award->title }}" data-award-issuer="{{ $award->issuer }}" data-award-year="{{ $award->year }}" data-award-icon="{{ $award->icon }}" data-award-description="{{ $award->description }}"><i class="fas fa-edit"></i> Edit</button></li>
                                 <li class="divider"></li>
@@ -217,5 +206,7 @@
 @endpush
 
 @endsection
+
+
 
 

@@ -154,18 +154,7 @@
                                             <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($activity->title) }}', category: 'Activity', type: 'Log', owner: 'System', modified: '{{ $activity->created_at ? $activity->created_at->format('M d, Y') : 'Unknown' }}', created: '{{ $activity->created_at ? $activity->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes($activity->message ?? 'No description') }}', imageUrl: '' })"><i class="fas fa-history"></i> Activity</button></li>
                                         </ul>
                                     </li>
-                                    <li class="has-submenu">
-                                        <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
-                                        <ul class="kebab-submenu kebab-submenu-left">
-                                            <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
-                                            <li class="has-submenu">
-                                                <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
-                                                <ul class="kebab-submenu kebab-submenu-left">
-                                                    <li><button type="button" onclick="copyToClipboard('{{ route('admin.document-activity') }}')"><i class="fas fa-external-link-alt"></i> Copy Link</button></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
+
                                     <li class="divider"></li>
                                     <li><a href="{{ route('admin.document-activity') }}"><i class="fas fa-eye"></i> View details</a></li>
                                 </ul>
@@ -325,5 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 @endpush
 @endsection
+
+
 
 

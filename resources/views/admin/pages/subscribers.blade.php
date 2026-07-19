@@ -72,24 +72,13 @@
                                         <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($subscriber->email) }}', category: 'Subscriber', type: 'Email', owner: 'me', modified: '{{ $subscriber->updated_at ? $subscriber->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $subscriber->created_at ? $subscriber->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: 'Subscribed email address', imageUrl: '' })"><i class="fas fa-history"></i> Activity</button></li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu">
-                                    <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
-                                    <ul class="kebab-submenu kebab-submenu-left">
-                                        <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
-                                        <li class="has-submenu">
-                                            <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
-                                            <ul class="kebab-submenu kebab-submenu-left">
-                                                <li><button type="button" onclick="copyToClipboard('{{ route('admin.subscribers') }}')"><i class="fas fa-external-link-alt"></i> Copy Link</button></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
+
                                 <li class="divider"></li>
                                 <li>
                                     <form action="{{ route('admin.subscribers.destroy', $subscriber) }}" method="POST" style="width: 100%; margin: 0;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" onclick="return confirm('Are you sure you want to delete this subscriber?')" style="display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 16px; color: var(--color-text); text-decoration: none; font-size: 0.875rem; background: transparent; border: none; text-align: left; cursor: pointer;">
+                                        <button type="submit" style="display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 16px; color: var(--color-text); text-decoration: none; font-size: 0.875rem; background: transparent; border: none; text-align: left; cursor: pointer;">
                                             <i class="fas fa-trash" style="font-size: 1.125rem; color: var(--color-text-muted); width: 20px; text-align: center;"></i> Delete
                                         </button>
                                     </form>
@@ -118,5 +107,7 @@
     </div>
 </div>
 @endsection
+
+
 
 

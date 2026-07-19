@@ -84,18 +84,7 @@
                                             <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($subCat ? $subCat : $first->category) }}', category: '{{ addslashes($first->category) }}', type: 'Skill', owner: 'me', modified: '{{ $first->updated_at ? $first->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $first->created_at ? $first->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes(str_replace(["\r","\n"], ' ', $first->description ?? '')) }}', imageUrl: '' })"><i class="fas fa-history"></i> Activity</button></li>
                                         </ul>
                                     </li>
-                                    <li class="has-submenu">
-                                        <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
-                                        <ul class="kebab-submenu kebab-submenu-left">
-                                            <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
-                                            <li class="has-submenu">
-                                                <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
-                                                <ul class="kebab-submenu kebab-submenu-left">
-                                                    <li><button type="button" onclick="copyToClipboard('{{ route('admin.skills') }}')"><i class="fas fa-external-link-alt"></i> Copy Link</button></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
+
                                     <li class="divider"></li>
                                     <li><button type="button" data-modal-open="edit-skill-modal" data-skill-id="{{ $first->id }}" data-skill-category="{{ $first->category }}" data-skill-subcategory="{{ $first->sub_category ?? '' }}" data-skill-description="{{ str_replace(["\r","\n"], ' ', $first->description ?? '') }}" data-skill-percentage="{{ $first->percentage }}" data-skill-order="{{ $first->sort_order }}" data-skill-tech-stacks="{{ $techStacks }}"><i class="fas fa-edit"></i> Edit</button></li>
                                     <li class="divider"></li>
@@ -275,5 +264,7 @@
 @endpush
 
 @endsection
+
+
 
 

@@ -26,6 +26,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
             }
+            
+            if (modalId === 'delete-confirm-modal' && this.hasAttribute('data-delete-url')) {
+                const url = (this.getAttribute('data-delete-url') || '').trim();
+                const name = this.getAttribute('data-delete-name') || 'this item';
+                const form = document.getElementById('delete-confirm-form');
+                const nameEl = document.getElementById('delete-confirm-name');
+                const input = document.getElementById('delete-confirm-input');
+                const submitBtn = document.getElementById('delete-confirm-submit');
+                if (form && url) {
+                    form.action = url;
+                    form.dataset.deleteReady = '1';
+                    if (nameEl) nameEl.textContent = name;
+                    if (input) input.value = '';
+                    if (submitBtn) submitBtn.disabled = true;
+                }
+            }
         });
     });
 

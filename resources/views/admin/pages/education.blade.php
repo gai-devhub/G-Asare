@@ -67,18 +67,7 @@
                                         <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($edu->degree) }}', category: '{{ addslashes($edu->institution) }}', type: 'Education', owner: 'me', modified: '{{ $edu->updated_at ? $edu->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $edu->created_at ? $edu->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes(str_replace(["\r","\n"], ' ', $edu->description ?? '')) }}', imageUrl: '' })"><i class="fas fa-history"></i> Activity</button></li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu">
-                                    <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
-                                    <ul class="kebab-submenu kebab-submenu-left">
-                                        <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
-                                        <li class="has-submenu">
-                                            <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
-                                            <ul class="kebab-submenu kebab-submenu-left">
-                                                <li><button type="button" onclick="copyToClipboard('{{ route('admin.education') }}')"><i class="fas fa-external-link-alt"></i> Copy Link</button></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
+
                                 <li class="divider"></li>
                                 <li><button type="button" data-modal-open="edit-edu-modal" data-edu-id="{{ $edu->id }}" data-edu-degree="{{ $edu->degree }}" data-edu-institution="{{ $edu->institution }}" data-edu-from="{{ $edu->date_from }}" data-edu-to="{{ $edu->date_to }}" data-edu-description="{{ $edu->description }}"><i class="fas fa-edit"></i> Edit</button></li>
                                 <li class="divider"></li>
@@ -202,5 +191,7 @@
 @endpush
 
 @endsection
+
+
 
 

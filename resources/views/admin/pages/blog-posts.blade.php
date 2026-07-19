@@ -71,18 +71,7 @@
                                         <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($post->title) }}', category: '{{ addslashes($post->category) }}', type: 'Blog Post', owner: '{{ addslashes($post->author_name ?? 'me') }}', modified: '{{ $post->updated_at ? $post->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $post->created_at ? $post->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes(Str::limit(strip_tags($post->content), 100)) }}', imageUrl: '{{ $post->image_url ? asset($post->image_url) : '' }}' })"><i class="fas fa-history"></i> Activity</button></li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu">
-                                    <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
-                                    <ul class="kebab-submenu kebab-submenu-left">
-                                        <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
-                                        <li class="has-submenu">
-                                            <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
-                                            <ul class="kebab-submenu kebab-submenu-left">
-                                                <li><button type="button" onclick="copyToClipboard('{{ route('admin.blog-posts') }}')"><i class="fas fa-external-link-alt"></i> Copy Link</button></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
+
                                 <li class="divider"></li>
                                 <li><button type="button" data-modal-open="edit-blog-modal" data-post-id="{{ $post->id }}" data-post-title="{{ $post->title }}" data-post-category="{{ e($post->category ?? '') }}" data-post-excerpt="{{ $post->excerpt }}" data-post-content="{{ $post->content }}" data-post-image="{{ $post->image_url }}" data-post-author="{{ $post->author_name }}" data-post-author-image="{{ $post->author_image_url }}" data-post-signature="{{ e(str_replace(["\r","\n"], ' ', $post->signature ?? '')) }}" data-post-published="{{ $post->published_at ? $post->published_at->format('Y-m-d') : '' }}"><i class="fas fa-edit"></i> Edit</button></li>
                                 <li><button type="button" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.blog-posts.destroy', $post) }}" data-delete-name="{{ $post->title }}"><i class="fas fa-trash"></i> Delete</button></li>
@@ -249,5 +238,7 @@
 @endpush
 
 @endsection
+
+
 
 

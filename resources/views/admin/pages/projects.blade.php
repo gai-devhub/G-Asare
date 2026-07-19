@@ -74,14 +74,8 @@
                                 <li class="has-submenu">
                                     <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
                                     <ul class="kebab-submenu kebab-submenu-left">
-                                        <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
-                                        <li class="has-submenu">
-                                            <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
-                                            <ul class="kebab-submenu kebab-submenu-left">
-                                                <li><button type="button" onclick="copyToClipboard('{{ $project->github_url }}')"><i class="fab fa-github"></i> GitHub Repo</button></li>
-                                                <li><button type="button" onclick="copyToClipboard('{{ $project->project_url }}')"><i class="fas fa-external-link-alt"></i> App Link</button></li>
-                                            </ul>
-                                        </li>
+                                        <li><button type="button" onclick="copyToClipboard('{{ $project->project_url ?? '' }}'); showToast('Project link copied', 'success')"><i class="fas fa-project-diagram"></i> Share this project</button></li>
+                                        <li><button type="button" onclick="copyToClipboard('{{ route('projects') }}'); showToast('All projects link copied', 'success')"><i class="fas fa-folder-open"></i> Share all links in project</button></li>
                                     </ul>
                                 </li>
                                 <li class="divider"></li>

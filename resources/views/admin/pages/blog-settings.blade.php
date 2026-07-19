@@ -47,18 +47,7 @@
                                                 <li><button type="button" onclick="openSidebar('activity', { title: 'Blog Settings', category: 'Configuration', type: 'Settings', owner: 'System', modified: 'Unknown', created: 'Unknown', opened: 'Unknown', size: '-', description: 'Main blog configuration settings', imageUrl: '' })"><i class="fas fa-history"></i> Activity</button></li>
                                             </ul>
                                         </li>
-                                        <li class="has-submenu">
-                                            <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
-                                            <ul class="kebab-submenu kebab-submenu-left">
-                                                <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
-                                                <li class="has-submenu">
-                                                    <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
-                                                    <ul class="kebab-submenu kebab-submenu-left">
-                                                        <li><button type="button" onclick="copyToClipboard('{{ route('admin.blog-settings') }}')"><i class="fas fa-external-link-alt"></i> Copy Link</button></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
+
                                         <li class="divider"></li>
                                         <li><button type="button" data-modal-open="edit-blog-settings-modal"><i class="fas fa-edit"></i> Edit</button></li>
                                         <li class="divider"></li>
@@ -176,5 +165,7 @@
 </div>
 @endpush
 @endsection
+
+
 
 

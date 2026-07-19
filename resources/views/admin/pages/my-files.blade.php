@@ -72,13 +72,8 @@
                                 <li class="has-submenu">
                                     <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
                                     <ul class="kebab-submenu kebab-submenu-left">
-                                        <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
-                                        <li class="has-submenu">
-                                            <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
-                                            <ul class="kebab-submenu kebab-submenu-left">
-                                                <li><button type="button" onclick="copyToClipboard('{{ route('admin.my-files') }}')"><i class="fas fa-external-link-alt"></i> Copy Link</button></li>
-                                            </ul>
-                                        </li>
+                                        <li><button type="button" onclick="copyToClipboard('{{ asset($doc->file_path) }}'); showToast('File link copied', 'success')"><i class="fas fa-file-alt"></i> Share this file</button></li>
+                                        <li><button type="button" onclick="copyToClipboard('{{ route('admin.my-files') }}'); showToast('All files link copied', 'success')"><i class="fas fa-folder-open"></i> Share all links in project</button></li>
                                     </ul>
                                 </li>
                                 <li class="divider"></li>

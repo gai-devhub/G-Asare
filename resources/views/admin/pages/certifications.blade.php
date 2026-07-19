@@ -68,18 +68,7 @@
                                         <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($cert->name) }}', category: '{{ addslashes($cert->issuer) }}', type: 'Certification', owner: 'me', modified: '{{ $cert->updated_at ? $cert->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $cert->created_at ? $cert->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: 'No description', imageUrl: '' })"><i class="fas fa-history"></i> Activity</button></li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu">
-                                    <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
-                                    <ul class="kebab-submenu kebab-submenu-left">
-                                        <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
-                                        <li class="has-submenu">
-                                            <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
-                                            <ul class="kebab-submenu kebab-submenu-left">
-                                                <li><button type="button" onclick="copyToClipboard('{{ route('admin.certifications') }}')"><i class="fas fa-external-link-alt"></i> Copy Link</button></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
+
                                 <li class="divider"></li>
                                 <li><button type="button" data-modal-open="edit-cert-modal" data-cert-id="{{ $cert->id }}" data-cert-name="{{ $cert->name }}" data-cert-issuer="{{ $cert->issuer }}" data-cert-year="{{ $cert->year }}" data-cert-url="{{ $cert->credential_url }}" data-cert-icon="{{ $cert->icon }}"><i class="fas fa-edit"></i> Edit</button></li>
                                 <li class="divider"></li>
@@ -235,5 +224,7 @@
 @endpush
 
 @endsection
+
+
 
 

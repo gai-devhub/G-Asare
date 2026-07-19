@@ -2252,3 +2252,69 @@ textarea.form-control,
         font-size: 0.68rem;
     }
 }
+/* Mobile Modal Neaten Fix */
+@media (max-width: 480px) {
+    .modal {
+        width: 90% !important;
+        margin: 0 auto;
+        border-radius: var(--border-radius-lg) !important;
+    }
+}
+
+/* Mobile Kebab Menu Adjustments */
+@media (max-width: 768px) {
+    .kebab-dropdown {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: auto !important;
+        width: 100%;
+        margin: 0;
+        border-radius: 16px 16px 0 0;
+        box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.2);
+        padding: 16px 0 24px 0;
+        z-index: 1100;
+        border: none;
+        background: var(--bg-surface);
+        display: block !important;
+        transform: translateY(110%);
+        visibility: hidden;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+    }
+    
+    .kebab-dropdown.show {
+        transform: translateY(0);
+        visibility: visible;
+    }
+
+    .kebab-dropdown::before {
+        content: '';
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 4px;
+        background: var(--border-color);
+        border-radius: 2px;
+    }
+
+    .kebab-dropdown li button,
+    .kebab-dropdown li a {
+        padding: 14px 20px;
+        font-size: 1rem;
+    }
+
+    .kebab-submenu, .kebab-submenu-left {
+        position: static;
+        width: 100%;
+        box-shadow: none;
+        border-radius: 0;
+        border-left: 2px solid var(--border-color);
+        margin-left: 1rem;
+        padding: 4px 0;
+        width: calc(100% - 1rem);
+        background: rgba(60, 64, 67, 0.02);
+    }
+}
