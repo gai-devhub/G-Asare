@@ -36,23 +36,29 @@ class Document extends Model
     {
         if (empty($this->file_path)) return '-';
         
-        $relativePath = $this->file_path;
-        if (str_starts_with($relativePath, 'storage/')) {
-            $relativePath = substr($relativePath, 8);
+        $pathsToCheck = [
+            public_path($this->file_path),
+            base_path('public_html/' . $this->file_path),
+        ];
+        
+        if (str_starts_with($this->file_path, 'storage/')) {
+            $pathsToCheck[] = storage_path('app/public/' . substr($this->file_path, 8));
         }
 
-        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($relativePath)) {
-            $bytes = \Illuminate\Support\Facades\Storage::disk('public')->size($relativePath);
-            if ($bytes >= 1048576) {
-                return number_format($bytes / 1048576, 2) . ' MB';
-            } elseif ($bytes >= 1024) {
-                return number_format($bytes / 1024, 0) . ' KB';
-            } elseif ($bytes > 1) {
-                return $bytes . ' bytes';
-            } elseif ($bytes == 1) {
-                return $bytes . ' byte';
-            } else {
-                return '0 bytes';
+        foreach ($pathsToCheck as $path) {
+            if (file_exists($path) && is_file($path)) {
+                $bytes = filesize($path);
+                if ($bytes >= 1048576) {
+                    return number_format($bytes / 1048576, 2) . ' MB';
+                } elseif ($bytes >= 1024) {
+                    return number_format($bytes / 1024, 0) . ' KB';
+                } elseif ($bytes > 1) {
+                    return $bytes . ' bytes';
+                } elseif ($bytes == 1) {
+                    return $bytes . ' byte';
+                } else {
+                    return '0 bytes';
+                }
             }
         }
         
