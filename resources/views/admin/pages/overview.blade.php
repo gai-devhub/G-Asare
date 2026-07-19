@@ -149,8 +149,8 @@
                                     <li class="has-submenu">
                                         <button type="button"><i class="fas fa-info-circle"></i> File information <i class="fas fa-chevron-right"></i></button>
                                         <ul class="kebab-submenu kebab-submenu-left">
-                                            <li><button type="button" onclick="openSidebar('details', { title: '{{ addslashes($activity->action) }}', category: 'Activity', type: 'Log', owner: 'System', modified: '{{ $activity->created_at ? $activity->created_at->format('M d, Y') : 'Unknown' }}', created: '{{ $activity->created_at ? $activity->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes($activity->description ?? 'No description') }}', imageUrl: '' })"><i class="fas fa-list"></i> Details</button></li>
-                                            <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($activity->action) }}', category: 'Activity', type: 'Log', owner: 'System', modified: '{{ $activity->created_at ? $activity->created_at->format('M d, Y') : 'Unknown' }}', created: '{{ $activity->created_at ? $activity->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes($activity->description ?? 'No description') }}', imageUrl: '' })"><i class="fas fa-history"></i> Activity</button></li>
+                                            <li><button type="button" onclick="openSidebar('details', { title: '{{ addslashes($activity->title) }}', category: 'Activity', type: 'Log', owner: 'System', modified: '{{ $activity->created_at ? $activity->created_at->format('M d, Y') : 'Unknown' }}', created: '{{ $activity->created_at ? $activity->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes($activity->message ?? 'No description') }}', imageUrl: '' })"><i class="fas fa-list"></i> Details</button></li>
+                                            <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($activity->title) }}', category: 'Activity', type: 'Log', owner: 'System', modified: '{{ $activity->created_at ? $activity->created_at->format('M d, Y') : 'Unknown' }}', created: '{{ $activity->created_at ? $activity->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes($activity->message ?? 'No description') }}', imageUrl: '' })"><i class="fas fa-history"></i> Activity</button></li>
                                         </ul>
                                     </li>
                                     <li class="has-submenu">
@@ -197,14 +197,14 @@
                 <div class="chart-title" >Storage</div>
             </div>
             <div class="storage-widget" >
-                <div class="storage-progress" >
+                <div class="storage-progress" style="--storage-deg: {{ $globalStoragePercent * 3.6 }}deg;">
                     <div class="storage-circle" >
                         <div >
-                            <span >{{ $storagePercent }}%</span>
+                            <span >{{ $globalStoragePercent }}%</span>
                         </div>
                     </div>
                 </div>
-                <p >{{ $storageMB }} MB used</p>
+                <p >{{ $globalStorageMB }} MB used</p>
                 <p >of 1 GB allocated</p>
                 <a href="{{ route('admin.my-files') }}" class="btn" >Open Drive</a>
             </div>
@@ -216,8 +216,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    Chart.defaults.color = 'var(--text)';
-    Chart.defaults.font.family = "'Poppins', sans-serif";
+    Chart.defaults.color = '#888888'; // fallback solid color for canvas
+    Chart.defaults.font.family = "'Inter', sans-serif";
 
     // Bar Chart
     const barCtx = document.getElementById('portfolioChart').getContext('2d');
@@ -261,6 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
             scales: {
                 y: { 
                     beginAtZero: true, 
+                    min: 0,
                     suggestedMax: 5,
                     ticks: { precision: 0 },
                     grid: { color: 'rgba(128, 128, 128, 0.1)' }
@@ -270,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             },
             plugins: {
-                legend: { position: 'top', labels: { color: 'var(--text)' } },
+                legend: { position: 'top', labels: { color: '#888888' } },
                 tooltip: { 
                     backgroundColor: 'rgba(10, 10, 15, 0.9)', 
                     titleColor: 'var(--color-primary)', 
@@ -307,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
             maintainAspectRatio: false,
             cutout: '70%',
             plugins: {
-                legend: { position: 'bottom', labels: { color: 'var(--text)', padding: 20 } },
+                legend: { position: 'bottom', labels: { color: '#888888', padding: 20 } },
                 tooltip: { 
                     backgroundColor: 'rgba(10, 10, 15, 0.9)', 
                     titleColor: 'var(--color-primary)', 

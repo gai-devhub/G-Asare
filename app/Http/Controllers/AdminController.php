@@ -60,12 +60,12 @@ class AdminController extends Controller
         $projectData = [];
         $skillData = [];
         $blogData = [];
-        for ($i = 5; $i >= 0; $i--) {
-            $month = now()->subMonths($i);
-            $months[] = $month->format('M');
-            $projectData[] = \App\Models\Project::whereMonth('created_at', $month->month)->whereYear('created_at', $month->year)->count();
-            $skillData[] = \App\Models\Skill::whereMonth('created_at', $month->month)->whereYear('created_at', $month->year)->count();
-            $blogData[] = \App\Models\BlogPost::whereMonth('created_at', $month->month)->whereYear('created_at', $month->year)->count();
+        for ($monthNum = 1; $monthNum <= 12; $monthNum++) {
+            $monthDate = now()->month($monthNum);
+            $months[] = $monthDate->format('M');
+            $projectData[] = \App\Models\Project::whereMonth('created_at', $monthNum)->whereYear('created_at', now()->year)->count();
+            $skillData[] = \App\Models\Skill::whereMonth('created_at', $monthNum)->whereYear('created_at', now()->year)->count();
+            $blogData[] = \App\Models\BlogPost::whereMonth('created_at', $monthNum)->whereYear('created_at', now()->year)->count();
         }
 
         // For Pie Chart (Projects by Category)

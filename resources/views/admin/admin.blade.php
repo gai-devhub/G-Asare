@@ -205,9 +205,9 @@
                             <i class="fas fa-cloud"></i> Storage
                         </div>
                         <div class="storage-bar">
-                            <div class="storage-fill" style="width: 6.3%;"></div>
+                            <div class="storage-fill" style="width: {{ $globalStoragePercent }}%;"></div>
                         </div>
-                        <div class="storage-text">6.3 MB of 1 GB used</div>
+                        <div class="storage-text">{{ $globalStorageMB }} MB of 1 GB used</div>
                     </div>
                     <form method="POST" action="{{ route('logout') }}" class="logout-form">
                         @csrf
