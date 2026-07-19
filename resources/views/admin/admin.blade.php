@@ -456,6 +456,46 @@
                     img.src = '';
                 }
 
+                // Build nested location tree if path is provided
+                var locationTreeHtml = '<button class="btn btn-sm btn-outline"><i class="fab fa-google-drive"></i> My Drive</button>';
+                var detailsLocationHtml = '<button class="btn btn-sm btn-outline"><i class="fab fa-google-drive"></i> My Drive</button>';
+
+                if (data.path) {
+                    var parts = data.path.split('/').filter(function(p) { return p.trim() !== ''; });
+                    if (parts.length > 0) {
+                        var html = '';
+                        parts.forEach(function(part, index) {
+                            var isLast = index === parts.length - 1;
+                            var icon = isLast ? (data.type === 'Document' ? 'fas fa-file-alt' : (data.type === 'Project' ? 'fas fa-project-diagram' : 'fas fa-file')) : 'fas fa-folder';
+                            var wrapperOpen = '';
+                            if (index > 0) {
+                                wrapperOpen = '<div class="location-branch">';
+                            }
+                            html += wrapperOpen + '<div class="location-pill"><i class="' + icon + '"></i> ' + part + '</div>';
+                        });
+                        for(var i = 1; i < parts.length; i++) {
+                            html += '</div>';
+                        }
+                        locationTreeHtml = '<div class="nested-location">' + html + '</div>';
+                        detailsLocationHtml = '<span class="text-muted" style="word-break: break-all;">' + parts.join(' / ') + '</span>';
+                    }
+                }
+                
+                var targetDetails = document.getElementById('sidebar-item-location-details');
+                var targetActivity = document.getElementById('sidebar-item-location-activity');
+                if (targetDetails) targetDetails.innerHTML = detailsLocationHtml;
+                if (targetActivity) targetActivity.innerHTML = locationTreeHtml;
+
+                // Update activity time
+                var activityTime = document.getElementById('sidebar-item-activity-time');
+                if (activityTime) activityTime.textContent = data.created || 'Unknown';
+                
+                // Update "Last month" text to match the date
+                var activityPeriod = document.getElementById('sidebar-item-activity-period');
+                if (activityPeriod && data.created) {
+                    activityPeriod.textContent = data.created.split(',')[0]; // Just a quick way to show month
+                }
+
                 // Switch to the correct tab
                 document.querySelectorAll('.sidebar-tab-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.sidebar-tab-pane').forEach(p => p.classList.remove('active'));
@@ -540,7 +580,7 @@
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Location</span>
-                        <span class="detail-value"><button class="btn btn-sm btn-outline"><i class="fab fa-google-drive"></i> My Drive</button></span>
+                        <span class="detail-value" id="sidebar-item-location-details"><button class="btn btn-sm btn-outline"><i class="fab fa-google-drive"></i> My Drive</button></span>
                     </div>
                     <div class="detail-row mt-3">
                         <span class="detail-label">Owner</span>
@@ -569,13 +609,13 @@
             </div>
             <div class="sidebar-tab-pane" id="sidebar-pane-activity">
                 <div class="activity-timeline">
-                    <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1rem;">Last month</p>
+                    <p class="text-muted" id="sidebar-item-activity-period" style="font-size: 0.85rem; margin-bottom: 1rem;">Last month</p>
                     <div class="activity-item">
                         <img src="{{ asset($profile->image_url ?? 'images/gilly.jpeg') }}" alt="Profile" class="activity-avatar">
                         <div class="activity-details">
                             <p><strong>You</strong> created an item in</p>
-                            <span class="activity-time">9:20 PM Jun 20</span>
-                            <div class="activity-target">
+                            <span class="activity-time" id="sidebar-item-activity-time">9:20 PM Jun 20</span>
+                            <div class="activity-target" id="sidebar-item-location-activity">
                                 <i class="fab fa-google-drive"></i> My Drive
                             </div>
                         </div>

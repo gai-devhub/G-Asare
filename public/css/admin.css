@@ -1932,9 +1932,11 @@ textarea.form-control,
 .global-details-sidebar .activity-avatar {
     width: 32px;
     height: 32px;
+    min-width: 32px;
     border-radius: 50%;
     object-fit: cover;
     z-index: 2;
+    flex-shrink: 0;
 }
 
 .global-details-sidebar .activity-item::before {
@@ -2346,4 +2348,41 @@ textarea.form-control,
         transform: translateX(0);
         visibility: visible;
     }
+}
+
+/* Nested Location Tree Styles */
+.nested-location {
+    font-family: inherit;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+.location-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: var(--bg-surface);
+    color: var(--text-color);
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+.location-branch {
+    margin-left: 16px;
+    border-left: 1px solid var(--border-color);
+    padding-left: 16px;
+    position: relative;
+}
+.location-branch::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 16px;
+    height: 1px;
+    background: var(--border-color);
+}
+.activity-target .nested-location {
+    margin-top: 8px;
 }

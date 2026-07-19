@@ -31,4 +31,26 @@ class Document extends Model
     {
         return $query->orderBy('sort_order')->orderBy('title');
     }
+
+    public function getFileSizeAttribute()
+    {
+        if (empty($this->file_path)) return '-';
+        
+        $path = public_path($this->file_path);
+        if (file_exists($path) && is_file($path)) {
+            $bytes = filesize($path);
+            if ($bytes >= 1048576) {
+                return number_format($bytes / 1048576, 2) . ' MB';
+            } elseif ($bytes >= 1024) {
+                return number_format($bytes / 1024, 0) . ' KB';
+            } elseif ($bytes > 1) {
+                return $bytes . ' bytes';
+            } elseif ($bytes == 1) {
+                return $bytes . ' byte';
+            } else {
+                return '0 bytes';
+            }
+        }
+        return '-';
+    }
 }
