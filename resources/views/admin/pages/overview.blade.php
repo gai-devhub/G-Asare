@@ -73,7 +73,7 @@
             <div class="stat-info">
                 <p >Gallery Items</p>
                 <h3 >{{ $galleryCount }}</h3>
-                <span class="stat-meta" >+{{ $filesStored }} files stored</span>
+                <span class="stat-meta" >+{{ $foldersCount }} folders</span>
             </div>
         </div>
     </div>

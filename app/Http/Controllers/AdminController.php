@@ -82,13 +82,15 @@ class AdminController extends Controller
             $pieData = [1];
         }
 
+        $foldersCount = \App\Models\GalleryFolder::count();
+
         return view('admin.pages.overview', compact(
             'projectsCount', 'projectsDiffStr',
             'skillsCount', 'skillsCategoriesCount',
             'certificationsCount', 'latestCertification',
             'galleryCount', 'messagesCount', 'blogPostsCount', 'journeyCount',
             'recentActivity',
-            'storageMB', 'storagePercent', 'filesStored',
+            'storageMB', 'storagePercent', 'filesStored', 'foldersCount',
             'months', 'projectData', 'skillData', 'blogData',
             'pieLabels', 'pieData'
         ));
