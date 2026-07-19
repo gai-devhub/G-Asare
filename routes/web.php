@@ -34,6 +34,7 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap')
 Route::get('/journey', [ExperienceController::class, 'publicIndex'])->name('journey');
 Route::get('/gallery', [GalleryController::class, 'publicIndex'])->name('gallery');
 Route::get('/gallery/folder/{galleryFolder}', [App\Http\Controllers\GalleryFolderController::class, 'publicShow'])->name('gallery.folder');
+
 Route::get('/about', [ProfileController::class, 'publicAbout'])->name('about');
 Route::get('/services', function () { return view('services'); })->name('services');
 Route::get('/projects', [ProjectController::class, 'publicIndex'])->name('projects');
