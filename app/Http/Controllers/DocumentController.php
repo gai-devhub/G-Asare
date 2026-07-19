@@ -28,8 +28,8 @@ class DocumentController extends Controller
         if ($request->hasFile('file_path')) {
             $file = $request->file('file_path');
             $filename = time() . '_' . preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $file->getClientOriginalName());
-            $file->move(public_path('documents'), $filename);
-            $validated['file_path'] = 'documents/' . $filename;
+            $file->storeAs('documents', $filename, 'public');
+            $validated['file_path'] = 'storage/documents/' . $filename;
         }
 
         $document = Document::create($validated);
@@ -57,8 +57,8 @@ class DocumentController extends Controller
         if ($request->hasFile('file_path')) {
             $file = $request->file('file_path');
             $filename = time() . '_' . preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $file->getClientOriginalName());
-            $file->move(public_path('documents'), $filename);
-            $validated['file_path'] = 'documents/' . $filename;
+            $file->storeAs('documents', $filename, 'public');
+            $validated['file_path'] = 'storage/documents/' . $filename;
         } else {
             unset($validated['file_path']);
         }
@@ -92,13 +92,25 @@ class DocumentController extends Controller
             abort(404, 'File not found');
         }
 
-        $path = public_path(ltrim($document->file_path, '/'));
+        $isStorage = str_starts_with($document->file_path, 'storage/');
+        $relativePath = $isStorage ? substr($document->file_path, 8) : null;
         
-        if (!file_exists($path)) {
+        if ($isStorage && !\Storage::disk('public')->exists($relativePath)) {
             abort(404, 'File not found on server');
+        } else if (!$isStorage) {
+            $path = public_path(ltrim($document->file_path, '/'));
+            if (!file_exists($path)) {
+                abort(404, 'File not found on server');
+            }
         }
 
-        $extension = pathinfo($path, PATHINFO_EXTENSION);
+        // Get extension to formulate the download filename
+        if ($isStorage) {
+            $extension = pathinfo(\Storage::disk('public')->path($relativePath), PATHINFO_EXTENSION);
+        } else {
+            $extension = pathinfo($path, PATHINFO_EXTENSION);
+        }
+        
         $filename = \Illuminate\Support\Str::slug($document->title) . '.' . $extension;
 
         ActivityLog::recordFromRequest(
@@ -107,6 +119,10 @@ class DocumentController extends Controller
             $document->title
         );
 
-        return response()->download($path, $filename);
+        if ($isStorage) {
+            return \Storage::disk('public')->download($relativePath, $filename);
+        } else {
+            return response()->download($path, $filename);
+        }
     }
 }

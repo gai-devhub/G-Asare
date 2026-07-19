@@ -24,21 +24,25 @@
             pointer-events: all;
             display: flex;
             align-items: flex-start;
-            gap: 0.75rem;
-            min-width: 300px;
-            max-width: 420px;
-            padding: 1rem 1.1rem 0.85rem;
+            pointer-events: auto;
+            width: 320px;
+            background: var(--bg-surface, #ffffff);
             border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0,0,0,.18);
-            background: #fff;
-            border-left: 4px solid #22c55e;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: flex-start;
+            padding: 16px;
+            gap: 12px;
             position: relative;
             overflow: hidden;
+            border: 1px solid var(--border-color, #e5e7eb);
+            border-left: 4px solid var(--primary-color, #3b82f6);
             transform: translateX(120%);
             opacity: 0;
             transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .25s ease;
         }
         .toast.toast-error  { border-left-color: #ef4444; }
+        .toast.toast-success { border-left-color: #22c55e; }
         .toast.toast-show   { transform: translateX(0); opacity: 1; }
         .toast.toast-hide   { transform: translateX(120%); opacity: 0; }
         .toast-icon {
@@ -49,29 +53,29 @@
             flex-shrink: 0;
             margin-top: 1px;
         }
-        .toast-success .toast-icon { background: #dcfce7; color: #16a34a; }
-        .toast-error   .toast-icon { background: #fee2e2; color: #dc2626; }
+        .toast-success .toast-icon { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+        .toast-error   .toast-icon { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
         .toast-body { flex: 1; }
         .toast-title {
             font-weight: 600;
             font-size: .85rem;
             margin-bottom: 2px;
-            color: #111827;
+            color: var(--text-color, #111827);
         }
-        .toast-success .toast-title { color: #166534; }
-        .toast-error   .toast-title { color: #991b1b; }
+        .toast-success .toast-title { color: #22c55e; }
+        .toast-error   .toast-title { color: #ef4444; }
         .toast-msg {
             font-size: .82rem;
-            color: #4b5563;
+            color: var(--text-muted, #4b5563);
             line-height: 1.4;
         }
         .toast-close {
             background: none; border: none; cursor: pointer;
-            color: #9ca3af; font-size: .8rem; padding: 0;
+            color: var(--text-muted, #9ca3af); font-size: .8rem; padding: 0;
             line-height: 1; flex-shrink: 0; margin-top: 2px;
             transition: color .15s;
         }
-        .toast-close:hover { color: #374151; }
+        .toast-close:hover { color: var(--text-color, #374151); }
         .toast-progress {
             position: absolute;
             bottom: 0; left: 0;
@@ -85,11 +89,7 @@
             from { width: 100%; }
             to   { width: 0%; }
         }
-        @media (prefers-color-scheme: dark) {
-            .toast { background: #1f2937; }
-            .toast-title { color: #f9fafb; }
-            .toast-msg   { color: #d1d5db; }
-        }
+        /* Dynamic theme handling is now native using CSS variables */
     </style>
 </head>
 <body>
@@ -406,7 +406,16 @@
         // Kebab Menu Dropdown Toggle
         document.addEventListener('click', function(e) {
             var btn = e.target.closest('.kebab-btn');
+            var submenuBtn = e.target.closest('.has-submenu > button');
             
+            // Submenu Toggle for Mobile
+            if (submenuBtn) {
+                e.preventDefault();
+                var li = submenuBtn.closest('.has-submenu');
+                li.classList.toggle('open');
+                return; // Stop here, do NOT close the dropdown
+            }
+
             // Close all other open kebab menus
             document.querySelectorAll('.kebab-dropdown.show').forEach(function(menu) {
                 if (!btn || menu.previousElementSibling !== btn) {

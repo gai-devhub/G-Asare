@@ -1370,7 +1370,8 @@ textarea.form-control,
     right: 100%;
 }
 
-.kebab-dropdown li.has-submenu:hover>.kebab-submenu {
+.kebab-dropdown li.has-submenu:hover>.kebab-submenu,
+.kebab-dropdown li.has-submenu.open>.kebab-submenu {
     display: block;
 }
 
@@ -2281,6 +2282,9 @@ textarea.form-control,
         transform: translateY(110%);
         visibility: hidden;
         transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+        overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 85vh;
     }
     
     .kebab-dropdown.show {
@@ -2306,15 +2310,40 @@ textarea.form-control,
         font-size: 1rem;
     }
 
+    .kebab-dropdown li.has-submenu {
+        position: static; /* Crucial: allows first submenu to overlay the entire bottom sheet */
+    }
+
     .kebab-submenu, .kebab-submenu-left {
-        position: static;
+        position: absolute !important;
+        top: 24px; /* Starts just below the little drag handle */
+        left: 0;
         width: 100%;
+        height: calc(100% - 24px);
+        background: var(--bg-surface);
         box-shadow: none;
         border-radius: 0;
-        border-left: 2px solid var(--border-color);
-        margin-left: 1rem;
-        padding: 4px 0;
-        width: calc(100% - 1rem);
-        background: rgba(60, 64, 67, 0.02);
+        border: none;
+        margin: 0;
+        padding: 0;
+        z-index: 10;
+        display: block !important;
+        transform: translateX(-100%);
+        visibility: hidden;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+    }
+
+    /* Nested submenus inside submenus should cover their parent exactly */
+    .kebab-submenu .kebab-submenu,
+    .kebab-submenu-left .kebab-submenu-left,
+    .kebab-submenu .kebab-submenu-left {
+        top: 0;
+        height: 100%;
+        z-index: 11;
+    }
+
+    .kebab-dropdown li.has-submenu.open > .kebab-submenu {
+        transform: translateX(0);
+        visibility: visible;
     }
 }
