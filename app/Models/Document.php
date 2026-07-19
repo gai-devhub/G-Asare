@@ -36,9 +36,13 @@ class Document extends Model
     {
         if (empty($this->file_path)) return '-';
         
-        $path = public_path($this->file_path);
-        if (file_exists($path) && is_file($path)) {
-            $bytes = filesize($path);
+        $relativePath = $this->file_path;
+        if (str_starts_with($relativePath, 'storage/')) {
+            $relativePath = substr($relativePath, 8);
+        }
+
+        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($relativePath)) {
+            $bytes = \Illuminate\Support\Facades\Storage::disk('public')->size($relativePath);
             if ($bytes >= 1048576) {
                 return number_format($bytes / 1048576, 2) . ' MB';
             } elseif ($bytes >= 1024) {
@@ -51,6 +55,7 @@ class Document extends Model
                 return '0 bytes';
             }
         }
+        
         return '-';
     }
 }
