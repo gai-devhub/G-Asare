@@ -9,7 +9,7 @@
 @section('content')
 <div class="content-section active">
     <div class="page-header">
-        <h1><i class="fas fa-envelope" style="margin-right: 12px; color: var(--color-primary);"></i>Messages</h1>
+        <h1><i class="fas fa-envelope" ></i>Messages</h1>
         <p>Manage your portfolio messages and inquiries.</p>
     </div>
     
@@ -122,7 +122,7 @@
 <div class="modal-overlay" id="compose-message-modal" data-modal>
     <div class="modal modal-lg">
         <div class="modal-header">
-            <h3><i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Compose Message</h3>
+            <h3><i class="fas fa-paper-plane" ></i> Compose Message</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <form class="compose-form">
@@ -154,3 +154,5 @@
 @endpush
 
 @endsection
+
+

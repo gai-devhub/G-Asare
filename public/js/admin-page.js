@@ -4,13 +4,13 @@
  * Requires window.ADMIN_URLS to be set (base, messages, skills, projects, etc.)
  */
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const urls = window.ADMIN_URLS || {};
     const base = urls.base || '';
 
     // ========== Sidebar Dropdown Toggle ==========
     document.querySelectorAll('.sidebar-dropdown-trigger').forEach(trigger => {
-        trigger.addEventListener('click', function(e) {
+        trigger.addEventListener('click', function (e) {
             e.preventDefault();
             const parent = this.closest('.sidebar-dropdown');
             parent.classList.toggle('open');
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ========== Modal System ==========
     document.querySelectorAll('[data-modal-open]').forEach(trigger => {
-        trigger.addEventListener('click', function() {
+        trigger.addEventListener('click', function () {
             const modalId = this.getAttribute('data-modal-open');
             const modal = document.getElementById(modalId);
             if (modal) {
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.querySelectorAll('[data-modal-close]').forEach(trigger => {
-        trigger.addEventListener('click', function() {
+        trigger.addEventListener('click', function () {
             const modal = this.closest('[data-modal]');
             if (modal) {
                 modal.classList.remove('active');
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.querySelectorAll('[data-modal]').forEach(modal => {
-        modal.addEventListener('click', function(e) {
+        modal.addEventListener('click', function (e) {
             if (e.target === this) {
                 this.classList.remove('active');
                 document.body.style.overflow = '';
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
             document.querySelectorAll('.modal-overlay.active').forEach(m => {
                 m.classList.remove('active');
@@ -59,12 +59,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ========== Forms ==========
     document.querySelectorAll('.dashboard form:not(.logout-form)').forEach(form => {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             if (this.dataset.submit === 'server') return;
             const modal = this.closest('.modal-overlay');
             // If the form is not inside a modal, let it submit naturally to the server
-            if (!modal) return; 
-            
+            if (!modal) return;
+
             e.preventDefault();
             modal.classList.remove('active');
             document.body.style.overflow = '';
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    document.querySelector('.compose-form')?.addEventListener('submit', function(e) {
+    document.querySelector('.compose-form')?.addEventListener('submit', function (e) {
         e.preventDefault();
         document.getElementById('compose-message-modal')?.classList.remove('active');
         document.body.style.overflow = '';
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ========== Action Buttons (delete uses HTML popup modal, no alerts) ==========
     document.querySelectorAll('.action-btn').forEach(button => {
-        button.addEventListener('click', function(e) {
+        button.addEventListener('click', function (e) {
             if (this.tagName.toLowerCase() === 'a' && this.hasAttribute('href') && this.getAttribute('href') !== '#') {
                 return; // Let links navigate naturally
             }
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const emailToolbar = document.querySelector('.email-toolbar');
     let currentViewRow = null;
 
-    document.getElementById('email-message-list')?.addEventListener('click', function(e) {
+    document.getElementById('email-message-list')?.addEventListener('click', function (e) {
         const row = e.target.closest('.email-message-row');
         if (!row || e.target.closest('.action-btn')) return;
         if (!row.dataset.messageId) return;
@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
             fetch(urls.messages + '/' + msgId + '/read', {
                 method: 'POST',
                 headers: { 'X-CSRF-TOKEN': urls.csrf, 'Accept': 'application/json', 'Content-Type': 'application/json' }
-            }).catch(() => {});
+            }).catch(() => { });
         }
     }
 
@@ -186,13 +186,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (emailToolbar) emailToolbar.style.display = '';
     }
 
-    document.getElementById('email-back-btn')?.addEventListener('click', function() {
+    document.getElementById('email-back-btn')?.addEventListener('click', function () {
         closeMessageView();
         if (urls.messagesRoute) window.location.href = urls.messagesRoute;
     });
 
     document.querySelectorAll('[data-reply-trigger]').forEach(btn => {
-        btn.addEventListener('click', function(e) {
+        btn.addEventListener('click', function (e) {
             e.stopPropagation();
             if (composeModal) {
                 const from = document.getElementById('email-view-from')?.textContent;
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.querySelectorAll('.email-folders a[data-folder]').forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
             const folder = this.dataset.folder;
             document.querySelectorAll('.email-folders a').forEach(l => l.classList.remove('active'));
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const messageSearchInput = document.querySelector('[data-message-search]');
     if (messageSearchInput) {
-        messageSearchInput.addEventListener('input', function() {
+        messageSearchInput.addEventListener('input', function () {
             const query = this.value.toLowerCase().trim();
             const activePane = document.querySelector('.email-folder-pane.active');
             const rows = activePane ? activePane.querySelectorAll('.email-message-row') : document.querySelectorAll('.email-message-row');
@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========== Global Search Box ==========
     const searchInput = document.getElementById('admin-search-input');
     if (searchInput) {
-        searchInput.addEventListener('input', function() {
+        searchInput.addEventListener('input', function () {
             const query = this.value.toLowerCase().trim();
             const searchableSection = document.querySelector('[data-searchable]');
             if (!searchableSection) return;
@@ -291,12 +291,43 @@ document.addEventListener('DOMContentLoaded', function() {
         darkModeToggle.checked = saved === 'dark';
         document.documentElement.setAttribute('data-theme', saved);
         updateThemeIcon(saved);
-        
-        darkModeToggle.addEventListener('change', function() {
+
+        darkModeToggle.addEventListener('change', function (e) {
             const theme = this.checked ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-            updateThemeIcon(theme);
+            
+            if (!document.startViewTransition) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                updateThemeIcon(theme);
+                return;
+            }
+
+            // Expanding from the top left corner (0, 0)
+            const x = 0;
+            const y = 0;
+            const endRadius = Math.hypot(window.innerWidth, window.innerHeight);
+
+            const transition = document.startViewTransition(() => {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                updateThemeIcon(theme);
+            });
+
+            transition.ready.then(() => {
+                document.documentElement.animate(
+                    {
+                        clipPath: [
+                            `circle(0px at ${x}px ${y}px)`,
+                            `circle(${endRadius}px at ${x}px ${y}px)`
+                        ]
+                    },
+                    {
+                        duration: 600,
+                        easing: 'ease-in-out',
+                        pseudoElement: '::view-transition-new(root)',
+                    }
+                );
+            });
         });
     }
 
@@ -306,11 +337,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const deleteConfirmSubmit = document.getElementById('delete-confirm-submit');
     const deleteConfirmModal = document.getElementById('delete-confirm-modal');
 
-    deleteConfirmInput?.addEventListener('input', function() {
+    deleteConfirmInput?.addEventListener('input', function () {
         if (deleteConfirmSubmit) deleteConfirmSubmit.disabled = this.value.trim().toLowerCase() !== CONFIRM_TEXT;
     });
 
-    deleteConfirmModal?.addEventListener('click', function(e) {
+    deleteConfirmModal?.addEventListener('click', function (e) {
         if (e.target === deleteConfirmModal || e.target.closest('[data-modal-close]')) {
             if (deleteConfirmInput) deleteConfirmInput.value = '';
             if (deleteConfirmSubmit) deleteConfirmSubmit.disabled = true;
@@ -319,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    document.getElementById('delete-confirm-form')?.addEventListener('submit', function(e) {
+    document.getElementById('delete-confirm-form')?.addEventListener('submit', function (e) {
         if (!this.dataset.deleteReady) {
             e.preventDefault();
         }
@@ -329,7 +360,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const editSkillBtns = document.querySelectorAll('[data-modal-open="edit-skill-modal"]');
     if (editSkillBtns.length && urls.skills) {
         editSkillBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 document.getElementById('edit-skill-form').action = urls.skills + '/' + this.dataset.skillId;
                 document.getElementById('edit-skill-category').value = this.dataset.skillCategory || '';
                 document.getElementById('edit-skill-subcategory').value = this.dataset.skillSubcategory || '';
@@ -341,13 +372,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (editTags && editHidden) {
                     editTags.innerHTML = '';
                     const techStacks = (this.dataset.skillTechStacks || '').split(',').map(s => s.trim()).filter(Boolean);
-                    techStacks.forEach(function(name) {
+                    techStacks.forEach(function (name) {
                         const tag = document.createElement('span');
                         tag.className = 'tech-tag';
                         tag.dataset.tech = name;
                         tag.innerHTML = name + ' <button type="button" class="tech-tag-remove" aria-label="Remove">&times;</button>';
                         editTags.appendChild(tag);
-                        tag.querySelector('.tech-tag-remove').addEventListener('click', function() {
+                        tag.querySelector('.tech-tag-remove').addEventListener('click', function () {
                             tag.remove();
                             setTimeout(editEditHidden, 0);
                         });
@@ -388,17 +419,17 @@ document.addEventListener('DOMContentLoaded', function() {
             tag.dataset.tech = trimmed;
             tag.innerHTML = trimmed + ' <button type="button" class="tech-tag-remove" aria-label="Remove">&times;</button>';
             editSkillsTags.appendChild(tag);
-            tag.querySelector('.tech-tag-remove').addEventListener('click', function() {
+            tag.querySelector('.tech-tag-remove').addEventListener('click', function () {
                 tag.remove();
                 editEditHidden();
             });
             editEditHidden();
         }
-        editSkillsInput.addEventListener('keydown', function(e) {
+        editSkillsInput.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') { e.preventDefault(); addEditTech(this.value); this.value = ''; }
         });
         document.querySelectorAll('.edit-tech-preset').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 const tech = this.dataset.tech;
                 const existing = document.querySelector('#edit-skills-tech-tags .tech-tag[data-tech="' + CSS.escape(tech) + '"]');
                 if (existing) existing.remove();
@@ -406,10 +437,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 editEditHidden();
             });
         });
-        editSkillsTags.addEventListener('click', function(e) {
+        editSkillsTags.addEventListener('click', function (e) {
             if (e.target.classList.contains('tech-tag-remove')) setTimeout(editEditHidden, 0);
         });
-        document.getElementById('edit-skill-form')?.addEventListener('submit', function(e) {
+        document.getElementById('edit-skill-form')?.addEventListener('submit', function (e) {
             const skills = document.getElementById('edit-skill-skills-hidden')?.value?.trim();
             if (!skills) {
                 e.preventDefault();
@@ -438,18 +469,18 @@ document.addEventListener('DOMContentLoaded', function() {
             tag.dataset.tech = trimmed;
             tag.innerHTML = trimmed + ' <button type="button" class="tech-tag-remove" aria-label="Remove">&times;</button>';
             skillsTechTags.appendChild(tag);
-            tag.querySelector('.tech-tag-remove').addEventListener('click', function() {
+            tag.querySelector('.tech-tag-remove').addEventListener('click', function () {
                 selectedTechs.delete(trimmed);
                 tag.remove();
                 updateHiddenInput();
             });
             updateHiddenInput();
         }
-        skillsTechInput.addEventListener('keydown', function(e) {
+        skillsTechInput.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') { e.preventDefault(); addTech(this.value); this.value = ''; }
         });
         document.querySelectorAll('#add-skill-modal .tech-preset-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 const tech = this.dataset.tech;
                 if (selectedTechs.has(tech)) {
                     selectedTechs.delete(tech);
@@ -481,18 +512,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 tag.dataset.tech = trimmed;
                 tag.innerHTML = trimmed + ' <button type="button" class="tech-tag-remove" aria-label="Remove">&times;</button>';
                 projectTechTags.appendChild(tag);
-                tag.querySelector('.tech-tag-remove').addEventListener('click', function() {
+                tag.querySelector('.tech-tag-remove').addEventListener('click', function () {
                     selectedTechs.delete(trimmed);
                     tag.remove();
                     updateHidden();
                 });
                 updateHidden();
             }
-            projectTechInput.addEventListener('keydown', function(e) {
+            projectTechInput.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter') { e.preventDefault(); addTech(this.value); this.value = ''; }
             });
             addPresets?.forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', function () {
                     const tech = this.dataset.tech;
                     selectedTechs.has(tech) ? (selectedTechs.delete(tech), document.querySelector('#project-tech-tags .tech-tag[data-tech="' + CSS.escape(tech) + '"]')?.remove()) : addTech(tech);
                     updateHidden();
@@ -500,7 +531,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         document.querySelectorAll('[data-modal-open="edit-project-modal"]').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 document.getElementById('edit-project-form').action = urls.projects + '/' + this.dataset.projectId;
                 document.getElementById('edit-project-title').value = this.dataset.projectTitle || '';
                 document.getElementById('edit-project-category').value = this.dataset.projectCategory || 'web';
@@ -521,7 +552,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         tag.dataset.tech = t;
                         tag.innerHTML = t + ' <button type="button" class="tech-tag-remove" aria-label="Remove">&times;</button>';
                         editTags.appendChild(tag);
-                        tag.querySelector('.tech-tag-remove').addEventListener('click', function() {
+                        tag.querySelector('.tech-tag-remove').addEventListener('click', function () {
                             tag.remove();
                             const ts = Array.from(document.querySelectorAll('#edit-project-tech-tags .tech-tag')).map(x => x.dataset.tech);
                             if (editHidden) editHidden.value = ts.join(',');
@@ -531,7 +562,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
-        document.getElementById('edit-project-tech-input')?.addEventListener('keydown', function(e) {
+        document.getElementById('edit-project-tech-input')?.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
                 const val = this.value.trim();
@@ -543,7 +574,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     tag.dataset.tech = val;
                     tag.innerHTML = val + ' <button type="button" class="tech-tag-remove" aria-label="Remove">&times;</button>';
                     tags.appendChild(tag);
-                    tag.querySelector('.tech-tag-remove').addEventListener('click', function() {
+                    tag.querySelector('.tech-tag-remove').addEventListener('click', function () {
                         tag.remove();
                         const ts = Array.from(document.querySelectorAll('#edit-project-tech-tags .tech-tag')).map(x => x.dataset.tech);
                         if (hidden) hidden.value = ts.join(',');
@@ -560,7 +591,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========== Certifications Page ==========
     if (urls.certifications) {
         document.querySelectorAll('[data-modal-open="edit-cert-modal"]').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 document.getElementById('edit-cert-form').action = urls.certifications + '/' + this.dataset.certId;
                 document.getElementById('edit-cert-name').value = this.dataset.certName || '';
                 document.getElementById('edit-cert-issuer').value = this.dataset.certIssuer || '';
@@ -574,7 +605,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========== Gallery Page ==========
     if (urls.gallery) {
         document.querySelectorAll('[data-modal-open="edit-gallery-modal"]').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 document.getElementById('edit-gallery-form').action = urls.gallery + '/' + this.dataset.itemId;
                 document.getElementById('edit-gallery-url').value = this.dataset.itemUrl || '';
                 document.getElementById('edit-gallery-title').value = this.dataset.itemTitle || '';
@@ -587,7 +618,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========== Settings Page ==========
     if (urls.settings) {
         document.querySelectorAll('[data-modal-open="edit-setting-modal"]').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 document.getElementById('edit-setting-form').action = urls.settings + '/' + this.dataset.settingId;
                 document.getElementById('edit-setting-key').value = this.dataset.settingKey || '';
                 document.getElementById('edit-setting-value').value = this.dataset.settingValue || '';
@@ -599,7 +630,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========== Journey Page ==========
     if (urls.journey) {
         document.querySelectorAll('[data-modal-open="edit-journey-modal"]').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 document.getElementById('edit-journey-form').action = urls.journey + '/' + this.dataset.expId;
                 document.getElementById('edit-journey-role').value = this.dataset.expRole || '';
                 document.getElementById('edit-journey-company').value = this.dataset.expCompany || '';
@@ -613,7 +644,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========== Education Page ==========
     if (urls.education) {
         document.querySelectorAll('[data-modal-open="edit-edu-modal"]').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 document.getElementById('edit-edu-form').action = urls.education + '/' + this.dataset.eduId;
                 document.getElementById('edit-edu-institution').value = this.dataset.eduInstitution || '';
                 document.getElementById('edit-edu-degree').value = this.dataset.eduDegree || '';
@@ -627,7 +658,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========== Blog Posts Page ==========
     if (urls.blogPosts) {
         document.querySelectorAll('[data-modal-open="edit-blog-modal"]').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 document.getElementById('edit-blog-form').action = urls.blogPosts + '/' + this.dataset.postId;
                 document.getElementById('edit-blog-title').value = this.dataset.postTitle || '';
                 document.getElementById('edit-blog-category').value = this.dataset.postCategory || '';
@@ -645,7 +676,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========== My Files Page ==========
     if (urls.myFiles) {
         document.querySelectorAll('[data-modal-open="edit-doc-modal"]').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 document.getElementById('edit-doc-form').action = urls.myFiles + '/' + this.dataset.docId;
                 document.getElementById('edit-doc-title').value = this.dataset.docTitle || '';
                 document.getElementById('edit-doc-desc').value = this.dataset.docDescription || '';
@@ -659,7 +690,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========== Awards Page ==========
     if (urls.awards) {
         document.querySelectorAll('[data-modal-open="edit-award-modal"]').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 document.getElementById('edit-award-form').action = urls.awards + '/' + this.dataset.awardId;
                 document.getElementById('edit-award-title').value = this.dataset.awardTitle || '';
                 document.getElementById('edit-award-issuer').value = this.dataset.awardIssuer || '';
@@ -673,35 +704,35 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========== Global File Input Styling ==========
     document.querySelectorAll('input[type="file"]').forEach(input => {
         if (input.parentElement.classList.contains('custom-file-wrapper')) return;
-        
+
         const wrapper = document.createElement('div');
         wrapper.className = 'custom-file-wrapper';
-        
+
         const label = document.createElement('label');
         label.className = 'custom-file-label';
-        
+
         const icon = document.createElement('i');
         icon.className = 'fas fa-cloud-upload-alt';
         icon.style.marginRight = '8px';
-        
+
         const text = document.createElement('span');
         const isImage = input.accept && input.accept.includes('image');
         text.innerText = isImage ? 'Choose an image' : 'Choose a file';
         text.className = 'custom-file-text';
-        
+
         label.appendChild(icon);
         label.appendChild(text);
-        
+
         input.parentNode.insertBefore(wrapper, input);
         wrapper.appendChild(input);
         wrapper.appendChild(label);
-        
+
         wrapper.addEventListener('click', (e) => {
             if (e.target !== input) {
                 input.click();
             }
         });
-        
+
         input.addEventListener('change', (e) => {
             if (input.files && input.files.length > 0) {
                 text.innerText = input.files[0].name;

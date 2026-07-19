@@ -9,16 +9,18 @@
 @section('content')
 <div class="content-section active" data-searchable>
     <div class="page-header">
-        <h1><i class="fas fa-laptop-code" style="margin-right: 12px; color: var(--color-primary);"></i>Skills</h1>
-        <p>Manage your skills to match the website structure: Frontend Development, Backend & Database, Tools & Platforms, and Soft Skills.</p>
+        <div>
+            <h1><i class="fas fa-laptop-code" ></i>Skills</h1>
+            <p>Manage your skills to match the website structure: Frontend Development, Backend & Database, Tools & Platforms, and Soft Skills.</p>
+        </div>
+        <button type="button" class="icon-btn" data-modal-open="add-skill-modal" title="Add Skill">
+            <i class="fas fa-plus"></i>
+        </button>
     </div>
 
     <div class="chart-card">
         <div class="chart-header">
-            <div class="chart-title"><i class="fas fa-list" style="margin-right: 8px;"></i> All Skills ({{ $groupCount }} group{{ $groupCount !== 1 ? 's' : '' }})</div>
-            <div class="chart-actions" style="display: flex; gap: 0.5rem;">
-                <button type="button" class="btn btn-primary" data-modal-open="add-skill-modal"><i class="fas fa-plus"></i> Add Skill</button>
-            </div>
+            <div class="chart-title"><i class="fas fa-list" ></i> All Skills ({{ $groupCount }} group{{ $groupCount !== 1 ? 's' : '' }})</div>
         </div>
         
         @php
@@ -32,14 +34,15 @@
         
         @foreach($sortedCategories as $category)
         <div class="skills-section">
-            <h3 class="skills-section-title"><i class="fas fa-layer-group" style="margin-right: 8px; color: var(--color-secondary);"></i>{{ $category }}</h3>
+            <h3 class="skills-section-title"><i class="fas fa-layer-group" ></i>{{ $category }}</h3>
             <table class="data-table" data-search-table>
                 <thead>
                     <tr>
-                        <th style="width: 25%;">Sub-Category</th>
-                        <th style="width: 40%;">Description</th>
-                        <th style="width: 15%;">Level</th>
-                        <th style="width: 20%; text-align: right;">Actions</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Owner</th>
+                        <th>Level</th>
+                        <th class="table-action-cell"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,24 +50,57 @@
                     @foreach($subGroups as $subCat => $groupSkills)
                     @php $first = $groupSkills->first(); $techStacks = $groupSkills->pluck('name')->implode(','); @endphp
                     <tr>
-                        <td><strong>{{ $subCat ?: '—' }}</strong></td>
+                        <td>
+                            <div class="table-name-cell">
+                                <i class="fas fa-layer-group"></i>
+                                <span>{{ $subCat ?: '—' }}</span>
+                            </div>
+                        </td>
                         <td class="text-muted td-limit-280">{{ Str::limit($first->description, 80) ?: '—' }}</td>
                         <td>
-                            @if($first->percentage !== null)
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <span style="color: var(--color-primary); font-weight: bold;">{{ $first->percentage }}%</span>
-                                    <div style="flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
-                                        <div style="height: 100%; width: {{ $first->percentage }}%; background: var(--color-primary); box-shadow: 0 0 10px var(--color-primary);"></div>
-                                    </div>
-                                </div>
-                            @else
-                                —
-                            @endif
+                            <div class="table-owner-cell">
+                                @php $profile = \App\Models\Profile::first(); @endphp
+                                <img src="{{ asset($profile->image_url ?? 'images/gilly.jpeg') }}" alt="Owner">
+                                <span>me</span>
+                            </div>
                         </td>
-                        <td style="text-align: right;">
-                            <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
-                                <button type="button" class="action-btn edit-btn" data-modal-open="edit-skill-modal" data-skill-id="{{ $first->id }}" data-skill-category="{{ $first->category }}" data-skill-subcategory="{{ $first->sub_category ?? '' }}" data-skill-description="{{ str_replace(["\r","\n"], ' ', $first->description ?? '') }}" data-skill-percentage="{{ $first->percentage }}" data-skill-order="{{ $first->sort_order }}" data-skill-tech-stacks="{{ $techStacks }}"><i class="fas fa-edit"></i> Edit</button>
-                                <button type="button" class="action-btn delete-btn" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.skills.destroy', $first) }}" data-delete-name="{{ $subCat ? $subCat . ' and all its tech stacks' : 'this skill group' }}"><i class="fas fa-trash"></i> Delete</button>
+                        <td>
+                            <div class="table-location-cell">
+                            @if($first->percentage !== null)
+                                <span>{{ $first->percentage }}%</span>
+                            @else
+                                <span>—</span>
+                            @endif
+                            </div>
+                        </td>
+                        <td class="table-action-cell">
+                            <div class="kebab-menu-wrapper">
+                                <button class="kebab-btn"><i class="fas fa-ellipsis-v"></i></button>
+                                <ul class="kebab-dropdown">
+                                    <li class="has-submenu">
+                                        <button type="button"><i class="fas fa-info-circle"></i> File information <i class="fas fa-chevron-right"></i></button>
+                                        <ul class="kebab-submenu kebab-submenu-left">
+                                            <li><button type="button" onclick="openSidebar('details', { title: '{{ addslashes($subCat ? $subCat : $first->category) }}', category: '{{ addslashes($first->category) }}', type: 'Skill', owner: 'me', modified: '{{ $first->updated_at ? $first->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $first->created_at ? $first->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes(str_replace(["\r","\n"], ' ', $first->description ?? '')) }}', imageUrl: '' })"><i class="fas fa-list"></i> Details</button></li>
+                                            <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($subCat ? $subCat : $first->category) }}', category: '{{ addslashes($first->category) }}', type: 'Skill', owner: 'me', modified: '{{ $first->updated_at ? $first->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $first->created_at ? $first->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes(str_replace(["\r","\n"], ' ', $first->description ?? '')) }}', imageUrl: '' })"><i class="fas fa-history"></i> Activity</button></li>
+                                        </ul>
+                                    </li>
+                                    <li class="has-submenu">
+                                        <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
+                                        <ul class="kebab-submenu kebab-submenu-left">
+                                            <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
+                                            <li class="has-submenu">
+                                                <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
+                                                <ul class="kebab-submenu kebab-submenu-left">
+                                                    <li><button type="button" onclick="copyToClipboard('{{ route('admin.skills') }}')"><i class="fas fa-external-link-alt"></i> Copy Link</button></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li><button type="button" data-modal-open="edit-skill-modal" data-skill-id="{{ $first->id }}" data-skill-category="{{ $first->category }}" data-skill-subcategory="{{ $first->sub_category ?? '' }}" data-skill-description="{{ str_replace(["\r","\n"], ' ', $first->description ?? '') }}" data-skill-percentage="{{ $first->percentage }}" data-skill-order="{{ $first->sort_order }}" data-skill-tech-stacks="{{ $techStacks }}"><i class="fas fa-edit"></i> Edit</button></li>
+                                    <li class="divider"></li>
+                                    <li><button type="button" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.skills.destroy', $first) }}" data-delete-name="{{ $subCat ? $subCat . ' and all its tech stacks' : 'this skill group' }}"><i class="fas fa-trash"></i> Delete</button></li>
+                                </ul>
                             </div>
                         </td>
                     </tr>
@@ -84,7 +120,16 @@
         @endforeach
         
         @if($skills->isEmpty())
-        <div class="text-center text-muted py-4">No skills yet. Add your first one above.</div>
+        <div class="empty-state-container">
+            <div class="empty-state-illustration">
+                <i class="fas fa-laptop-code"></i>
+            </div>
+            <h2 class="empty-state-title">No skills added</h2>
+            <p class="empty-state-description">Add your technical and soft skills to build up your professional portfolio.</p>
+            <div class="empty-state-actions">
+                <button type="button" class="empty-state-btn" data-modal-open="add-skill-modal"><i class="fas fa-plus"></i> Add Skill</button>
+            </div>
+        </div>
         @endif
     </div>
 </div>
@@ -93,7 +138,7 @@
 <div class="modal-overlay" id="add-skill-modal" data-modal>
     <div class="modal">
         <div class="modal-header">
-            <h3><i class="fas fa-plus-circle" style="margin-right: 8px;"></i> Add New Skill</h3>
+            <h3><i class="fas fa-plus-circle" ></i> Add New Skill</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <form method="POST" action="{{ route('admin.skills.store-bulk') }}" data-submit="server">
@@ -121,7 +166,7 @@
                 </div>
                 <div class="form-group">
                     <label>Tech Stack / Tools</label>
-                    <p class="form-hint">Type tools and press Enter, or use quick add buttons</p>
+
                     <div class="tech-stack-container">
                         <div class="tech-stack-tags" id="skills-tech-tags"></div>
                         <div class="tech-stack-input-wrap">
@@ -156,7 +201,7 @@
 <div class="modal-overlay" id="edit-skill-modal" data-modal>
     <div class="modal">
         <div class="modal-header">
-            <h3><i class="fas fa-edit" style="margin-right: 8px;"></i> Edit Skill Group</h3>
+            <h3><i class="fas fa-edit" ></i> Edit Skill Group</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <form method="POST" action="" id="edit-skill-form" data-submit="server">
@@ -185,7 +230,7 @@
                 </div>
                 <div class="form-group">
                     <label>Tech Stack / Tools</label>
-                    <p class="form-hint">Type tools and press Enter, or use quick add buttons</p>
+
                     <div class="tech-stack-container">
                         <div class="tech-stack-tags" id="edit-skills-tech-tags"></div>
                         <div class="tech-stack-input-wrap">
@@ -230,3 +275,5 @@
 @endpush
 
 @endsection
+
+

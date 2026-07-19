@@ -9,47 +9,99 @@
 @section('content')
 <div class="content-section active" data-searchable>
     <div class="page-header">
-        <h1><i class="fas fa-graduation-cap" style="margin-right: 12px; color: var(--color-primary);"></i>Education</h1>
-        <p>Manage your educational background and qualifications.</p>
+        <div>
+            <h1><i class="fas fa-graduation-cap" ></i>Education</h1>
+            <p>Manage your educational background and qualifications.</p>
+        </div>
+        <button type="button" class="icon-btn" data-modal-open="add-edu-modal" title="Add Education">
+            <i class="fas fa-plus"></i>
+        </button>
     </div>
     
     <div class="chart-card">
         <div class="chart-header">
-            <div class="chart-title"><i class="fas fa-university" style="margin-right: 8px;"></i> Education History</div>
-            <div class="chart-actions" style="display: flex; gap: 0.5rem;">
-                <button type="button" class="btn btn-primary" data-modal-open="add-edu-modal"><i class="fas fa-plus"></i> Add Education</button>
-            </div>
+            <div class="chart-title"><i class="fas fa-university" ></i> Education History</div>
         </div>
         
+        @if($education->count() > 0)
         <table class="data-table" data-search-table>
             <thead>
                 <tr>
-                    <th style="width: 35%;">Institution</th>
-                    <th style="width: 30%;">Degree</th>
-                    <th style="width: 15%;">Period</th>
-                    <th style="width: 20%; text-align: right;">Actions</th>
+                    <th>Name</th>
+                    <th>Degree</th>
+                    <th>Owner</th>
+                    <th>Period</th>
+                    <th class="table-action-cell"></th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($education as $edu)
+                @foreach($education as $edu)
                 <tr>
-                    <td><strong>{{ $edu->institution }}</strong></td>
+                    <td>
+                        <div class="table-name-cell">
+                            <i class="fas fa-university"></i>
+                            <span>{{ $edu->institution }}</span>
+                        </div>
+                    </td>
                     <td><span class="activity-badge page-view">{{ $edu->degree }}</span></td>
-                    <td class="text-muted">{{ $edu->date_from }}@if($edu->date_to) - {{ $edu->date_to }}@endif</td>
-                    <td style="text-align: right;">
-                        <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
-                            <button type="button" class="action-btn edit-btn" data-modal-open="edit-edu-modal" data-edu-id="{{ $edu->id }}" data-edu-degree="{{ $edu->degree }}" data-edu-institution="{{ $edu->institution }}" data-edu-from="{{ $edu->date_from }}" data-edu-to="{{ $edu->date_to }}" data-edu-description="{{ $edu->description }}"><i class="fas fa-edit"></i> Edit</button>
-                            <button type="button" class="action-btn delete-btn" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.education.destroy', $edu) }}" data-delete-name="{{ $edu->institution }}"><i class="fas fa-trash"></i> Delete</button>
+                    <td>
+                        <div class="table-owner-cell">
+                            @php $profile = \App\Models\Profile::first(); @endphp
+                            <img src="{{ asset($profile->image_url ?? 'images/gilly.jpeg') }}" alt="Owner">
+                            <span>me</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="table-location-cell">
+                            <span class="text-muted">{{ $edu->date_from }}@if($edu->date_to) - {{ $edu->date_to }}@endif</span>
+                        </div>
+                    </td>
+                    <td class="table-action-cell">
+                        <div class="kebab-menu-wrapper">
+                            <button class="kebab-btn"><i class="fas fa-ellipsis-v"></i></button>
+                            <ul class="kebab-dropdown">
+                                <li class="has-submenu">
+                                    <button type="button"><i class="fas fa-info-circle"></i> File information <i class="fas fa-chevron-right"></i></button>
+                                    <ul class="kebab-submenu kebab-submenu-left">
+                                        <li><button type="button" onclick="openSidebar('details', { title: '{{ addslashes($edu->degree) }}', category: '{{ addslashes($edu->institution) }}', type: 'Education', owner: 'me', modified: '{{ $edu->updated_at ? $edu->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $edu->created_at ? $edu->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes(str_replace(["\r","\n"], ' ', $edu->description ?? '')) }}', imageUrl: '' })"><i class="fas fa-list"></i> Details</button></li>
+                                        <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($edu->degree) }}', category: '{{ addslashes($edu->institution) }}', type: 'Education', owner: 'me', modified: '{{ $edu->updated_at ? $edu->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $edu->created_at ? $edu->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes(str_replace(["\r","\n"], ' ', $edu->description ?? '')) }}', imageUrl: '' })"><i class="fas fa-history"></i> Activity</button></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu">
+                                    <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
+                                    <ul class="kebab-submenu kebab-submenu-left">
+                                        <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
+                                        <li class="has-submenu">
+                                            <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
+                                            <ul class="kebab-submenu kebab-submenu-left">
+                                                <li><button type="button" onclick="copyToClipboard('{{ route('admin.education') }}')"><i class="fas fa-external-link-alt"></i> Copy Link</button></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="divider"></li>
+                                <li><button type="button" data-modal-open="edit-edu-modal" data-edu-id="{{ $edu->id }}" data-edu-degree="{{ $edu->degree }}" data-edu-institution="{{ $edu->institution }}" data-edu-from="{{ $edu->date_from }}" data-edu-to="{{ $edu->date_to }}" data-edu-description="{{ $edu->description }}"><i class="fas fa-edit"></i> Edit</button></li>
+                                <li class="divider"></li>
+                                <li><button type="button" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.education.destroy', $edu) }}" data-delete-name="{{ $edu->institution }}"><i class="fas fa-trash"></i> Delete</button></li>
+                            </ul>
                         </div>
                     </td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="4" class="text-center text-muted py-4">No education entries yet. Add your first one above.</td>
-                </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
+        @else
+        <div class="empty-state-container">
+            <div class="empty-state-illustration">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h2 class="empty-state-title">No education added</h2>
+            <p class="empty-state-description">Add your educational background to show visitors your qualifications.</p>
+            <div class="empty-state-actions">
+                <button type="button" class="empty-state-btn" data-modal-open="add-edu-modal"><i class="fas fa-plus"></i> Add Education</button>
+            </div>
+        </div>
+        @endif
             @if(method_exists($education, 'hasPages') && $education->hasPages())
                 <div class="pagination-wrapper">
                     {{ $education->links('admin.pagination') }}
@@ -66,7 +118,7 @@
 <div class="modal-overlay" id="add-edu-modal" data-modal>
     <div class="modal">
         <div class="modal-header">
-            <h3><i class="fas fa-plus-circle" style="margin-right: 8px;"></i> Add Education</h3>
+            <h3><i class="fas fa-plus-circle" ></i> Add Education</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <form method="POST" action="{{ route('admin.education.store') }}" data-submit="server">
@@ -108,7 +160,7 @@
 <div class="modal-overlay" id="edit-edu-modal" data-modal>
     <div class="modal">
         <div class="modal-header">
-            <h3><i class="fas fa-edit" style="margin-right: 8px;"></i> Edit Education</h3>
+            <h3><i class="fas fa-edit" ></i> Edit Education</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <form method="POST" action="" id="edit-edu-form" data-submit="server">
@@ -150,3 +202,5 @@
 @endpush
 
 @endsection
+
+

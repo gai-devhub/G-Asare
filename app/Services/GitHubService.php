@@ -32,7 +32,8 @@ class GitHubService
             return $defaultStats;
         }
 
-        try {
+        return Cache::remember('github_stats_' . $username . '_v3', now()->addMinutes(5), function () use ($username, $token, $defaultStats) {
+            try {
                 $query = '
                 query($login: String!) {
                   user(login: $login) {
@@ -110,5 +111,6 @@ class GitHubService
                 Log::error('GitHub API exception: ' . $e->getMessage());
                 return $defaultStats;
             }
+        });
     }
 }

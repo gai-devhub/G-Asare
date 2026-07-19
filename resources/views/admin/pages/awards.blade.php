@@ -9,49 +9,100 @@
 @section('content')
 <div class="content-section active" data-searchable>
     <div class="page-header">
-        <h1><i class="fas fa-trophy" style="margin-right: 12px; color: var(--color-primary);"></i>Awards</h1>
-        <p>Manage awards and recognition. These display as cards with icon, organization, and year.</p>
+        <div>
+            <h1><i class="fas fa-trophy" ></i>Awards</h1>
+            <p>Manage awards and recognition. These display as cards with icon, organization, and year.</p>
+        </div>
+        <button type="button" class="icon-btn" data-modal-open="add-award-modal" title="Add Award">
+            <i class="fas fa-plus"></i>
+        </button>
     </div>
     
     <div class="chart-card">
         <div class="chart-header">
-            <div class="chart-title"><i class="fas fa-award" style="margin-right: 8px;"></i> All Awards</div>
-            <div class="chart-actions" style="display: flex; gap: 0.5rem;">
-                <button type="button" class="btn btn-primary" data-modal-open="add-award-modal"><i class="fas fa-plus"></i> Add Award</button>
-            </div>
+            <div class="chart-title"><i class="fas fa-award" ></i> All Awards</div>
         </div>
         
+        @if($awards->count() > 0)
         <table class="data-table" data-search-table>
             <thead>
                 <tr>
-                    <th style="width: 10%;">Icon</th>
-                    <th style="width: 35%;">Award</th>
-                    <th style="width: 25%;">Organization</th>
-                    <th style="width: 10%;">Year</th>
-                    <th style="width: 20%; text-align: right;">Actions</th>
+                    <th>Icon</th>
+                    <th>Name</th>
+                    <th>Organization</th>
+                    <th>Owner</th>
+                    <th>Date</th>
+                    <th class="table-action-cell"></th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($awards as $award)
+                @foreach($awards as $award)
                 <tr>
                     <td><div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(0,240,255,0.1); display: flex; align-items: center; justify-content: center; color: var(--color-primary);"><i class="{{ trim($award->icon) != '' && $award->icon != 'null' ? $award->icon : 'fas fa-trophy' }}"></i></div></td>
-                    <td><strong>{{ $award->title }}</strong></td>
+                    <td>
+                        <div class="table-name-cell" style="padding-left: 0;">
+                            <span>{{ $award->title }}</span>
+                        </div>
+                    </td>
                     <td class="text-muted">{{ $award->issuer ?? '—' }}</td>
-                    <td><span class="activity-badge page-view">{{ $award->date ?? '—' }}</span></td>
-                    <td style="text-align: right;">
-                        <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
-                            <button type="button" class="action-btn edit-btn" data-modal-open="edit-award-modal" data-award-id="{{ $award->id }}" data-award-title="{{ $award->title }}" data-award-issuer="{{ $award->issuer }}" data-award-date="{{ $award->date }}" data-award-description="{{ $award->description }}"><i class="fas fa-edit"></i> Edit</button>
-                            <button type="button" class="action-btn delete-btn" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.awards.destroy', $award) }}" data-delete-name="{{ $award->title }}"><i class="fas fa-trash"></i> Delete</button>
+                    <td>
+                        <div class="table-owner-cell">
+                            @php $profile = \App\Models\Profile::first(); @endphp
+                            <img src="{{ asset($profile->image_url ?? 'images/gilly.jpeg') }}" alt="Owner">
+                            <span>me</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="table-location-cell">
+                            <span class="activity-badge page-view">{{ $award->year ?? '—' }}</span>
+                        </div>
+                    </td>
+                    <td class="table-action-cell">
+                        <div class="kebab-menu-wrapper">
+                            <button class="kebab-btn"><i class="fas fa-ellipsis-v"></i></button>
+                            <ul class="kebab-dropdown">
+                                <li class="has-submenu">
+                                    <button type="button"><i class="fas fa-info-circle"></i> File information <i class="fas fa-chevron-right"></i></button>
+                                    <ul class="kebab-submenu kebab-submenu-left">
+                                        <li><button type="button" onclick="openSidebar('details', { title: '{{ addslashes($award->title) }}', category: '{{ addslashes($award->issuer) }}', type: 'Award', owner: 'me', modified: '{{ $award->updated_at ? $award->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $award->created_at ? $award->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes(str_replace(["\r","\n"], ' ', $award->description ?? '')) }}', imageUrl: '' })"><i class="fas fa-list"></i> Details</button></li>
+                                        <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($award->title) }}', category: '{{ addslashes($award->issuer) }}', type: 'Award', owner: 'me', modified: '{{ $award->updated_at ? $award->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $award->created_at ? $award->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes(str_replace(["\r","\n"], ' ', $award->description ?? '')) }}', imageUrl: '' })"><i class="fas fa-history"></i> Activity</button></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu">
+                                    <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
+                                    <ul class="kebab-submenu kebab-submenu-left">
+                                        <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
+                                        <li class="has-submenu">
+                                            <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
+                                            <ul class="kebab-submenu kebab-submenu-left">
+                                                <li><button type="button" onclick="copyToClipboard('{{ route('admin.awards') }}')"><i class="fas fa-external-link-alt"></i> Copy Link</button></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="divider"></li>
+                                <li><button type="button" data-modal-open="edit-award-modal" data-award-id="{{ $award->id }}" data-award-title="{{ $award->title }}" data-award-issuer="{{ $award->issuer }}" data-award-year="{{ $award->year }}" data-award-icon="{{ $award->icon }}" data-award-description="{{ $award->description }}"><i class="fas fa-edit"></i> Edit</button></li>
+                                <li class="divider"></li>
+                                <li><button type="button" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.awards.destroy', $award) }}" data-delete-name="{{ $award->title }}"><i class="fas fa-trash"></i> Delete</button></li>
+                            </ul>
                         </div>
                     </td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="4" class="text-center text-muted py-4">No awards yet. Add your first one above.</td>
-                </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
+        @else
+        <div class="empty-state-container">
+            <div class="empty-state-illustration">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h2 class="empty-state-title">No awards yet</h2>
+            <p class="empty-state-description">Add your awards and recognition so they appear on your profile.</p>
+            <div class="empty-state-actions">
+                <button type="button" class="empty-state-btn" data-modal-open="add-award-modal"><i class="fas fa-plus"></i> Add Award</button>
+            </div>
+        </div>
+        @endif
             @if(method_exists($awards, 'hasPages') && $awards->hasPages())
                 <div class="pagination-wrapper">
                     {{ $awards->links('admin.pagination') }}
@@ -68,31 +119,31 @@
 <div class="modal-overlay" id="add-award-modal" data-modal>
     <div class="modal">
         <div class="modal-header">
-            <h3><i class="fas fa-plus-circle" style="margin-right: 8px;"></i> Add Award</h3>
+            <h3><i class="fas fa-plus-circle" ></i> Add Award</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
-        <form method="POST" action="{{ route('admin.awards.store') }}" data-submit="server">
+        <form method="POST" action="{{ route('admin.awards.store') }}" data-submit="server" enctype="multipart/form-data">
             @csrf
             <div class="modal-body">
                 <div class="form-group">
                     <label for="award-title">Award Title</label>
-                    <input type="text" name="title" id="award-title" placeholder="e.g. Outstanding Developer Award" required>
+                    <input type="text" name="title" id="award-title" class="form-control" placeholder="e.g. Outstanding Developer Award" required>
                 </div>
                 <div class="form-group">
                     <label for="award-issuer">Organization</label>
-                    <input type="text" name="issuer" id="award-issuer" placeholder="e.g. Tech Innovation Summit">
+                    <input type="text" name="issuer" id="award-issuer" class="form-control" placeholder="e.g. Tech Innovation Summit">
                 </div>
                 <div class="form-group">
                     <label for="award-date">Year / Date</label>
-                    <input type="text" name="date" id="award-date" placeholder="e.g. 2024">
+                    <input type="text" name="date" id="award-date" class="form-control" placeholder="e.g. 2024">
                 </div>
                 <div class="form-group">
                     <label for="award-description">Description</label>
-                    <textarea name="description" id="award-description" rows="3" placeholder="Optional description"></textarea>
+                    <textarea name="description" id="award-description" rows="3" class="form-control" placeholder="Optional description"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="award-icon">Icon</label>
-                    <select name="icon" id="award-icon">
+                    <select name="icon" id="award-icon" class="form-control">
                         <option value="fas fa-trophy">Trophy</option>
                         <option value="fas fa-medal">Medal</option>
                         <option value="fas fa-star">Star</option>
@@ -102,8 +153,8 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="award-image">Image URL</label>
-                    <input type="text" name="image_url" id="award-image" placeholder="images/award.jpg or full URL">
+                    <label for="award-image">Image File</label>
+                    <input type="file" name="image_url" id="award-image" class="form-control">
                 </div>
             </div>
             <div class="modal-footer">
@@ -117,7 +168,7 @@
 <div class="modal-overlay" id="edit-award-modal" data-modal>
     <div class="modal">
         <div class="modal-header">
-            <h3><i class="fas fa-edit" style="margin-right: 8px;"></i> Edit Award</h3>
+            <h3><i class="fas fa-edit" ></i> Edit Award</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <form method="POST" action="" id="edit-award-form" data-submit="server">
@@ -166,3 +217,5 @@
 @endpush
 
 @endsection
+
+

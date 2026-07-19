@@ -9,16 +9,18 @@
 @section('content')
 <div class="content-section active" data-searchable>
     <div class="page-header">
-        <h1><i class="fas fa-route" style="margin-right: 12px; color: var(--color-primary);"></i>Journey</h1>
-        <p>Manage your career journey and timeline milestones.</p>
+        <div>
+            <h1><i class="fas fa-route" ></i>Journey</h1>
+            <p>Manage your career journey and timeline milestones.</p>
+        </div>
+        <button type="button" class="icon-btn" data-modal-open="add-journey-modal" title="Add Milestone">
+            <i class="fas fa-plus"></i>
+        </button>
     </div>
     
     <div class="chart-card">
         <div class="chart-header">
-            <div class="chart-title"><i class="fas fa-history" style="margin-right: 8px;"></i> Journey Timeline</div>
-            <div class="chart-actions" style="display: flex; gap: 0.5rem;">
-                <button type="button" class="btn btn-primary" data-modal-open="add-journey-modal"><i class="fas fa-plus"></i> Add Milestone</button>
-            </div>
+            <div class="chart-title"><i class="fas fa-history" ></i> Journey Timeline</div>
         </div>
         
         <div class="journey-timeline" data-search-container>
@@ -29,17 +31,21 @@
                     <h4>{{ $exp->role }} @ {{ $exp->company }}</h4>
                     <p class="journey-date">{{ $exp->date_from }}@if($exp->date_to) - {{ $exp->date_to }}@endif</p>
                     @if($exp->description)<p>{{ $exp->description }}</p>@endif
-                    <div class="journey-actions mt-2" style="display: flex; gap: 0.5rem;">
+                    <div class="journey-actions mt-2" >
                         <button type="button" class="action-btn edit-btn" data-modal-open="edit-journey-modal" data-exp-id="{{ $exp->id }}" data-exp-role="{{ $exp->role }}" data-exp-company="{{ $exp->company }}" data-exp-from="{{ $exp->date_from }}" data-exp-to="{{ $exp->date_to }}" data-exp-description="{{ $exp->description }}"><i class="fas fa-edit"></i> Edit</button>
                         <button type="button" class="action-btn delete-btn" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.journey.destroy', $exp) }}" data-delete-name="{{ $exp->title }}"><i class="fas fa-trash"></i> Delete</button>
                     </div>
                 </div>
             </div>
             @empty
-            <div class="journey-item text-muted">
-                <div class="journey-dot"></div>
-                <div class="journey-content">
-                    <p>No milestones yet. Add your first one above.</p>
+            <div class="empty-state-container">
+                <div class="empty-state-illustration">
+                    <i class="fas fa-route"></i>
+                </div>
+                <h2 class="empty-state-title">No milestones yet</h2>
+                <p class="empty-state-description">Add your first career or educational milestone.</p>
+                <div class="empty-state-actions">
+                    <button type="button" class="empty-state-btn" data-modal-open="add-journey-modal"><i class="fas fa-plus"></i> Add Milestone</button>
                 </div>
             </div>
             @endforelse
@@ -54,7 +60,7 @@
 <div class="modal-overlay" id="add-journey-modal" data-modal>
     <div class="modal">
         <div class="modal-header">
-            <h3><i class="fas fa-plus-circle" style="margin-right: 8px;"></i> Add Journey Milestone</h3>
+            <h3><i class="fas fa-plus-circle" ></i> Add Journey Milestone</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <form method="POST" action="{{ route('admin.journey.store') }}" data-submit="server">
@@ -96,7 +102,7 @@
 <div class="modal-overlay" id="edit-journey-modal" data-modal>
     <div class="modal">
         <div class="modal-header">
-            <h3><i class="fas fa-edit" style="margin-right: 8px;"></i> Edit Journey Milestone</h3>
+            <h3><i class="fas fa-edit" ></i> Edit Journey Milestone</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <form method="POST" action="" id="edit-journey-form" data-submit="server">
@@ -138,3 +144,5 @@
 @endpush
 
 @endsection
+
+

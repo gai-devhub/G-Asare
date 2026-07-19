@@ -9,50 +9,102 @@
 @section('content')
 <div class="content-section active" data-searchable>
     <div class="page-header">
-        <h1><i class="fas fa-file-alt" style="margin-right: 12px; color: var(--color-primary);"></i>My Files</h1>
-        <p>Manage key documents for download—resume, transcripts, certificates. These display as downloadable file items.</p>
+        <div>
+            <h1><i class="fas fa-file-alt" ></i>My Files</h1>
+            <p>Manage key documents for download—resume, transcripts, certificates. These display as downloadable file items.</p>
+        </div>
+        <button type="button" class="icon-btn" data-modal-open="add-doc-modal" title="Add Document">
+            <i class="fas fa-plus"></i>
+        </button>
     </div>
     
     <div class="chart-card">
         <div class="chart-header">
-            <div class="chart-title"><i class="fas fa-folder-open" style="margin-right: 8px;"></i> All Documents</div>
-            <div class="chart-actions" style="display: flex; gap: 0.5rem;">
-                <button type="button" class="btn btn-primary" data-modal-open="add-doc-modal"><i class="fas fa-plus"></i> Add Document</button>
-            </div>
+            <div class="chart-title"><i class="fas fa-folder-open" ></i> All Documents</div>
         </div>
         
+        @if($documents->count() > 0)
         <table class="data-table" data-search-table>
             <thead>
                 <tr>
-                    <th style="width: 10%;">Icon</th>
-                    <th style="width: 25%;">Document</th>
-                    <th style="width: 25%;">Description</th>
-                    <th style="width: 20%;">File</th>
-                    <th style="width: 20%; text-align: right;">Actions</th>
+                    <th>Icon</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Owner</th>
+                    <th>File</th>
+                    <th class="table-action-cell"></th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($documents as $doc)
+                @foreach($documents as $doc)
                 <tr>
-                    <td><div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(0,240,255,0.1); display: flex; align-items: center; justify-content: center; color: var(--color-primary);"><i class="{{ $doc->icon }}"></i></div></td>
-                    <td><strong>{{ $doc->title }}</strong></td>
-                    <td class="text-muted">{{ Str::limit($doc->description, 50) ?? '—' }}</td>
-                    <td><span class="activity-badge page-view">{{ Str::limit($doc->file_path, 20) }}</span></td>
-                    <td style="text-align: right;">
-                                <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
-                                <a href="{{ asset($doc->file_path) }}" target="_blank" class="action-btn" style="text-decoration: none; color: #3b82f6; border-color: rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.05); display: inline-flex; align-items: center; justify-content: center;"><i class="fas fa-external-link-alt"></i> View</a>
-                                <button type="button" class="action-btn edit-btn" data-modal-open="edit-doc-modal" data-doc-id="{{ $doc->id }}" data-doc-title="{{ $doc->title }}" data-doc-description="{{ $doc->description }}" data-doc-type="{{ $doc->type }}" data-doc-url="{{ $doc->url }}" data-doc-button="{{ $doc->button_text }}"><i class="fas fa-edit"></i> Edit</button>
-                                <button type="button" class="action-btn delete-btn" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.my-files.destroy', $doc) }}" data-delete-name="{{ $doc->title }}"><i class="fas fa-trash"></i> Delete</button>
+                    <td><div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(0,240,255,0.1); display: flex; align-items: center; justify-content: center; color: var(--color-primary);"><i class="{{ $doc->icon ?: 'fas fa-file-alt' }}"></i></div></td>
+                    <td>
+                        <div class="table-name-cell" style="padding-left: 0;">
+                            <span>{{ $doc->title }}</span>
+                        </div>
+                    </td>
+                    <td>{{ Str::limit($doc->description, 50) ?? '—' }}</td>
+                    <td>
+                        <div class="table-owner-cell">
+                            @php $profile = \App\Models\Profile::first(); @endphp
+                            <img src="{{ asset($profile->image_url ?? 'images/gilly.jpeg') }}" alt="Owner">
+                            <span>me</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="table-location-cell">
+                            <i class="fas fa-folder"></i>
+                            <span>{{ Str::limit($doc->file_path, 20) }}</span>
+                        </div>
+                    </td>
+                    <td class="table-action-cell">
+                        <div class="kebab-menu-wrapper">
+                            <button class="kebab-btn"><i class="fas fa-ellipsis-v"></i></button>
+                            <ul class="kebab-dropdown">
+                                <li class="has-submenu">
+                                    <button type="button"><i class="fas fa-info-circle"></i> File information <i class="fas fa-chevron-right"></i></button>
+                                    <ul class="kebab-submenu kebab-submenu-left">
+                                        <li><button type="button" onclick="openSidebar('details', { title: '{{ addslashes($doc->title) }}', category: '{{ addslashes($doc->type) }}', type: 'Document', owner: 'me', modified: '{{ $doc->updated_at ? $doc->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $doc->created_at ? $doc->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes($doc->description ?? 'No description') }}', imageUrl: '' })"><i class="fas fa-list"></i> Details</button></li>
+                                        <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($doc->title) }}', category: '{{ addslashes($doc->type) }}', type: 'Document', owner: 'me', modified: '{{ $doc->updated_at ? $doc->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $doc->created_at ? $doc->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes($doc->description ?? 'No description') }}', imageUrl: '' })"><i class="fas fa-history"></i> Activity</button></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu">
+                                    <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
+                                    <ul class="kebab-submenu kebab-submenu-left">
+                                        <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
+                                        <li class="has-submenu">
+                                            <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
+                                            <ul class="kebab-submenu kebab-submenu-left">
+                                                <li><button type="button" onclick="copyToClipboard('{{ route('admin.my-files') }}')"><i class="fas fa-external-link-alt"></i> Copy Link</button></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="divider"></li>
+                                <li><a href="{{ asset($doc->file_path) }}" target="_blank"><i class="fas fa-external-link-alt"></i> View</a></li>
+                                <li><button type="button" data-modal-open="edit-doc-modal" data-doc-id="{{ $doc->id }}" data-doc-title="{{ $doc->title }}" data-doc-description="{{ $doc->description }}" data-doc-type="{{ $doc->type }}" data-doc-url="{{ $doc->url }}" data-doc-button="{{ $doc->button_text }}"><i class="fas fa-edit"></i> Edit</button></li>
+                                <li class="divider"></li>
+                                <li><button type="button" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.my-files.destroy', $doc) }}" data-delete-name="{{ $doc->title }}"><i class="fas fa-trash"></i> Delete</button></li>
+                            </ul>
                         </div>
                     </td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="4" class="text-center text-muted py-4">No documents yet. Add your first one above.</td>
-                </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
+        @else
+        <div class="empty-state-container">
+            <div class="empty-state-illustration">
+                <i class="fas fa-folder-open"></i>
+            </div>
+            <h2 class="empty-state-title">No documents yet</h2>
+            <p class="empty-state-description">Add your resume, transcripts, or other key documents so they appear on your portfolio.</p>
+            <div class="empty-state-actions">
+                <button type="button" class="empty-state-btn" data-modal-open="add-doc-modal"><i class="fas fa-plus"></i> Add Document</button>
+            </div>
+        </div>
+        @endif
             @if(method_exists($documents, 'hasPages') && $documents->hasPages())
                 <div class="pagination-wrapper">
                     {{ $documents->links('admin.pagination') }}
@@ -69,7 +121,7 @@
 <div class="modal-overlay" id="add-doc-modal" data-modal>
     <div class="modal">
         <div class="modal-header">
-            <h3><i class="fas fa-plus-circle" style="margin-right: 8px;"></i> Add Document</h3>
+            <h3><i class="fas fa-plus-circle" ></i> Add Document</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <form method="POST" action="{{ route('admin.my-files.store') }}" data-submit="server" enctype="multipart/form-data">
@@ -77,15 +129,15 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="doc-title">Document Title</label>
-                    <input type="text" name="title" id="doc-title" placeholder="e.g. Resume / CV" required>
+                    <input type="text" name="title" id="doc-title" class="form-control" placeholder="e.g. Resume / CV" required>
                 </div>
                 <div class="form-group">
                     <label for="doc-desc">Description</label>
-                    <input type="text" name="description" id="doc-desc" placeholder="e.g. Updated professional resume (PDF)">
+                    <input type="text" name="description" id="doc-desc" class="form-control" placeholder="e.g. Updated professional resume (PDF)">
                 </div>
                 <div class="form-group">
                     <label for="doc-icon">Icon</label>
-                    <select name="icon" id="doc-icon">
+                    <select name="icon" id="doc-icon" class="form-control">
                         <option value="fas fa-file">File</option>
                         <option value="fas fa-file-pdf">PDF</option>
                         <option value="fas fa-file-word">Word</option>
@@ -97,8 +149,8 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="doc">File</label>
-                    <input type="file" name="file_path" id="doc-url" placeholder="file.pdf">
+                    <label for="doc-url">File</label>
+                    <input type="file" name="file_path" id="doc-url" class="form-control">
                 </div>
             </div>
             <div class="modal-footer">
@@ -112,7 +164,7 @@
 <div class="modal-overlay" id="edit-doc-modal" data-modal>
     <div class="modal">
         <div class="modal-header">
-            <h3><i class="fas fa-edit" style="margin-right: 8px;"></i> Edit Document</h3>
+            <h3><i class="fas fa-edit" ></i> Edit Document</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <form method="POST" action="" id="edit-doc-form" data-submit="server" enctype="multipart/form-data">
@@ -155,3 +207,5 @@
 @endpush
 
 @endsection
+
+

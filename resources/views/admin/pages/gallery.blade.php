@@ -9,45 +9,55 @@
 @section('content')
 <div class="content-section active" data-searchable>
     <div class="page-header">
-        <h1><i class="fas fa-folder-open" style="margin-right: 12px; color: var(--color-primary);"></i>Gallery Folders</h1>
-        <p>Manage your gallery folders and the images inside them.</p>
+        <div>
+            <h1><i class="fas fa-folder-open" ></i>Gallery Folders</h1>
+            <p>Manage your gallery folders and the images inside them.</p>
+        </div>
+        <button type="button" class="icon-btn" data-modal-open="add-folder-modal" title="Add Folder">
+            <i class="fas fa-plus"></i>
+        </button>
     </div>
     
     <div class="chart-card">
         <div class="chart-header">
-            <div class="chart-title"><i class="fas fa-folder" style="margin-right: 8px;"></i> Folders ({{ $folders->count() }})</div>
-            <div class="chart-actions" style="display: flex; gap: 0.5rem;">
-                <button type="button" class="btn btn-primary" data-modal-open="add-folder-modal"><i class="fas fa-folder-plus"></i> Add Folder</button>
-            </div>
+            <div class="chart-title"><i class="fas fa-folder" ></i> Folders ({{ $folders->count() }})</div>
         </div>
         
-        <div class="gallery-grid" data-search-container>
+        <div class="folder-grid" data-search-container>
             @forelse($folders as $folder)
-            <div class="gallery-folder-item" data-search-text="{{ $folder->name }} {{ $folder->category }}" style="cursor: pointer;" onclick="window.location.href='{{ route('admin.gallery-folders.show', $folder) }}'">
+            <div class="gallery-folder-item" data-search-text="{{ $folder->name }} {{ $folder->category }}"  onclick="window.location.href='{{ route('admin.gallery-folders.show', $folder) }}'">
                 <div class="folder-thumbnail">
-                    @if($folder->cover_image_url)
-                        <img src="{{ asset($folder->cover_image_url) }}" alt="{{ $folder->name }}">
-                    @else
-                        <div style="height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                            <i class="fas fa-folder" style="font-size: 3.5rem; color: var(--color-primary); margin-bottom: 8px;"></i>
-                            <span style="color: var(--text); font-size: 0.85rem;">{{ $folder->items()->count() }} items</span>
+                    <div class="mac-folder">
+                        <div class="mac-folder-back"></div>
+                        @if($folder->cover_image_url)
+                            <div class="mac-folder-image">
+                                <img src="{{ asset($folder->cover_image_url) }}" alt="{{ $folder->name }}">
+                            </div>
+                        @else
+                            <div class="mac-folder-image empty-folder"></div>
+                        @endif
+                        <div class="mac-folder-front">
+                            <h3 class="folder-title" title="{{ $folder->name }}">{{ $folder->name }}</h3>
+                            <span class="folder-subtitle">{{ $folder->items()->count() }} items</span>
                         </div>
-                    @endif
-                    <div class="gallery-overlay" onclick="event.stopPropagation();">
-                        <button type="button" class="action-btn" onclick="window.location.href='{{ route('admin.gallery-folders.show', $folder) }}'" style="background: var(--color-primary); color: white;"><i class="fas fa-external-link-alt"></i></button>
-                        <button type="button" class="action-btn" data-modal-open="edit-folder-modal-{{ $folder->id }}" style="background: #f59e0b; color: white;"><i class="fas fa-edit"></i></button>
+                    </div>
+                    <div class="folder-actions" onclick="event.stopPropagation();">
+                        <button type="button" class="action-btn" onclick="window.location.href='{{ route('admin.gallery-folders.show', $folder) }}'" ><i class="fas fa-external-link-alt"></i></button>
+                        <button type="button" class="action-btn" data-modal-open="edit-folder-modal-{{ $folder->id }}" ><i class="fas fa-edit"></i></button>
                         <button type="button" class="action-btn delete-btn" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.gallery-folders.destroy', $folder) }}" data-delete-name="this folder and all its images"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
-                <div class="folder-label">
-                    <h3>{{ $folder->name }}</h3>
-                    <span>{{ $folder->category ?? 'Uncategorized' }}</span>
-                </div>
             </div>
             @empty
-            <div class="empty-state-container" style="grid-column: 1 / -1; padding: 4rem 2rem; text-align: center; border: 1px dashed rgba(150, 150, 150, 0.2); border-radius: 12px; background: rgba(0,0,0,0.02);">
-                <i class="fas fa-folder-open" style="font-size: 3rem; color: var(--gray); margin-bottom: 1rem; opacity: 0.5;"></i>
-                <p class="text-muted" style="font-size: 1.1rem; margin: 0;">No gallery folders yet. Add your first folder above.</p>
+            <div class="empty-state-container" style="grid-column: 1 / -1;">
+                <div class="empty-state-illustration">
+                    <i class="fas fa-folder-open"></i>
+                </div>
+                <h2 class="empty-state-title">No gallery folders yet</h2>
+                <p class="empty-state-description">Add your first folder to organize your images.</p>
+                <div class="empty-state-actions">
+                    <button type="button" class="empty-state-btn" data-modal-open="add-folder-modal"><i class="fas fa-plus"></i> Add Folder</button>
+                </div>
             </div>
             @endforelse
         </div>
@@ -64,7 +74,7 @@
 <div class="modal-overlay" id="add-folder-modal" data-modal>
     <div class="modal">
         <div class="modal-header">
-            <h3><i class="fas fa-folder-plus" style="margin-right: 8px;"></i> Create Folder</h3>
+            <h3><i class="fas fa-folder-plus" ></i> Create Folder</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <form method="POST" action="{{ route('admin.gallery-folders.store') }}" data-submit="server" enctype="multipart/form-data">
@@ -108,9 +118,9 @@
 {{-- Per-folder edit modals rendered outside the grid to avoid backdrop-filter stacking --}}
 @foreach($folders as $folder)
 <div class="modal-overlay" id="edit-folder-modal-{{ $folder->id }}" data-modal>
-    <div class="modal" style="margin-top: 3rem;">
+    <div class="modal" >
         <div class="modal-header">
-            <h3><i class="fas fa-edit" style="margin-right: 8px;"></i> Edit: {{ $folder->name }}</h3>
+            <h3><i class="fas fa-edit" ></i> Edit: {{ $folder->name }}</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <form method="POST" action="{{ route('admin.gallery-folders.update', $folder) }}" data-submit="server" enctype="multipart/form-data">
@@ -142,9 +152,9 @@
                 <div class="form-group">
                     <label>Cover Image (Leave empty to keep current)</label>
                     @if($folder->cover_image_url)
-                    <div style="margin-bottom: 8px;">
-                        <p style="font-size: 0.8rem; color: var(--gray); margin: 0 0 6px 0;">Current cover:</p>
-                        <img src="{{ asset($folder->cover_image_url) }}" style="width: 100%; max-height: 120px; object-fit: cover; border-radius: 8px;">
+                    <div style="margin-bottom: 1rem;">
+                        <p style="margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--color-text-muted);">Current cover:</p>
+                        <img src="{{ asset($folder->cover_image_url) }}" style="max-width: 100%; max-height: 150px; border-radius: 6px; object-fit: contain; border: 1px solid var(--border-color);">
                     </div>
                     @endif
                     <input type="file" name="cover_image" accept="image/*">
@@ -163,3 +173,5 @@
 
 
 @endsection
+
+

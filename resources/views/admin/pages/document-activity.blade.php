@@ -8,29 +8,29 @@
 @section('content')
 <div class="content-section active" data-searchable>
     <div class="page-header">
-        <h1><i class="fas fa-mouse-pointer" style="margin-right: 12px; color: var(--color-primary);"></i>Document & Link Activity</h1>
+        <h1><i class="fas fa-mouse-pointer" ></i>Document & Link Activity</h1>
         <p>Track when visitors view or download your documents, certificates, awards, and files.</p>
     </div>
 
     <div class="chart-card">
         <div class="chart-header">
-            <div class="chart-title"><i class="fas fa-table" style="margin-right: 8px;"></i> Activity Log Table</div>
+            <div class="chart-title"><i class="fas fa-table" ></i> Activity Log Table</div>
         </div>
 
         <div class="table-responsive">
+            @if($logs->count() > 0)
             <table class="data-table">
                 <thead>
                     <tr>
+                        <th>Name</th>
                         <th>Action</th>
-                        <th>Item Type</th>
-                        <th>Name / Details</th>
+                        <th>Owner</th>
                         <th>Date</th>
-                        <th>Time</th>
-                        <th style="text-align: right;">Manage</th>
+                        <th class="table-action-cell"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($logs as $log)
+                    @foreach($logs as $log)
                         @php
                             $action = 'Viewed';
                             $itemType = 'Link';
@@ -77,31 +77,80 @@
                             }
                         @endphp
                         <tr>
-                            <td><span class="status-badge" style="background: rgba(var(--color-primary-rgb), 0.1); color: var(--color-primary);">{{ $action }}</span></td>
-                            <td><span style="color: var(--gray);">{{ $itemType }}</span></td>
-                            <td style="font-weight: 500;">{{ Str::limit($itemName, 60) }}</td>
-                            <td>{{ $log->created_at->format('M j, Y') }}</td>
-                            <td>{{ $log->created_at->format('g:i A') }}</td>
-                            <td style="text-align: right;">
-                                <button type="button" class="action-btn delete-btn" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.document-activity.destroy', $log) }}" data-delete-name="this activity log" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                            <td>
+                                <div class="table-name-cell">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span>{{ Str::limit($itemName, 60) }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="table-location-cell">
+                                    <span class="status-badge">{{ $action }} ({{ $itemType }})</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="table-owner-cell">
+                                    @php $profile = \App\Models\Profile::first(); @endphp
+                                    <img src="{{ asset($profile->image_url ?? 'images/gilly.jpeg') }}" alt="Owner">
+                                    <span>me</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="table-location-cell">
+                                    <span class="text-muted">{{ $log->created_at->format('M j, Y - g:i A') }}</span>
+                                </div>
+                            </td>
+                            <td class="table-action-cell">
+                                <div class="kebab-menu-wrapper">
+                                    <button class="kebab-btn"><i class="fas fa-ellipsis-v"></i></button>
+                                    <ul class="kebab-dropdown">
+                                        <li class="has-submenu">
+                                            <button type="button"><i class="fas fa-info-circle"></i> File information <i class="fas fa-chevron-right"></i></button>
+                                            <ul class="kebab-submenu kebab-submenu-left">
+                                                <li><button type="button" onclick="openSidebar('details', { title: '{{ addslashes($itemName) }}', category: '{{ addslashes($itemType) }}', type: 'Activity', owner: 'me', modified: '{{ $log->updated_at ? $log->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $log->created_at ? $log->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes($log->description ?? 'No description') }}', imageUrl: '' })"><i class="fas fa-list"></i> Details</button></li>
+                                                <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($itemName) }}', category: '{{ addslashes($itemType) }}', type: 'Activity', owner: 'me', modified: '{{ $log->updated_at ? $log->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $log->created_at ? $log->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes($log->description ?? 'No description') }}', imageUrl: '' })"><i class="fas fa-history"></i> Activity</button></li>
+                                            </ul>
+                                        </li>
+                                        <li class="has-submenu">
+                                            <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
+                                            <ul class="kebab-submenu kebab-submenu-left">
+                                                <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
+                                                <li class="has-submenu">
+                                                    <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
+                                                    <ul class="kebab-submenu kebab-submenu-left">
+                                                        <li><button type="button" onclick="copyToClipboard('{{ route('admin.document-activity') }}')"><i class="fas fa-external-link-alt"></i> Copy Link</button></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li><button type="button" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.document-activity.destroy', $log) }}" data-delete-name="this activity log"><i class="fas fa-trash"></i> Delete</button></li>
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center py-4" style="color: var(--gray);">No activity recorded yet.</td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
+            @else
+            <div class="empty-state-container">
+                <div class="empty-state-illustration">
+                    <i class="fas fa-file-invoice"></i>
+                </div>
+                <h2 class="empty-state-title">No activity recorded</h2>
+                <p class="empty-state-description">Your document and file activities will be recorded and shown here.</p>
+
+            </div>
+            @endif
         </div>
 
         @if($logs->hasPages())
-        <div class="pagination-wrapper p-3" style="border-top: 1px solid rgba(255,255,255,0.05);">
+        <div class="pagination-wrapper p-3" >
             {{ $logs->links('admin.pagination') }}
         </div>
         @endif
     </div>
 </div>
 @endsection
+
+

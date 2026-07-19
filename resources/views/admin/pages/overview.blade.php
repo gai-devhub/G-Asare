@@ -4,163 +4,212 @@
 
 @section('content')
 <div class="content-section active" data-searchable>
-    <div class="page-header" style="border-left: 4px solid var(--color-primary); padding-left: 1rem;">
-        <h1 style="color: var(--color-primary); text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px rgba(0,240,255,0.3);">System Overview</h1>
-        <p style="color: var(--gray);">Welcome back, administrator. Here's your portfolio metrics.</p>
+    <div class="page-header" >
+        <h1 >System Overview</h1>
+        <p >Welcome back, administrator. Here's your portfolio metrics.</p>
     </div>
     
     <!-- Stats Grid -->
-    <div class="dashboard-grid">
-        <div class="stat-card">
-            <div class="stat-icon blue">
-                <i class="fas fa-folder-open"></i>
+    <div class="dashboard-grid" >
+        <div class="stat-card" >
+            <div class="stat-icon" >
+                <i class="fas fa-folder"></i>
             </div>
             <div class="stat-info">
-                <h3>{{ $projectsCount }}</h3>
-                <p>TOTAL PROJECTS</p>
-                <span class="stat-meta">{{ $projectsDiffStr }}</span>
+                <p >Total Projects</p>
+                <h3 >{{ $projectsCount }}</h3>
+                <span class="stat-meta" >{{ $projectsDiffStr }}</span>
             </div>
         </div>
         
-        <div class="stat-card">
-            <div class="stat-icon purple">
+        <div class="stat-card" >
+            <div class="stat-icon" >
                 <i class="fas fa-code"></i>
             </div>
             <div class="stat-info">
-                <h3>{{ $skillsCount }}</h3>
-                <p>ACTIVE SKILLS</p>
-                <span class="stat-meta">Across {{ $skillsCategoriesCount }} categories</span>
+                <p >Active Skills</p>
+                <h3 >{{ $skillsCount }}</h3>
+                <span class="stat-meta" >Across {{ $skillsCategoriesCount }} categories</span>
             </div>
         </div>
 
-        <div class="stat-card">
-            <div class="stat-icon green">
+        <div class="stat-card" >
+            <div class="stat-icon" >
                 <i class="fas fa-envelope"></i>
             </div>
             <div class="stat-info">
-                <h3>{{ $messagesCount }}</h3>
-                <p>MESSAGES</p>
-                <span class="stat-meta">Inquiries & Contact</span>
+                <p >Messages</p>
+                <h3 >{{ $messagesCount }}</h3>
+                <span class="stat-meta" >Inquiries & Contact</span>
             </div>
         </div>
         
-        <div class="stat-card">
-            <div class="stat-icon orange">
-                <i class="fas fa-blog"></i>
+        <div class="stat-card" >
+            <div class="stat-icon" >
+                <i class="fas fa-file-alt"></i>
             </div>
             <div class="stat-info">
-                <h3>{{ $blogPostsCount }}</h3>
-                <p>BLOG POSTS</p>
-                <span class="stat-meta">Published Articles</span>
+                <p >Blog Posts</p>
+                <h3 >{{ $blogPostsCount }}</h3>
+                <span class="stat-meta" >Published Articles</span>
             </div>
         </div>
 
-        <div class="stat-card">
-            <div class="stat-icon red">
-                <i class="fas fa-route"></i>
+        <div class="stat-card" >
+            <div class="stat-icon" >
+                <i class="fas fa-map-marker-alt"></i>
             </div>
             <div class="stat-info">
-                <h3>{{ $journeyCount }}</h3>
-                <p>JOURNEY ITEMS</p>
-                <span class="stat-meta">Exp & Education</span>
+                <p >Journey Items</p>
+                <h3 >{{ $journeyCount }}</h3>
+                <span class="stat-meta" >Exp & Education</span>
             </div>
         </div>
         
-        <div class="stat-card">
-            <div class="stat-icon blue" style="color: #00f0ff; border-color: rgba(0, 240, 255, 0.3);">
+        <div class="stat-card" >
+            <div class="stat-icon" >
                 <i class="fas fa-images"></i>
             </div>
             <div class="stat-info">
-                <h3>{{ $galleryCount }}</h3>
-                <p>GALLERY ITEMS</p>
-                <span class="stat-meta">+{{ $filesStored }} files stored</span>
+                <p >Gallery Items</p>
+                <h3 >{{ $galleryCount }}</h3>
+                <span class="stat-meta" >+{{ $filesStored }} files stored</span>
             </div>
         </div>
     </div>
     
-    <div class="dashboard-row">
+    <div class="dashboard-row" >
         <!-- Portfolio Stats Bar Chart -->
-        <div class="chart-card flex-2">
-            <div class="chart-header">
-                <div class="chart-title"><i class="fas fa-chart-bar" style="margin-right: 8px;"></i> Activity Metrics</div>
+        <div class="chart-card" >
+            <div class="chart-header" >
+                <div class="chart-title" >Activity Metrics</div>
             </div>
-            <div class="portfolio-stats-chart" style="height: 350px; padding: 10px; width: 100%;">
+            <div class="portfolio-stats-chart" >
                 <canvas id="portfolioChart"></canvas>
             </div>
         </div>
         
         <!-- Projects Pie Chart -->
-        <div class="chart-card">
-            <div class="chart-header">
-                <div class="chart-title"><i class="fas fa-chart-pie" style="margin-right: 8px;"></i> Projects by Category</div>
+        <div class="chart-card" >
+            <div class="chart-header" >
+                <div class="chart-title" >Projects by Category</div>
             </div>
-            <div class="portfolio-stats-chart" style="height: 350px; padding: 10px; display: flex; align-items: center; justify-content: center;">
+            <div class="portfolio-stats-chart" >
                 <canvas id="pieChart"></canvas>
             </div>
         </div>
     </div>
 
-    <div class="dashboard-row">
+    <div class="dashboard-row" >
         <!-- Recent Activity -->
-        <div class="chart-card flex-2">
-            <div class="chart-header">
-                <div class="chart-title"><i class="fas fa-history" style="margin-right: 8px;"></i> System Logs</div>
-                <a href="{{ route('admin.document-activity') }}" class="chart-link">View all logs</a>
+        <div class="chart-card" >
+            <div class="chart-header" >
+                <div class="chart-title" >System Logs</div>
+                <a href="{{ route('admin.document-activity') }}" >View all</a>
             </div>
             
-            <table class="data-table" data-search-table>
+            @if($recentActivity->count() > 0)
+            <table class="data-table" >
                 <thead>
                     <tr>
-                        <th style="color: var(--color-primary);">EVENT NAME</th>
-                        <th style="color: var(--color-primary);">MODULE</th>
-                        <th style="color: var(--color-primary);">STATUS</th>
-                        <th style="color: var(--color-primary);">TIMESTAMP</th>
+                        <th>Name</th>
+                        <th>Module</th>
+                        <th>Owner</th>
+                        <th>Time</th>
+                        <th class="table-action-cell"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($recentActivity as $activity)
+                    @foreach($recentActivity as $activity)
                     <tr>
-                        <td>{{ $activity->title }}</td>
-                        <td><span class="activity-badge page-view">{{ $activity->type }}</span></td>
-                        <td><span class="status published" style="background: rgba(0, 240, 255, 0.1); color: #00f0ff; border: 1px solid rgba(0, 240, 255, 0.3); box-shadow: 0 0 5px rgba(0, 240, 255, 0.2);">Logged</span></td>
-                        <td style="color: var(--gray);">{{ $activity->created_at->diffForHumans() }}</td>
+                        <td>
+                            <div class="table-name-cell">
+                                <i class="fas fa-file-alt"></i>
+                                <span>{{ $activity->title }}</span>
+                            </div>
+                        </td>
+                        <td>{{ $activity->type }}</td>
+                        <td>
+                            <div class="table-owner-cell">
+                                @php $profile = \App\Models\Profile::first(); @endphp
+                                <img src="{{ asset($profile->image_url ?? 'images/gilly.jpeg') }}" alt="Owner">
+                                <span>me</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="table-location-cell">
+                                <i class="fas fa-clock"></i>
+                                <span>{{ $activity->created_at->diffForHumans() }}</span>
+                            </div>
+                        </td>
+                        <td class="table-action-cell">
+                            <div class="kebab-menu-wrapper">
+                                <button class="kebab-btn"><i class="fas fa-ellipsis-v"></i></button>
+                                <ul class="kebab-dropdown">
+                                    <li class="has-submenu">
+                                        <button type="button"><i class="fas fa-info-circle"></i> File information <i class="fas fa-chevron-right"></i></button>
+                                        <ul class="kebab-submenu kebab-submenu-left">
+                                            <li><button type="button" onclick="openSidebar('details', { title: '{{ addslashes($activity->action) }}', category: 'Activity', type: 'Log', owner: 'System', modified: '{{ $activity->created_at ? $activity->created_at->format('M d, Y') : 'Unknown' }}', created: '{{ $activity->created_at ? $activity->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes($activity->description ?? 'No description') }}', imageUrl: '' })"><i class="fas fa-list"></i> Details</button></li>
+                                            <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($activity->action) }}', category: 'Activity', type: 'Log', owner: 'System', modified: '{{ $activity->created_at ? $activity->created_at->format('M d, Y') : 'Unknown' }}', created: '{{ $activity->created_at ? $activity->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes($activity->description ?? 'No description') }}', imageUrl: '' })"><i class="fas fa-history"></i> Activity</button></li>
+                                        </ul>
+                                    </li>
+                                    <li class="has-submenu">
+                                        <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
+                                        <ul class="kebab-submenu kebab-submenu-left">
+                                            <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
+                                            <li class="has-submenu">
+                                                <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
+                                                <ul class="kebab-submenu kebab-submenu-left">
+                                                    <li><button type="button" onclick="copyToClipboard('{{ route('admin.document-activity') }}')"><i class="fas fa-external-link-alt"></i> Copy Link</button></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li><a href="{{ route('admin.document-activity') }}"><i class="fas fa-eye"></i> View details</a></li>
+                                </ul>
+                            </div>
+                        </td>
                     </tr>
-                    @empty
-                    <tr>
-                        <td colspan="4" style="text-align: center; padding: 20px; color: var(--gray);">No recent activity in system logs.</td>
-                    </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
+            @else
+            <div class="empty-state-container">
+                <div class="empty-state-illustration">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h2 class="empty-state-title">No recent activity</h2>
+                <p class="empty-state-description">Your dashboard overview and recent system logs will appear here.</p>
+
+            </div>
+            @endif
             @if(method_exists($recentActivity, 'hasPages') && $recentActivity->hasPages())
-                <div class="pagination-wrapper">
+                <div class="pagination-wrapper" >
                     {{ $recentActivity->links('admin.pagination') }}
                 </div>
             @endif
-
-            
-
-            
         </div>
         
         <!-- Storage Usage -->
-        <div class="chart-card">
-            <div class="chart-header">
-                <div class="chart-title"><i class="fas fa-hdd" style="margin-right: 8px;"></i> Disk Usage</div>
+        <div class="chart-card" >
+            <div class="chart-header" >
+                <div class="chart-title" >Storage</div>
             </div>
-            <div class="storage-widget">
-                <div class="storage-progress" style="margin: 20px 0;">
-                    <div class="storage-circle" style="background: conic-gradient(var(--color-primary) {{ $storagePercent }}%, rgba(128,128,128,0.1) 0); border: 1px solid rgba(0,240,255,0.2); box-shadow: 0 0 15px rgba(0,240,255,0.1);">
-                        <span class="storage-percent" style="color: var(--text); font-weight: 600;">{{ $storagePercent }}%</span>
+            <div class="storage-widget" >
+                <div class="storage-progress" >
+                    <div class="storage-circle" >
+                        <div >
+                            <span >{{ $storagePercent }}%</span>
+                        </div>
                     </div>
                 </div>
-                <p class="storage-text" style="color: var(--color-primary);">{{ $storageMB }} MB of 1 GB allocated</p>
-                <p class="storage-meta">{{ $filesStored }} Total uploaded files</p>
-                <a href="{{ route('admin.my-files') }}" class="btn btn-outline" style="width: 100%; justify-content: center; margin-top: 10px;">ACCESS DRIVE</a>
+                <p >{{ $storageMB }} MB used</p>
+                <p >of 1 GB allocated</p>
+                <a href="{{ route('admin.my-files') }}" class="btn" >Open Drive</a>
             </div>
         </div>
     </div>
-    
 </div>
 
 @push('scripts')
@@ -180,8 +229,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     label: 'Projects',
                     data: {!! json_encode($projectData) !!},
-                    backgroundColor: 'rgba(0, 240, 255, 0.8)',
-                    borderColor: '#00f0ff',
+                    backgroundColor: '#0F9D58',
+                    borderColor: 'var(--color-primary)',
                     borderWidth: 1,
                     borderRadius: 4,
                     barPercentage: 0.6
@@ -189,8 +238,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     label: 'Skills',
                     data: {!! json_encode($skillData) !!},
-                    backgroundColor: 'rgba(176, 38, 255, 0.8)',
-                    borderColor: '#b026ff',
+                    backgroundColor: '#4285F4',
+                    borderColor: 'var(--color-accent)',
                     borderWidth: 1,
                     borderRadius: 4,
                     barPercentage: 0.6
@@ -198,8 +247,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     label: 'Blog Posts',
                     data: {!! json_encode($blogData) !!},
-                    backgroundColor: 'rgba(255, 0, 60, 0.8)',
-                    borderColor: '#ff003c',
+                    backgroundColor: '#EA4335',
+                    borderColor: 'var(--color-secondary)',
                     borderWidth: 1,
                     borderRadius: 4,
                     barPercentage: 0.6
@@ -224,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 legend: { position: 'top', labels: { color: 'var(--text)' } },
                 tooltip: { 
                     backgroundColor: 'rgba(10, 10, 15, 0.9)', 
-                    titleColor: '#00f0ff', 
+                    titleColor: 'var(--color-primary)', 
                     bodyColor: '#fff',
                     borderColor: 'rgba(0, 240, 255, 0.3)',
                     borderWidth: 1
@@ -242,11 +291,11 @@ document.addEventListener('DOMContentLoaded', function() {
             datasets: [{
                 data: {!! json_encode($pieData) !!},
                 backgroundColor: [
-                    'rgba(0, 240, 255, 0.8)',
-                    'rgba(176, 38, 255, 0.8)',
-                    'rgba(255, 0, 60, 0.8)',
-                    'rgba(0, 255, 115, 0.8)',
-                    'rgba(255, 174, 0, 0.8)'
+                    '#0F9D58',
+                    '#4285F4',
+                    '#EA4335',
+                    '#FBBC05',
+                    '#34A853'
                 ],
                 borderColor: 'var(--bg-surface)',
                 borderWidth: 2,
@@ -261,7 +310,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 legend: { position: 'bottom', labels: { color: 'var(--text)', padding: 20 } },
                 tooltip: { 
                     backgroundColor: 'rgba(10, 10, 15, 0.9)', 
-                    titleColor: '#00f0ff', 
+                    titleColor: 'var(--color-primary)', 
                     bodyColor: '#fff',
                     borderColor: 'rgba(0, 240, 255, 0.3)',
                     borderWidth: 1
@@ -273,3 +322,5 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 @endpush
 @endsection
+
+

@@ -9,47 +9,104 @@
 @section('content')
 <div class="content-section active" data-searchable>
     <div class="page-header">
-        <h1><i class="fas fa-project-diagram" style="margin-right: 12px; color: var(--color-primary);"></i>Projects</h1>
-        <p>Manage your portfolio projects.</p>
+        <div>
+            <h1><i class="fas fa-project-diagram" ></i>Projects</h1>
+            <p>Manage your portfolio projects.</p>
+        </div>
+        <button type="button" class="icon-btn" data-modal-open="add-project-modal" title="Add Project">
+            <i class="fas fa-plus"></i>
+        </button>
     </div>
     
     <div class="chart-card">
         <div class="chart-header">
-            <div class="chart-title"><i class="fas fa-list" style="margin-right: 8px;"></i> All Projects</div>
-            <div class="chart-actions" style="display: flex; gap: 0.5rem;">
-                <button type="button" class="btn btn-primary" data-modal-open="add-project-modal"><i class="fas fa-plus"></i> Add Project</button>
-            </div>
+            <div class="chart-title"><i class="fas fa-list" ></i> All Projects</div>
         </div>
         
+        @if($projects->count() > 0)
         <table class="data-table" data-search-table>
             <thead>
                 <tr>
-                    <th style="width: 40%;">Project</th>
-                    <th style="width: 25%;">Category</th>
-                    <th style="width: 15%;">Status</th>
-                    <th style="width: 20%; text-align: right;">Actions</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Owner</th>
+                    <th>Status</th>
+                    <th class="table-action-cell"></th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($projects as $project)
+                @foreach($projects as $project)
                 <tr>
-                    <td><strong>{{ $project->title }}</strong></td>
+                    <td>
+                        <div class="table-name-cell">
+                            @if($project->image_url)
+                                <img src="{{ asset($project->image_url) }}" alt="Project" class="table-image-icon">
+                            @else
+                                <i class="fas fa-project-diagram"></i>
+                            @endif
+                            <span>{{ $project->title }}</span>
+                        </div>
+                    </td>
                     <td><span class="activity-badge page-view">{{ strtoupper($project->category) }}</span></td>
-                    <td><span class="status {{ $project->is_active ? 'published' : 'draft' }}">{{ $project->is_active ? 'Active' : 'Draft' }}</span></td>
-                    <td style="text-align: right;">
-                        <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
-                            <button type="button" class="action-btn edit-btn" data-modal-open="edit-project-modal" data-project-id="{{ $project->id }}" data-project-title="{{ $project->title }}" data-project-category="{{ $project->category }}" data-project-description="{{ $project->description }}" data-project-tags="{{ is_array($project->tags) ? implode(', ', $project->tags) : '' }}" data-project-url="{{ $project->project_url }}" data-project-github="{{ $project->github_url }}" data-project-image="{{ $project->image_url }}" data-project-featured="{{ $project->is_featured ? '1' : '0' }}"><i class="fas fa-edit"></i> Edit</button>
-                            <button type="button" class="action-btn delete-btn" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.projects.destroy', $project) }}" data-delete-name="{{ $project->title }}"><i class="fas fa-trash"></i> Delete</button>
+                    <td>
+                        <div class="table-owner-cell">
+                            @php $profile = \App\Models\Profile::first(); @endphp
+                            <img src="{{ asset($profile->image_url ?? 'images/gilly.jpeg') }}" alt="Owner">
+                            <span>me</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="table-location-cell">
+                            <span class="status {{ $project->is_active ? 'published' : 'draft' }}">{{ $project->is_active ? 'Active' : 'Draft' }}</span>
+                        </div>
+                    </td>
+                    <td class="table-action-cell">
+                        <div class="kebab-menu-wrapper">
+                            <button class="kebab-btn"><i class="fas fa-ellipsis-v"></i></button>
+                            <ul class="kebab-dropdown">
+                                <li class="has-submenu">
+                                    <button type="button"><i class="fas fa-info-circle"></i> File information <i class="fas fa-chevron-right"></i></button>
+                                    <ul class="kebab-submenu kebab-submenu-left">
+                                        <li><button type="button" onclick="openSidebar('details', { title: '{{ addslashes($project->title) }}', category: '{{ addslashes($project->category) }}', type: 'Project', owner: 'me', modified: '{{ $project->updated_at ? $project->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $project->created_at ? $project->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes($project->description) }}', imageUrl: '{{ $project->image_url ? asset($project->image_url) : '' }}' })"><i class="fas fa-list"></i> Details</button></li>
+                                        <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($project->title) }}', category: '{{ addslashes($project->category) }}', type: 'Project', owner: 'me', modified: '{{ $project->updated_at ? $project->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $project->created_at ? $project->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes($project->description) }}', imageUrl: '{{ $project->image_url ? asset($project->image_url) : '' }}' })"><i class="fas fa-history"></i> Activity</button></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu">
+                                    <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
+                                    <ul class="kebab-submenu kebab-submenu-left">
+                                        <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
+                                        <li class="has-submenu">
+                                            <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
+                                            <ul class="kebab-submenu kebab-submenu-left">
+                                                <li><button type="button" onclick="copyToClipboard('{{ $project->github_url }}')"><i class="fab fa-github"></i> GitHub Repo</button></li>
+                                                <li><button type="button" onclick="copyToClipboard('{{ $project->project_url }}')"><i class="fas fa-external-link-alt"></i> App Link</button></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="divider"></li>
+                                <li><button type="button" data-modal-open="edit-project-modal" data-project-id="{{ $project->id }}" data-project-title="{{ $project->title }}" data-project-category="{{ $project->category }}" data-project-description="{{ $project->description }}" data-project-tags="{{ is_array($project->tags) ? implode(', ', $project->tags) : '' }}" data-project-url="{{ $project->project_url }}" data-project-github="{{ $project->github_url }}" data-project-image="{{ $project->image_url }}" data-project-featured="{{ $project->is_featured ? '1' : '0' }}"><i class="fas fa-edit"></i> Edit</button></li>
+                                <li class="divider"></li>
+                                <li><button type="button" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.projects.destroy', $project) }}" data-delete-name="{{ $project->title }}"><i class="fas fa-trash"></i> Delete</button></li>
+                            </ul>
                         </div>
                     </td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="4" class="text-center text-muted py-4">No projects yet. Add your first one above.</td>
-                </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
+        @else
+        <div class="empty-state-container">
+            <div class="empty-state-illustration">
+                <i class="fas fa-project-diagram"></i>
+            </div>
+            <h2 class="empty-state-title">No projects yet</h2>
+            <p class="empty-state-description">Add the exact projects you want to focus on so they appear on your public portfolio.</p>
+            <div class="empty-state-actions">
+                <button type="button" class="empty-state-btn" data-modal-open="add-project-modal"><i class="fas fa-plus"></i> Create a project</button>
+            </div>
+        </div>
+        @endif
             @if(method_exists($projects, 'hasPages') && $projects->hasPages())
                 <div class="pagination-wrapper">
                     {{ $projects->links('admin.pagination') }}
@@ -66,7 +123,7 @@
 <div class="modal-overlay" id="add-project-modal" data-modal>
     <div class="modal modal-lg">
         <div class="modal-header">
-            <h3><i class="fas fa-plus-circle" style="margin-right: 8px;"></i> Add New Project</h3>
+            <h3><i class="fas fa-plus-circle" ></i> Add New Project</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <form method="POST" action="{{ route('admin.projects.store') }}" enctype="multipart/form-data" data-submit="server">
@@ -96,7 +153,7 @@
                 </div>
                 <div class="form-group">
                     <label>Tech Stack / Tools</label>
-                    <p class="form-hint">Type tools and press Enter, or use quick add buttons</p>
+
                     <div class="tech-stack-container">
                         <div class="tech-stack-tags" id="project-tech-tags"></div>
                         <div class="tech-stack-input-wrap">
@@ -156,7 +213,7 @@
 <div class="modal-overlay" id="edit-project-modal" data-modal>
     <div class="modal modal-lg">
         <div class="modal-header">
-            <h3><i class="fas fa-edit" style="margin-right: 8px;"></i> Edit Project</h3>
+            <h3><i class="fas fa-edit" ></i> Edit Project</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <form method="POST" action="" id="edit-project-form" enctype="multipart/form-data" data-submit="server">
@@ -197,8 +254,12 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="edit-project-image">Project Image</label>
+                        <div id="edit-project-image-preview-container" style="display: none; margin-bottom: 1rem;">
+                            <p style="margin-bottom: 0.5rem; font-size: 0.75rem; color: var(--color-text-muted);">Current image:</p>
+                            <img id="edit-project-image-preview" src="" style="max-width: 100%; max-height: 120px; border-radius: 6px; object-fit: contain; border: 1px solid var(--border-color);">
+                        </div>
                         <input type="file" name="image_url" id="edit-project-image" accept="image/*">
-                        <p class="form-hint mt-1" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">Leave empty to keep existing image</p>
+                        <p class="form-hint mt-1" style="font-size: 0.65rem; color: #6b7280; margin-top: 2px;">Leave empty to keep existing image</p>
                     </div>
                     <div class="form-group">
                         <label for="edit-project-url">Project URL</label>
@@ -231,3 +292,5 @@
 @endpush
 
 @endsection
+
+

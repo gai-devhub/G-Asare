@@ -4,9 +4,9 @@
 
 @section('content')
 <div class="content-section active">
-    <div class="page-header" style="display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+    <div class="page-header" >
         <a href="{{ route('admin.messages') }}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Back</a>
-        <h1><i class="fas fa-envelope-open-text" style="margin-right: 12px; color: var(--color-primary);"></i>Message from {{ $contactMessage->name }}</h1>
+        <h1><i class="fas fa-envelope-open-text" ></i>Message from {{ $contactMessage->name }}</h1>
     </div>
     
     <div class="chart-card">
@@ -27,3 +27,5 @@
     </div>
 </div>
 @endsection
+
+

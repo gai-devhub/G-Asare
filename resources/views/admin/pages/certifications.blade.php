@@ -9,49 +9,100 @@
 @section('content')
 <div class="content-section active" data-searchable>
     <div class="page-header">
-        <h1><i class="fas fa-certificate" style="margin-right: 12px; color: var(--color-primary);"></i>Certifications</h1>
-        <p>Manage professional certifications and credentials. These display as cards with icon, issuer, date, and View Credential link.</p>
+        <div>
+            <h1><i class="fas fa-certificate" ></i>Certifications</h1>
+            <p>Manage professional certifications and credentials. These display as cards with icon, issuer, date, and View Credential link.</p>
+        </div>
+        <button type="button" class="icon-btn" data-modal-open="add-cert-modal" title="Add Certification">
+            <i class="fas fa-plus"></i>
+        </button>
     </div>
     
     <div class="chart-card">
         <div class="chart-header">
-            <div class="chart-title"><i class="fas fa-award" style="margin-right: 8px;"></i> All Certifications</div>
-            <div class="chart-actions" style="display: flex; gap: 0.5rem;">
-                <button type="button" class="btn btn-primary" data-modal-open="add-cert-modal"><i class="fas fa-plus"></i> Add Certification</button>
-            </div>
+            <div class="chart-title"><i class="fas fa-award" ></i> All Certifications</div>
         </div>
         
+        @if($certifications->count() > 0)
         <table class="data-table" data-search-table>
             <thead>
                 <tr>
-                    <th style="width: 10%;">Icon</th>
-                    <th style="width: 35%;">Certification</th>
-                    <th style="width: 25%;">Issuer</th>
-                    <th style="width: 10%;">Date</th>
-                    <th style="width: 20%; text-align: right;">Actions</th>
+                    <th>Icon</th>
+                    <th>Name</th>
+                    <th>Issuer</th>
+                    <th>Owner</th>
+                    <th>Date</th>
+                    <th class="table-action-cell"></th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($certifications as $cert)
+                @foreach($certifications as $cert)
                 <tr>
                     <td><div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(0,240,255,0.1); display: flex; align-items: center; justify-content: center; color: var(--color-primary);"><i class="{{ trim($cert->icon) != '' && $cert->icon != 'null' ? $cert->icon : 'fas fa-certificate' }}"></i></div></td>
-                    <td><strong>{{ $cert->name }}</strong></td>
+                    <td>
+                        <div class="table-name-cell" style="padding-left: 0;">
+                            <span>{{ $cert->name }}</span>
+                        </div>
+                    </td>
                     <td class="text-muted">{{ $cert->issuer }}</td>
-                    <td><span class="activity-badge page-view">{{ $cert->year ?? '—' }}</span></td>
-                    <td style="text-align: right;">
-                        <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
-                            <button type="button" class="action-btn edit-btn" data-modal-open="edit-cert-modal" data-cert-id="{{ $cert->id }}" data-cert-name="{{ $cert->name }}" data-cert-issuer="{{ $cert->issuer }}" data-cert-year="{{ $cert->year }}" data-cert-url="{{ $cert->credential_url }}" data-cert-icon="{{ $cert->icon }}"><i class="fas fa-edit"></i> Edit</button>
-                            <button type="button" class="action-btn delete-btn" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.certifications.destroy', $cert) }}" data-delete-name="{{ $cert->title }}"><i class="fas fa-trash"></i> Delete</button>
+                    <td>
+                        <div class="table-owner-cell">
+                            @php $profile = \App\Models\Profile::first(); @endphp
+                            <img src="{{ asset($profile->image_url ?? 'images/gilly.jpeg') }}" alt="Owner">
+                            <span>me</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="table-location-cell">
+                            <span class="activity-badge page-view">{{ $cert->year ?? '—' }}</span>
+                        </div>
+                    </td>
+                    <td class="table-action-cell">
+                        <div class="kebab-menu-wrapper">
+                            <button class="kebab-btn"><i class="fas fa-ellipsis-v"></i></button>
+                            <ul class="kebab-dropdown">
+                                <li class="has-submenu">
+                                    <button type="button"><i class="fas fa-info-circle"></i> File information <i class="fas fa-chevron-right"></i></button>
+                                    <ul class="kebab-submenu kebab-submenu-left">
+                                        <li><button type="button" onclick="openSidebar('details', { title: '{{ addslashes($cert->name) }}', category: '{{ addslashes($cert->issuer) }}', type: 'Certification', owner: 'me', modified: '{{ $cert->updated_at ? $cert->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $cert->created_at ? $cert->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: 'No description', imageUrl: '' })"><i class="fas fa-list"></i> Details</button></li>
+                                        <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($cert->name) }}', category: '{{ addslashes($cert->issuer) }}', type: 'Certification', owner: 'me', modified: '{{ $cert->updated_at ? $cert->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $cert->created_at ? $cert->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: 'No description', imageUrl: '' })"><i class="fas fa-history"></i> Activity</button></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu">
+                                    <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
+                                    <ul class="kebab-submenu kebab-submenu-left">
+                                        <li><button type="button" onclick="showToast('Share dialog opened', 'success')"><i class="fas fa-user-plus"></i> Share</button></li>
+                                        <li class="has-submenu">
+                                            <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
+                                            <ul class="kebab-submenu kebab-submenu-left">
+                                                <li><button type="button" onclick="copyToClipboard('{{ route('admin.certifications') }}')"><i class="fas fa-external-link-alt"></i> Copy Link</button></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="divider"></li>
+                                <li><button type="button" data-modal-open="edit-cert-modal" data-cert-id="{{ $cert->id }}" data-cert-name="{{ $cert->name }}" data-cert-issuer="{{ $cert->issuer }}" data-cert-year="{{ $cert->year }}" data-cert-url="{{ $cert->credential_url }}" data-cert-icon="{{ $cert->icon }}"><i class="fas fa-edit"></i> Edit</button></li>
+                                <li class="divider"></li>
+                                <li><button type="button" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.certifications.destroy', $cert) }}" data-delete-name="{{ $cert->title }}"><i class="fas fa-trash"></i> Delete</button></li>
+                            </ul>
                         </div>
                     </td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="5" class="text-center text-muted py-4">No certifications yet. Add your first one above.</td>
-                </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
+        @else
+        <div class="empty-state-container">
+            <div class="empty-state-illustration">
+                <i class="fas fa-award"></i>
+            </div>
+            <h2 class="empty-state-title">No certifications yet</h2>
+            <p class="empty-state-description">Add your professional certifications and credentials so they appear on your profile.</p>
+            <div class="empty-state-actions">
+                <button type="button" class="empty-state-btn" data-modal-open="add-cert-modal"><i class="fas fa-plus"></i> Add Certification</button>
+            </div>
+        </div>
+        @endif
             @if(method_exists($certifications, 'hasPages') && $certifications->hasPages())
                 <div class="pagination-wrapper">
                     {{ $certifications->links('admin.pagination') }}
@@ -68,7 +119,7 @@
 <div class="modal-overlay" id="add-cert-modal" data-modal>
     <div class="modal">
         <div class="modal-header">
-            <h3><i class="fas fa-plus-circle" style="margin-right: 8px;"></i> Add Certification</h3>
+            <h3><i class="fas fa-plus-circle" ></i> Add Certification</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <form method="POST" action="{{ route('admin.certifications.store') }}" data-submit="server">
@@ -121,7 +172,6 @@
                         <option value="fab fa-vuejs">Vue.js</option>
                         <option value="fab fa-svelte">Svelte</option>
                         <option value="fab fa-nextjs">Next.js</option>
-                        <option value="fab fa-nuxtjs">Nuxt.js</option>
                         <option value="fab fa-remix">Remix</option>
                         <option value="fab fa-astro">Astro</option>
                     </select>
@@ -138,7 +188,7 @@
 <div class="modal-overlay" id="edit-cert-modal" data-modal>
     <div class="modal">
         <div class="modal-header">
-            <h3><i class="fas fa-edit" style="margin-right: 8px;"></i> Edit Certification</h3>
+            <h3><i class="fas fa-edit" ></i> Edit Certification</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <form method="POST" action="" id="edit-cert-form" data-submit="server">
@@ -185,3 +235,5 @@
 @endpush
 
 @endsection
+
+
