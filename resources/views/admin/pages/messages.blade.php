@@ -526,7 +526,7 @@
                     <a href="#" class="gm-folder-active" data-folder="inbox" id="folder-inbox">
                         <i class="fas fa-inbox"></i>
                         Inbox
-                        <span class="gm-badge" id="inbox-badge">{{ $messages->total() > 0 ? $messages->total() : '' }}</span>
+                        <span class="gm-badge" id="inbox-badge">{{ $inboxMessages->total() > 0 ? $inboxMessages->total() : '' }}</span>
                     </a>
                 </li>
                 <li>
@@ -557,6 +557,13 @@
 
             {{-- Toolbar --}}
             <div class="gm-toolbar">
+                @if($errors->any())
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            alert("Validation Error: Please fill all fields in the compose form properly.");
+                        });
+                    </script>
+                @endif
                 {{-- Mobile hamburger --}}
                 <button class="gm-icon-btn" id="gm-menu-toggle" title="Menu" style="display:none;">
                     <i class="fas fa-bars"></i>
@@ -579,7 +586,7 @@
 
                 {{-- INBOX --}}
                 <div class="gm-folder-pane active" data-folder-pane="inbox">
-                    @forelse($messages as $message)
+                    @forelse($inboxMessages as $message)
                         <div class="gm-msg-row {{ $message->read_at ? '' : 'unread' }}"
                              data-from="{{ $message->name }}"
                              data-email="{{ $message->email }}"
@@ -618,19 +625,56 @@
                         </div>
                     @endforelse
 
-                    @if(method_exists($messages, 'hasPages') && $messages->hasPages())
+                    @if(method_exists($inboxMessages, 'hasPages') && $inboxMessages->hasPages())
                         <div class="gm-pagination">
-                            {{ $messages->links('admin.pagination') }}
+                            {{ $inboxMessages->links('admin.pagination') }}
                         </div>
                     @endif
                 </div>
 
                 {{-- SENT --}}
                 <div class="gm-folder-pane" data-folder-pane="sent">
-                    <div class="gm-empty">
-                        <i class="fas fa-paper-plane"></i>
-                        <p>No sent messages yet.</p>
-                    </div>
+                    @forelse($sentMessages as $message)
+                        <div class="gm-msg-row {{ $message->read_at ? '' : 'unread' }}"
+                             data-from="{{ $message->name }}"
+                             data-email="{{ $message->email }}"
+                             data-subject="{{ $message->subject }}"
+                             data-date="{{ $message->created_at->format('M j, Y \a\t g:i A') }}"
+                             data-body="{{ e($message->message) }}"
+                             data-message-id="{{ $message->id }}">
+
+                            <div class="gm-msg-avatar">{{ strtoupper(substr($message->name, 0, 1)) }}</div>
+
+                            <div class="gm-msg-body">
+                                <span class="gm-msg-from">To: {{ $message->email }}</span>
+                                <div class="gm-msg-subject-row">
+                                    <span class="gm-msg-subject">{{ $message->subject }}</span>
+                                    <span class="gm-msg-preview"> — {{ Str::limit($message->message, 60) }}</span>
+                                </div>
+                            </div>
+
+                            <span class="gm-msg-date">
+                                @if($message->created_at->isToday())
+                                    {{ $message->created_at->format('g:i A') }}
+                                @elseif($message->created_at->year === now()->year)
+                                    {{ $message->created_at->format('M j') }}
+                                @else
+                                    {{ $message->created_at->format('M j, Y') }}
+                                @endif
+                            </span>
+                        </div>
+                    @empty
+                        <div class="gm-empty">
+                            <i class="fas fa-paper-plane"></i>
+                            <p>No sent messages yet.</p>
+                        </div>
+                    @endforelse
+
+                    @if(method_exists($sentMessages, 'hasPages') && $sentMessages->hasPages())
+                        <div class="gm-pagination">
+                            {{ $sentMessages->links('admin.pagination') }}
+                        </div>
+                    @endif
                 </div>
 
                 {{-- DRAFTS --}}
@@ -711,25 +755,26 @@
             <h3 style="font-size:1rem; font-weight:500;"><i class="fas fa-pen" style="color:var(--color-text-muted); margin-right:8px;"></i> New Message</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
-        <form class="compose-form">
+        <form class="compose-form" method="POST" action="{{ route('admin.messages.compose.send') }}">
+            @csrf
             <div class="modal-body" style="padding:0;">
                 <div style="border-bottom:1px solid var(--border-color); padding:10px 20px; display:flex; align-items:center; gap:12px;">
                     <label for="compose-to" style="width:36px; font-size:0.875rem; color:var(--color-text-muted); font-weight:500;">To</label>
-                    <input type="email" id="compose-to" placeholder="" required
+                    <input type="email" id="compose-to" name="to" placeholder="" required
                            style="flex:1; border:none; outline:none; background:transparent; font-size:0.875rem; color:var(--color-text);">
                 </div>
                 <div style="border-bottom:1px solid var(--border-color); padding:10px 20px; display:flex; align-items:center; gap:12px;">
                     <label for="compose-cc" style="width:36px; font-size:0.875rem; color:var(--color-text-muted); font-weight:500;">Cc</label>
-                    <input type="text" id="compose-cc" placeholder=""
+                    <input type="text" id="compose-cc" name="cc" placeholder=""
                            style="flex:1; border:none; outline:none; background:transparent; font-size:0.875rem; color:var(--color-text);">
                 </div>
                 <div style="border-bottom:1px solid var(--border-color); padding:10px 20px; display:flex; align-items:center; gap:12px;">
                     <label for="compose-subject" style="width:36px; font-size:0.875rem; color:var(--color-text-muted); font-weight:500;">Sub</label>
-                    <input type="text" id="compose-subject" placeholder="Subject" required
+                    <input type="text" id="compose-subject" name="subject" placeholder="Subject" required
                            style="flex:1; border:none; outline:none; background:transparent; font-size:0.875rem; color:var(--color-text);">
                 </div>
                 <div style="padding:16px 20px; min-height:200px;">
-                    <textarea id="compose-body" rows="10" placeholder="Write your message here..."
+                    <textarea id="compose-body" name="body" rows="10" placeholder="Write your message here..." required
                               style="width:100%; border:none; outline:none; background:transparent; font-size:0.875rem; color:var(--color-text); resize:vertical; min-height:200px; font-family:inherit;"></textarea>
                 </div>
             </div>
@@ -816,8 +861,16 @@
 
         // Reply link
         const replyLink = document.getElementById('gm-reply-link');
-        if (replyLink) replyLink.href = 'mailto:' + email + '?subject=Re: ' + encodeURIComponent(subject);
-
+        if (replyLink) {
+            replyLink.href = '#';
+            replyLink.onclick = function(e) {
+                e.preventDefault();
+                document.getElementById('compose-to').value = email;
+                document.getElementById('compose-subject').value = 'Re: ' + subject;
+                document.getElementById('compose-message-modal').classList.add('open');
+                closeDetail();
+            };
+        }
         // Delete btn
         const deleteBtn = document.getElementById('gm-delete-btn');
         if (deleteBtn && msgId) {

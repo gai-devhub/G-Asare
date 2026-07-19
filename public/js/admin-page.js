@@ -88,13 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    document.querySelector('.compose-form')?.addEventListener('submit', function (e) {
-        e.preventDefault();
-        document.getElementById('compose-message-modal')?.classList.remove('active');
-        document.body.style.overflow = '';
-        this.reset();
-    });
-
+    // Removed compose-form interceptor to allow actual backend submission
     // ========== Action Buttons (delete uses HTML popup modal, no alerts) ==========
     document.querySelectorAll('.action-btn').forEach(button => {
         button.addEventListener('click', function (e) {

@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('subject');
             $table->text('message');
+            $table->string('folder')->default('inbox');
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });

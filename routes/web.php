@@ -70,6 +70,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', \App\Http\Middleware
 
     // Messages
     Route::get('/messages', [ContactMessageController::class, 'index'])->name('messages');
+    Route::post('/messages/compose', [ContactMessageController::class, 'composeSend'])->name('messages.compose.send');
     Route::get('/messages/{contactMessage}', [ContactMessageController::class, 'show'])->name('messages.show');
     Route::post('/messages/{contactMessage}/read', [ContactMessageController::class, 'markAsRead'])->name('messages.read');
     Route::delete('/messages/{contactMessage}', [ContactMessageController::class, 'destroy'])->name('messages.destroy');

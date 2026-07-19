@@ -13,6 +13,7 @@ class ContactMessage extends Model
         'email',
         'subject',
         'message',
+        'folder',
         'read_at',
     ];
 
