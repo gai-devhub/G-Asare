@@ -52,9 +52,9 @@
                         <div class="form-group">
                             <label for="profile-image">Profile Image</label>
                             @if(!empty($profile->image_url))
-                                <div >
-                                    <img src="{{ asset($profile->image_url) }}" alt="Profile Image" >
-                                    <span >Current Image</span>
+                                <div style="margin-bottom: 1rem;">
+                                    <img src="{{ asset($profile->image_url) }}" alt="Profile Image" style="width: 150px; height: 150px; object-fit: cover; border-radius: 12px; border: 1px solid var(--gray-light, #e2e8f0); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+                                    <span style="display: block; margin-top: 0.5rem; font-size: 0.875rem; color: var(--gray-dark, #64748b);">Current Image</span>
                                 </div>
                             @endif
                             <input type="file" name="image" id="profile-image" accept="image/*" class="form-control" >
