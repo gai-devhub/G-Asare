@@ -8,22 +8,22 @@
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
                 <button class="btn btn-secondary pagination-btn" disabled >
-                    <i class="fas fa-chevron-left" ></i> Previous
+                    <i class="fas fa-chevron-left" ></i> <span class="pagination-label">Previous</span>
                 </button>
             @else
                 <a href="{{ $paginator->previousPageUrl() }}" class="btn btn-secondary pagination-btn" >
-                    <i class="fas fa-chevron-left" ></i> Previous
+                    <i class="fas fa-chevron-left" ></i> <span class="pagination-label">Previous</span>
                 </a>
             @endif
 
             {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
                 <a href="{{ $paginator->nextPageUrl() }}" class="btn btn-secondary pagination-btn" >
-                    Next <i class="fas fa-chevron-right" ></i>
+                    <span class="pagination-label">Next</span> <i class="fas fa-chevron-right" ></i>
                 </a>
             @else
                 <button class="btn btn-secondary pagination-btn" disabled >
-                    Next <i class="fas fa-chevron-right" ></i>
+                    <span class="pagination-label">Next</span> <i class="fas fa-chevron-right" ></i>
                 </button>
             @endif
         </div>

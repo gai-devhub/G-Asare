@@ -20,6 +20,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
 // Free routes
@@ -156,5 +157,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', \App\Http\Middleware
     // Subscribers
     Route::get('/subscribers', [SubscriberController::class, 'index'])->name('subscribers');
     Route::delete('/subscribers/{subscriber}', [SubscriberController::class, 'destroy'])->name('subscribers.destroy');
+
+    // Global Search
+    Route::get('/search', [SearchController::class, 'page'])->name('search.page');
+    Route::get('/search/results', [SearchController::class, 'search'])->name('search');
 });
 

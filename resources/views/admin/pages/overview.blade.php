@@ -109,6 +109,7 @@
             </div>
             
             @if($recentActivity->count() > 0)
+            <div class="table-responsive">
             <table class="data-table" >
                 <thead>
                     <tr>
@@ -174,6 +175,7 @@
                     @endforeach
                 </tbody>
             </table>
+            </div>
             @else
             <div class="empty-state-container">
                 <div class="empty-state-illustration">

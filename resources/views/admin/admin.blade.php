@@ -107,19 +107,22 @@
             </div>
             
             <div class="header-middle">
-                <div class="search-box" id="admin-search-box">
+                <form action="{{ route('admin.search.page') }}" method="GET" class="search-box" id="admin-search-box">
                     <i class="fas fa-search search-icon"></i>
-                    <input type="text" id="admin-search-input" placeholder="Search in Drive..." autocomplete="off">
-                </div>
+                    <input type="text" name="q" id="admin-search-input" placeholder="Search in Drive..." autocomplete="off">
+                </form>
             </div>
             
             <div class="header-right">
+                <a href="{{ route('admin.search.page') }}" class="icon-btn mobile-search-btn" title="Search" id="mobile-search-btn">
+                    <i class="fas fa-search"></i>
+                </a>
                 <label class="icon-btn" title="Toggle Theme">
                     <input type="checkbox" id="dark-mode-toggle" style="display: none;">
                     <i class="fas fa-moon" id="theme-icon"></i>
                 </label>
-                <a href="{{ route('admin.document-activity') }}" class="icon-btn" title="Document Activity"><i class="fas fa-file-alt"></i></a>
-                <a href="{{ route('admin.messages') }}" class="icon-btn" title="Messages"><i class="fas fa-envelope"></i></a>
+                <a href="{{ route('admin.document-activity') }}" class="icon-btn header-icon-hide" title="Document Activity"><i class="fas fa-file-alt"></i></a>
+                <a href="{{ route('admin.messages') }}" class="icon-btn header-icon-hide" title="Messages"><i class="fas fa-envelope"></i></a>
                 @php $profile = \App\Models\Profile::first(); @endphp
                 <div class="header-avatar">
                     <img src="{{ asset($profile->image_url ?? 'images/gilly.jpeg') }}" alt="Profile">
