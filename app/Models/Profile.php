@@ -33,4 +33,9 @@ class Profile extends Model
             'contact_info' => 'array',
         ];
     }
+
+    public function getImageUrlAttribute($value)
+    {
+        return $value ? $value : 'images/gilly.jpeg';
+    }
 }
