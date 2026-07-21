@@ -297,7 +297,7 @@
     </section>
 
     <!-- Stay Updated - Image 2 news card -->
-    <section class="welcome-news">
+    <!-- <section class="welcome-news">
         <div class="container">
             <div class="news-card">
                 <div class="news-content">
@@ -319,7 +319,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- Latest from the Blog - pulls from database -->
     @if(!empty($latestPosts))
