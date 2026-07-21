@@ -6090,3 +6090,72 @@
         .impact-stat .stat-label.stat-muted {
             color: rgba(255, 255, 255, 0.8);
         }
+
+        /* Mobile tweaks requested by user */
+        @media (max-width: 768px) {
+            /* 1. Hero Section on mobile */
+            .welcome-hero.hero-image-bg h1 {
+                font-size: 2.2rem;
+            }
+            .welcome-hero.hero-image-bg p {
+                font-size: 1rem;
+                padding: 0 10px;
+            }
+            
+            /* 2. Showcasing the beauty */
+            .showcasing-title {
+                font-size: 1.5rem !important;
+            }
+            
+            /* 3. Clean code. Modern stack. Delivered on time. */
+            .empowering-overlay-box {
+                font-size: 0.8rem;
+                padding: 10px 15px;
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+                text-align: center;
+                width: auto;
+            }
+            
+            /* 4. Eye icon and download icon */
+            .doc-item {
+                flex-direction: row !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+            }
+            .doc-item-view, .doc-item-download {
+                background: transparent !important;
+                border: none !important;
+                color: var(--primary) !important;
+                padding: 4px 8px !important;
+                font-size: 0 !important;
+            }
+            .doc-item-view i, .doc-item-download i {
+                font-size: 1.15rem !important;
+            }
+            
+            /* 5. Filtering buttons (Education, Certifications, etc.) */
+            .edu-quick-nav {
+                flex-wrap: nowrap !important;
+                overflow-x: auto !important;
+                justify-content: flex-start !important;
+                gap: 8px !important;
+                padding-bottom: 8px !important; /* give some room for scrollbar */
+            }
+            .edu-quick-nav::-webkit-scrollbar {
+                height: 4px;
+            }
+            .edu-quick-nav::-webkit-scrollbar-track {
+                background: var(--bg);
+            }
+            .edu-quick-nav::-webkit-scrollbar-thumb {
+                background: var(--primary);
+                border-radius: 4px;
+            }
+            .edu-quick-nav a {
+                padding: 6px 12px !important;
+                font-size: 0.8rem !important;
+                white-space: nowrap !important;
+            }
+        }
