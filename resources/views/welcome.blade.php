@@ -76,8 +76,8 @@
     <section class="welcome-showcasing">
         <div class="container">
             <div class="showcasing-header">
-                <h3 class="showcasing-subtitle">Showcasing the Beauty and Innovation of</h3>
-                <h2 class="showcasing-title">Development Through Stunning Visuals and Inspiring Projects</h2>
+                <h3 class="showcasing-subtitle">Innovative Development.</h3>
+                <h2 class="showcasing-title">Stunning Results.</h2>
             </div>
             <style>
                 .showcasing-header { text-align: center; margin-bottom: 30px; padding: 0 10px; }
