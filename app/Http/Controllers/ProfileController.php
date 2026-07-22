@@ -71,9 +71,11 @@ class ProfileController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $filename = time() . '_' . preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $file->getClientOriginalName());
-            $path = $file->storeAs('profile_pic', $filename);
-            $profile->image_url = \Storage::disk()->url($path);
+            $path = $file->store('profile_pic', 's3');
+            if (!$path) {
+                throw new \Exception("Failed to upload image to S3. Check if the file is valid and S3 permissions are correct.");
+            }
+            $profile->image_url = \Storage::disk('s3')->url($path);
         }
 
         $profile->save();

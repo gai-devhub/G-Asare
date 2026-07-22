@@ -28,7 +28,10 @@ class DocumentController extends Controller
         if ($request->hasFile('file_path')) {
             $file = $request->file('file_path');
             $filename = time() . '_' . preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $file->getClientOriginalName());
-            $path = $file->storeAs('documents', $filename);
+            $path = $file->storeAs('documents', $filename, 's3');
+            if (!$path) {
+                throw new \Exception("Failed to upload document to S3.");
+            }
             $validated['file_path'] = $path;
         }
 
@@ -57,7 +60,10 @@ class DocumentController extends Controller
         if ($request->hasFile('file_path')) {
             $file = $request->file('file_path');
             $filename = time() . '_' . preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $file->getClientOriginalName());
-            $path = $file->storeAs('documents', $filename);
+            $path = $file->storeAs('documents', $filename, 's3');
+            if (!$path) {
+                throw new \Exception("Failed to upload document to S3.");
+            }
             $validated['file_path'] = $path;
         } else {
             unset($validated['file_path']);
@@ -109,7 +115,9 @@ class DocumentController extends Controller
             }
         } catch (\Exception $e) {
             // Ignore existence check errors if S3 is not configured properly
-        } else if (!$isStorage) {
+        } 
+        
+        if (!$isStorage) {
             $path = public_path(ltrim($document->file_path, '/'));
             if (!file_exists($path)) {
                 abort(404, 'File not found on server');

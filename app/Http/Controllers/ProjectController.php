@@ -49,7 +49,7 @@ class ProjectController extends Controller
         $data['is_featured'] = $request->has('is_featured');
 
         if ($request->hasFile('image_url')) {
-            $path = $request->file('image_url')->store('projects');
+            $path = $request->file('image_url')->store('projects', 's3');
             $data['image_url'] = \Storage::disk()->url($path);
         }
 
@@ -83,7 +83,7 @@ class ProjectController extends Controller
         $data['is_featured'] = $request->has('is_featured');
 
         if ($request->hasFile('image_url')) {
-            $path = $request->file('image_url')->store('projects');
+            $path = $request->file('image_url')->store('projects', 's3');
             $data['image_url'] = \Storage::disk()->url($path);
         } else {
             unset($data['image_url']); // Don't overwrite existing image if no new file is uploaded
