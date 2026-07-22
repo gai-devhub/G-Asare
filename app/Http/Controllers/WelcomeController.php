@@ -42,9 +42,9 @@ class WelcomeController extends Controller
                 'title' => $post->title,
                 'category' => $post->category ?? 'Development',
                 'excerpt' => $post->excerpt ?? Str::limit(strip_tags($post->content), 150),
-                'image' => $post->image_url ? (Str::startsWith($post->image_url, 'http') ? $post->image_url : asset($post->image_url)) : asset('images/gilly.jpeg'),
+                'image' => $post->image_path ? (Str::startsWith($post->image_path, 'http') ? $post->image_path : asset($post->image_path)) : asset('images/gilly.jpeg'),
                 'author' => $post->author_name ?? $profile?->name ?? 'Admin',
-                'author_avatar' => $post->author_image_url ? (Str::startsWith($post->author_image_url, 'http') ? $post->author_image_url : asset($post->author_image_url)) : ($profile?->image_url ? (Str::startsWith($profile->image_url, 'http') ? $profile->image_url : asset($profile->image_url)) : asset('images/afia.jpg')),
+                'author_avatar' => $post->author_image_path ? (Str::startsWith($post->author_image_path, 'http') ? $post->author_image_path : asset($post->author_image_path)) : ($profile?->image_url ? (Str::startsWith($profile->image_url, 'http') ? $profile->image_url : asset($profile->image_url)) : asset('images/afia.jpg')),
                 'date' => $post->published_at?->format('F Y') ?? 'Draft',
             ];
         })->toArray();

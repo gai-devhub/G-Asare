@@ -72,18 +72,18 @@
                                 <li class="has-submenu">
                                     <button type="button"><i class="fas fa-share-alt"></i> Share <i class="fas fa-chevron-right"></i></button>
                                     <ul class="kebab-submenu kebab-submenu-left">
-                                        <li><button type="button" onclick="if(navigator.share) { navigator.share({title: '{{ addslashes($doc->title) }}', url: '{{ asset($doc->file_path) }}'}); } else { copyToClipboard('{{ asset($doc->file_path) }}'); }"><i class="fas fa-share"></i> Share</button></li>
+                                        <li><button type="button" onclick="if(navigator.share) { navigator.share({title: '{{ addslashes($doc->title) }}', url: '{{ str_starts_with($doc->file_path, 'http') ? $doc->file_path : \Storage::disk('s3')->url($doc->file_path) }}'}); } else { copyToClipboard('{{ str_starts_with($doc->file_path, 'http') ? $doc->file_path : \Storage::disk('s3')->url($doc->file_path) }}'); }"><i class="fas fa-share"></i> Share</button></li>
                                         <li class="has-submenu">
                                             <button type="button"><i class="fas fa-link"></i> Copy link <i class="fas fa-chevron-right"></i></button>
                                             <ul class="kebab-submenu kebab-submenu-left">
-                                                <li><button type="button" onclick="copyToClipboard('{{ asset($doc->file_path) }}');"><i class="fas fa-file-alt"></i> Copy file link</button></li>
+                                                <li><button type="button" onclick="copyToClipboard('{{ str_starts_with($doc->file_path, 'http') ? $doc->file_path : \Storage::disk('s3')->url($doc->file_path) }}');"><i class="fas fa-file-alt"></i> Copy file link</button></li>
                                                 <li><button type="button" onclick="copyToClipboard('{{ route('admin.my-files') }}');"><i class="fas fa-folder-open"></i> Copy all files link</button></li>
                                             </ul>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="divider"></li>
-                                <li><a href="{{ asset($doc->file_path) }}" target="_blank"><i class="fas fa-external-link-alt"></i> View</a></li>
+                                <li><a href="{{ str_starts_with($doc->file_path, 'http') ? $doc->file_path : \Storage::disk('s3')->url($doc->file_path) }}" target="_blank"><i class="fas fa-external-link-alt"></i> View</a></li>
                                 <li><button type="button" data-modal-open="edit-doc-modal" data-doc-id="{{ $doc->id }}" data-doc-title="{{ $doc->title }}" data-doc-description="{{ $doc->description }}" data-doc-type="{{ $doc->type }}" data-doc-url="{{ $doc->url }}" data-doc-button="{{ $doc->button_text }}"><i class="fas fa-edit"></i> Edit</button></li>
                                 <li class="divider"></li>
                                 <li><button type="button" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.my-files.destroy', $doc) }}" data-delete-name="{{ $doc->title }}"><i class="fas fa-trash"></i> Delete</button></li>

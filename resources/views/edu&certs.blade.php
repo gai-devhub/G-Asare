@@ -154,7 +154,7 @@
                     </div>
                     @if($doc->file_path)
                     <div class="doc-item-actions">
-                        <a href="#" class="doc-item-view" data-url="{{ asset($doc->file_path) }}" data-title="{{ $doc->title }}"><i class="fas fa-eye"></i> View</a>
+                        <a href="#" class="doc-item-view" data-url="{{ str_starts_with($doc->file_path, 'http') ? $doc->file_path : \Storage::disk('s3')->url($doc->file_path) }}" data-title="{{ $doc->title }}"><i class="fas fa-eye"></i> View</a>
                         <a href="{{ route('documents.download', $doc) }}" class="doc-item-download"><i class="fas fa-download"></i> Download</a>
                     </div>
                     @endif

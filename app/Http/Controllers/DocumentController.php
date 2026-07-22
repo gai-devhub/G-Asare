@@ -141,7 +141,7 @@ class DocumentController extends Controller
 
         if ($isStorage) {
             try {
-                return \Storage::disk()->download($relativePath, $filename);
+                return \Storage::disk('s3')->download($relativePath, $filename);
             } catch (\Exception $e) {
                 abort(500, 'Could not download from S3. Please verify your AWS credentials.');
             }
