@@ -39,8 +39,8 @@
                 <tr>
                     <td>
                         <div class="table-name-cell">
-                            @if($post->image_url)
-                                <img src="{{ asset($post->image_url) }}" alt="Post" class="table-image-icon">
+                            @if($post->image_path)
+                                <img src="{{ asset($post->image_path) }}" alt="Post" class="table-image-icon">
                             @else
                                 <i class="fas fa-file-alt"></i>
                             @endif
@@ -51,7 +51,7 @@
                     <td>
                         <div class="table-owner-cell">
                             @php $profile = \App\Models\Profile::first(); @endphp
-                            <img src="{{ asset($post->author_image_url ?? $profile->image_url ?? 'images/gilly.jpeg') }}" alt="Author">
+                            <img src="{{ asset($post->author_image_path ?? $profile->image_url ?? 'images/gilly.jpeg') }}" alt="Author">
                             <span>{{ $post->author_name ?? 'me' }}</span>
                         </div>
                     </td>
@@ -67,13 +67,13 @@
                                 <li class="has-submenu">
                                     <button type="button"><i class="fas fa-info-circle"></i> File information <i class="fas fa-chevron-right"></i></button>
                                     <ul class="kebab-submenu kebab-submenu-left">
-                                        <li><button type="button" onclick="openSidebar('details', { title: '{{ addslashes($post->title) }}', category: '{{ addslashes($post->category) }}', type: 'Blog Post', owner: '{{ addslashes($post->author_name ?? 'me') }}', modified: '{{ $post->updated_at ? $post->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $post->created_at ? $post->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes(Str::limit(strip_tags($post->content), 100)) }}', imageUrl: '{{ $post->image_url ? asset($post->image_url) : '' }}' })"><i class="fas fa-list"></i> Details</button></li>
-                                        <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($post->title) }}', category: '{{ addslashes($post->category) }}', type: 'Blog Post', owner: '{{ addslashes($post->author_name ?? 'me') }}', modified: '{{ $post->updated_at ? $post->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $post->created_at ? $post->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes(Str::limit(strip_tags($post->content), 100)) }}', imageUrl: '{{ $post->image_url ? asset($post->image_url) : '' }}' })"><i class="fas fa-history"></i> Activity</button></li>
+                                        <li><button type="button" onclick="openSidebar('details', { title: '{{ addslashes($post->title) }}', category: '{{ addslashes($post->category) }}', type: 'Blog Post', owner: '{{ addslashes($post->author_name ?? 'me') }}', modified: '{{ $post->updated_at ? $post->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $post->created_at ? $post->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes(Str::limit(strip_tags($post->content), 100)) }}', imageUrl: '{{ $post->image_path ? asset($post->image_path) : '' }}' })"><i class="fas fa-list"></i> Details</button></li>
+                                        <li><button type="button" onclick="openSidebar('activity', { title: '{{ addslashes($post->title) }}', category: '{{ addslashes($post->category) }}', type: 'Blog Post', owner: '{{ addslashes($post->author_name ?? 'me') }}', modified: '{{ $post->updated_at ? $post->updated_at->format('M d, Y') : 'Unknown' }}', created: '{{ $post->created_at ? $post->created_at->format('M d, Y') : 'Unknown' }}', opened: 'Unknown', size: '-', description: '{{ addslashes(Str::limit(strip_tags($post->content), 100)) }}', imageUrl: '{{ $post->image_path ? asset($post->image_path) : '' }}' })"><i class="fas fa-history"></i> Activity</button></li>
                                     </ul>
                                 </li>
 
                                 <li class="divider"></li>
-                                <li><button type="button" data-modal-open="edit-blog-modal" data-post-id="{{ $post->id }}" data-post-title="{{ $post->title }}" data-post-category="{{ e($post->category ?? '') }}" data-post-excerpt="{{ $post->excerpt }}" data-post-content="{{ $post->content }}" data-post-image="{{ $post->image_url }}" data-post-author="{{ $post->author_name }}" data-post-author-image="{{ $post->author_image_url }}" data-post-signature="{{ e(str_replace(["\r","\n"], ' ', $post->signature ?? '')) }}" data-post-published="{{ $post->published_at ? $post->published_at->format('Y-m-d') : '' }}"><i class="fas fa-edit"></i> Edit</button></li>
+                                <li><button type="button" data-modal-open="edit-blog-modal" data-post-id="{{ $post->id }}" data-post-title="{{ $post->title }}" data-post-category="{{ e($post->category ?? '') }}" data-post-excerpt="{{ $post->excerpt }}" data-post-content="{{ $post->content }}" data-post-image="{{ $post->image_path }}" data-post-author="{{ $post->author_name }}" data-post-author-image="{{ $post->author_image_path }}" data-post-signature="{{ e(str_replace(["\r","\n"], ' ', $post->signature ?? '')) }}" data-post-published="{{ $post->published_at ? $post->published_at->format('Y-m-d') : '' }}"><i class="fas fa-edit"></i> Edit</button></li>
                                 <li><button type="button" data-modal-open="delete-confirm-modal" data-delete-url="{{ route('admin.blog-posts.destroy', $post) }}" data-delete-name="{{ $post->title }}"><i class="fas fa-trash"></i> Delete</button></li>
                             </ul>
                         </div>
@@ -113,7 +113,7 @@
             <h3><i class="fas fa-plus-circle" ></i> Add New Blog Post</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
-        <form method="POST" action="{{ route('admin.blog-posts.store') }}" data-submit="server">
+        <form method="POST" action="{{ route('admin.blog-posts.store') }}" enctype="multipart/form-data" data-submit="server">
             @csrf
             <div class="modal-body">
                 <div id="add-blog-step-1">
@@ -177,7 +177,7 @@
             <h3><i class="fas fa-edit" ></i> Edit Blog Post</h3>
             <button type="button" class="modal-close" data-modal-close aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
-        <form method="POST" action="" id="edit-blog-form" data-submit="server">
+        <form method="POST" action="" id="edit-blog-form" enctype="multipart/form-data" data-submit="server">
             @csrf
             @method('PUT')
             <div class="modal-body">

@@ -25,15 +25,25 @@ class BlogPostController extends Controller
             'category' => 'nullable|string|max:100',
             'excerpt' => 'nullable|string',
             'content' => 'nullable|string',
-            'image_url' => 'nullable|string|max:500',
+            'image_path' => 'nullable|image|max:10240',
             'author_name' => 'nullable|string|max:255',
-            'author_image_url' => 'nullable|string|max:500',
+            'author_image_path' => 'nullable|image|max:10240',
             'signature' => 'nullable|string',
             'published_at' => 'nullable|date',
             'sort_order' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',
         ]);
         $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
+
+        if ($request->hasFile('image_path')) {
+            $path = $request->file('image_path')->store('blog_posts', 's3');
+            $data['image_path'] = \Storage::disk('s3')->url($path);
+        }
+
+        if ($request->hasFile('author_image_path')) {
+            $path = $request->file('author_image_path')->store('blog_posts', 's3');
+            $data['author_image_path'] = \Storage::disk('s3')->url($path);
+        }
 
         $post = BlogPost::create($data);
 
@@ -53,15 +63,29 @@ class BlogPostController extends Controller
             'slug' => 'nullable|string|max:255|unique:blog_posts,slug,' . $blogPost->id,
             'excerpt' => 'nullable|string',
             'content' => 'nullable|string',
-            'image_path' => 'nullable|string|max:500',
+            'image_path' => 'nullable|image|max:10240',
             'author_name' => 'nullable|string|max:255',
-            'author_image_path' => 'nullable|string|max:500',
+            'author_image_path' => 'nullable|image|max:10240',
             'signature' => 'nullable|string',
             'published_at' => 'nullable|date',
             'sort_order' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',
         ]);
         $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
+
+        if ($request->hasFile('image_path')) {
+            $path = $request->file('image_path')->store('blog_posts', 's3');
+            $data['image_path'] = \Storage::disk('s3')->url($path);
+        } else {
+            unset($data['image_path']);
+        }
+
+        if ($request->hasFile('author_image_path')) {
+            $path = $request->file('author_image_path')->store('blog_posts', 's3');
+            $data['author_image_path'] = \Storage::disk('s3')->url($path);
+        } else {
+            unset($data['author_image_path']);
+        }
 
         $blogPost->update($data);
 
