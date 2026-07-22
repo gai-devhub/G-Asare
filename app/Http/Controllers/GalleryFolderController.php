@@ -18,7 +18,7 @@ class GalleryFolderController extends Controller
         ]);
 
         if ($request->hasFile('cover_image')) {
-            $path = $request->file('cover_image')->store('gallery_folders', 'public');
+            $path = $request->file('cover_image')->store('gallery_folders');
             $validated['cover_image_url'] = '/storage/' . $path;
         }
 
@@ -44,7 +44,7 @@ class GalleryFolderController extends Controller
         ]);
 
         if ($request->hasFile('cover_image')) {
-            $path = $request->file('cover_image')->store('gallery_folders', 'public');
+            $path = $request->file('cover_image')->store('gallery_folders');
             $validated['cover_image_url'] = '/storage/' . $path;
         }
 

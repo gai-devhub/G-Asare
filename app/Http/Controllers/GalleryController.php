@@ -31,7 +31,7 @@ class GalleryController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
-                $path = $file->store('gallery', 'public');
+                $path = $file->store('gallery');
                 
                 GalleryItem::create([
                     'image_url' => '/storage/' . $path,
@@ -59,7 +59,7 @@ class GalleryController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('gallery', 'public');
+            $path = $request->file('image')->store('gallery');
             $validated['image_url'] = '/storage/' . $path;
         }
 

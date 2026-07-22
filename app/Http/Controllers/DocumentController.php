@@ -28,7 +28,7 @@ class DocumentController extends Controller
         if ($request->hasFile('file_path')) {
             $file = $request->file('file_path');
             $filename = time() . '_' . preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $file->getClientOriginalName());
-            $file->storeAs('documents', $filename, 'public');
+            $file->storeAs('documents', $filename);
             $validated['file_path'] = 'storage/documents/' . $filename;
         }
 
@@ -57,7 +57,7 @@ class DocumentController extends Controller
         if ($request->hasFile('file_path')) {
             $file = $request->file('file_path');
             $filename = time() . '_' . preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $file->getClientOriginalName());
-            $file->storeAs('documents', $filename, 'public');
+            $file->storeAs('documents', $filename);
             $validated['file_path'] = 'storage/documents/' . $filename;
         } else {
             unset($validated['file_path']);
@@ -95,7 +95,7 @@ class DocumentController extends Controller
         $isStorage = str_starts_with($document->file_path, 'storage/');
         $relativePath = $isStorage ? substr($document->file_path, 8) : null;
         
-        if ($isStorage && !\Storage::disk('public')->exists($relativePath)) {
+        if ($isStorage && !\Storage::disk()->exists($relativePath)) {
             abort(404, 'File not found on server');
         } else if (!$isStorage) {
             $path = public_path(ltrim($document->file_path, '/'));
@@ -106,7 +106,7 @@ class DocumentController extends Controller
 
         // Get extension to formulate the download filename
         if ($isStorage) {
-            $extension = pathinfo(\Storage::disk('public')->path($relativePath), PATHINFO_EXTENSION);
+            $extension = pathinfo($relativePath, PATHINFO_EXTENSION);
         } else {
             $extension = pathinfo($path, PATHINFO_EXTENSION);
         }
@@ -120,7 +120,7 @@ class DocumentController extends Controller
         );
 
         if ($isStorage) {
-            return \Storage::disk('public')->download($relativePath, $filename);
+            return \Storage::disk()->download($relativePath, $filename);
         } else {
             return response()->download($path, $filename);
         }

@@ -30,7 +30,7 @@ class WebContentController extends Controller
         $webContent->fill(collect($validated)->except(['hero_image_url'])->toArray());
 
         if ($request->hasFile('hero_image_url')) {
-            $path = $request->file('hero_image_url')->store('web_content', 'public');
+            $path = $request->file('hero_image_url')->store('web_content');
             $webContent->hero_image_url = 'storage/' . $path;
         }
 

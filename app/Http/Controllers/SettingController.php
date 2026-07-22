@@ -40,7 +40,7 @@ class SettingController extends Controller
         $videoKeys = ['blog_sidebar_video'];
         foreach ($videoKeys as $vKey) {
             if ($request->hasFile($vKey)) {
-                $path = $request->file($vKey)->store('videos', 'public');
+                $path = $request->file($vKey)->store('videos');
                 Setting::set($vKey, 'storage/' . $path, 'string');
             }
         }
