@@ -50,7 +50,7 @@ class ProjectController extends Controller
 
         if ($request->hasFile('image_url')) {
             $path = $request->file('image_url')->store('projects');
-            $data['image_url'] = 'storage/' . $path;
+            $data['image_url'] = \Storage::disk()->url($path);
         }
 
         $project = Project::create($data);
@@ -84,7 +84,7 @@ class ProjectController extends Controller
 
         if ($request->hasFile('image_url')) {
             $path = $request->file('image_url')->store('projects');
-            $data['image_url'] = 'storage/' . $path;
+            $data['image_url'] = \Storage::disk()->url($path);
         } else {
             unset($data['image_url']); // Don't overwrite existing image if no new file is uploaded
         }

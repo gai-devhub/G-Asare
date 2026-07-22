@@ -41,7 +41,7 @@ class SettingController extends Controller
         foreach ($videoKeys as $vKey) {
             if ($request->hasFile($vKey)) {
                 $path = $request->file($vKey)->store('videos');
-                Setting::set($vKey, 'storage/' . $path, 'string');
+                Setting::set($vKey, \Storage::disk()->url($path), 'string');
             }
         }
 

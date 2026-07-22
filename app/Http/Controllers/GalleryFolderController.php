@@ -19,7 +19,7 @@ class GalleryFolderController extends Controller
 
         if ($request->hasFile('cover_image')) {
             $path = $request->file('cover_image')->store('gallery_folders');
-            $validated['cover_image_url'] = '/storage/' . $path;
+            $validated['cover_image_url'] = \Storage::disk()->url($path);
         }
 
         GalleryFolder::create($validated);
@@ -45,7 +45,7 @@ class GalleryFolderController extends Controller
 
         if ($request->hasFile('cover_image')) {
             $path = $request->file('cover_image')->store('gallery_folders');
-            $validated['cover_image_url'] = '/storage/' . $path;
+            $validated['cover_image_url'] = \Storage::disk()->url($path);
         }
 
         $galleryFolder->update($validated);

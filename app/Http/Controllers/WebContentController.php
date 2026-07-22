@@ -31,7 +31,7 @@ class WebContentController extends Controller
 
         if ($request->hasFile('hero_image_url')) {
             $path = $request->file('hero_image_url')->store('web_content');
-            $webContent->hero_image_url = 'storage/' . $path;
+            $webContent->hero_image_url = \Storage::disk()->url($path);
         }
 
 

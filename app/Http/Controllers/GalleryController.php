@@ -34,7 +34,7 @@ class GalleryController extends Controller
                 $path = $file->store('gallery');
                 
                 GalleryItem::create([
-                    'image_url' => '/storage/' . $path,
+                    'image_url' => \Storage::disk()->url($path),
                     'category' => $validated['category'] ?? null,
                     'gallery_folder_id' => $validated['gallery_folder_id'] ?? null,
                     'is_active' => true,
@@ -60,7 +60,7 @@ class GalleryController extends Controller
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('gallery');
-            $validated['image_url'] = '/storage/' . $path;
+            $validated['image_url'] = \Storage::disk()->url($path);
         }
 
         $galleryItem->update($validated);
