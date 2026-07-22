@@ -28,8 +28,8 @@ class DocumentController extends Controller
         if ($request->hasFile('file_path')) {
             $file = $request->file('file_path');
             $filename = time() . '_' . preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $file->getClientOriginalName());
-            $file->storeAs('documents', $filename);
-            $validated['file_path'] = 'storage/documents/' . $filename;
+            $path = $file->storeAs('documents', $filename);
+            $validated['file_path'] = $path;
         }
 
         $document = Document::create($validated);
@@ -57,8 +57,8 @@ class DocumentController extends Controller
         if ($request->hasFile('file_path')) {
             $file = $request->file('file_path');
             $filename = time() . '_' . preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $file->getClientOriginalName());
-            $file->storeAs('documents', $filename);
-            $validated['file_path'] = 'storage/documents/' . $filename;
+            $path = $file->storeAs('documents', $filename);
+            $validated['file_path'] = $path;
         } else {
             unset($validated['file_path']);
         }
@@ -92,8 +92,16 @@ class DocumentController extends Controller
             abort(404, 'File not found');
         }
 
-        $isStorage = str_starts_with($document->file_path, 'storage/');
-        $relativePath = $isStorage ? substr($document->file_path, 8) : null;
+        if (str_starts_with($document->file_path, 'storage/')) {
+            $relativePath = substr($document->file_path, 8);
+            $isStorage = true;
+        } elseif (str_starts_with($document->file_path, 'documents/')) {
+            $relativePath = $document->file_path;
+            $isStorage = true;
+        } else {
+            $relativePath = null;
+            $isStorage = false;
+        }
         
         try {
             if ($isStorage && !\Storage::disk()->exists($relativePath)) {

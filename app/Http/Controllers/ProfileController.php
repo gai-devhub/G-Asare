@@ -71,9 +71,9 @@ class ProfileController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('profile_pic'), $filename);
-            $profile->image_url = 'profile_pic/' . $filename;
+            $filename = time() . '_' . preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $file->getClientOriginalName());
+            $path = $file->storeAs('profile_pic', $filename);
+            $profile->image_url = \Storage::disk()->url($path);
         }
 
         $profile->save();
