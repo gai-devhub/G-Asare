@@ -41,19 +41,23 @@ class Document extends Model
             $relativePath = substr($relativePath, 8);
         }
 
-        if (\Illuminate\Support\Facades\Storage::disk()->exists($relativePath)) {
-            $bytes = \Illuminate\Support\Facades\Storage::disk()->size($relativePath);
-            if ($bytes >= 1048576) {
-                return number_format($bytes / 1048576, 2) . ' MB';
-            } elseif ($bytes >= 1024) {
-                return number_format($bytes / 1024, 0) . ' KB';
-            } elseif ($bytes > 1) {
-                return $bytes . ' bytes';
-            } elseif ($bytes == 1) {
-                return $bytes . ' byte';
-            } else {
-                return '0 bytes';
+        try {
+            if (\Illuminate\Support\Facades\Storage::disk()->exists($relativePath)) {
+                $bytes = \Illuminate\Support\Facades\Storage::disk()->size($relativePath);
+                if ($bytes >= 1048576) {
+                    return number_format($bytes / 1048576, 2) . ' MB';
+                } elseif ($bytes >= 1024) {
+                    return number_format($bytes / 1024, 0) . ' KB';
+                } elseif ($bytes > 1) {
+                    return $bytes . ' bytes';
+                } elseif ($bytes == 1) {
+                    return $bytes . ' byte';
+                } else {
+                    return '0 bytes';
+                }
             }
+        } catch (\Exception $e) {
+            // Fail gracefully if S3 is misconfigured or credentials are not yet set
         }
         
         return '-';

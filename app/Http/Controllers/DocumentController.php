@@ -95,8 +95,12 @@ class DocumentController extends Controller
         $isStorage = str_starts_with($document->file_path, 'storage/');
         $relativePath = $isStorage ? substr($document->file_path, 8) : null;
         
-        if ($isStorage && !\Storage::disk()->exists($relativePath)) {
-            abort(404, 'File not found on server');
+        try {
+            if ($isStorage && !\Storage::disk()->exists($relativePath)) {
+                abort(404, 'File not found on server');
+            }
+        } catch (\Exception $e) {
+            // Ignore existence check errors if S3 is not configured properly
         } else if (!$isStorage) {
             $path = public_path(ltrim($document->file_path, '/'));
             if (!file_exists($path)) {
@@ -120,7 +124,11 @@ class DocumentController extends Controller
         );
 
         if ($isStorage) {
-            return \Storage::disk()->download($relativePath, $filename);
+            try {
+                return \Storage::disk()->download($relativePath, $filename);
+            } catch (\Exception $e) {
+                abort(500, 'Could not download from S3. Please verify your AWS credentials.');
+            }
         } else {
             return response()->download($path, $filename);
         }
