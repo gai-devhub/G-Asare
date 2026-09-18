@@ -15,10 +15,10 @@
 <body>
     <div class="container">
         <h2 style="margin-top: 0; color: #1a1d24;">Your Login Access Code</h2>
-        <p>Use the code below to sign in to your G-BASE admin account:</p>
+        <p>Use the code below to sign in to your G-ASARE admin account:</p>
         <div class="code-box">{{ $code }}</div>
         <p>This code expires in {{ $expiresInMinutes }} minutes. Do not share it with anyone.</p>
-        <p class="footer">© {{ date('Y') }} G-BASE. If you didn't request this code, please ignore this email.</p>
+        <p class="footer">© {{ date('Y') }} G-ASARE. If you didn't request this code, please ignore this email.</p>
     </div>
 </body>
 </html>

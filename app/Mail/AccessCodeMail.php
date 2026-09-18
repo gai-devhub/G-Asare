@@ -21,7 +21,7 @@ class AccessCodeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Your G-BASE Login Access Code',
+            subject: 'Your G-ASARE Login Access Code',
             from: new Address(
                 config('mail.from.address'),
                 config('mail.from.name')

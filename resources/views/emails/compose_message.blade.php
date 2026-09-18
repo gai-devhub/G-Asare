@@ -23,17 +23,17 @@
 </head>
 <body>
     <div class="container">
-        <h2 class="header">Message from G-BASE</h2>
+        <h2 class="header">Message from G-ASARE</h2>
         
         <div class="message-box">{!! nl2br(e($bodyContent)) !!}</div>
         
         <p style="color: #64748b; margin-top: 2rem;">
             Best regards,<br>
-            <strong>{{ config('app.name', 'G-BASE') }}</strong>
+            <strong>{{ config('app.name', 'G-ASARE') }}</strong>
         </p>
 
         <div class="footer">
-            © {{ date('Y') }} {{ config('app.name', 'G-BASE') }}. All rights reserved.
+            © {{ date('Y') }} {{ config('app.name', 'G-ASARE') }}. All rights reserved.
         </div>
     </div>
 </body>

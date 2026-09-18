@@ -6,7 +6,7 @@
             <div class="site-footer-brand">
                 <div class="site-footer-logo">
                     <span class="site-footer-logo-icon"><img src="{{ asset('images/logo.png') }}" alt="Logo" class="nav-logo-img" style="border-radius: 50%; object-fit: cover;"></span>
-                    <span class="logo-text" style="color: #ffffff !important;">{{ explode(' ', $profile->name ?? 'G - BASE')[0] }} <span>{{ implode(' ', array_slice(explode(' ', $profile->name ?? 'G - BASE'), 1)) }}</span></span>
+                    <span class="logo-text" style="color: #ffffff !important;">{{ explode(' ', $profile->name ?? 'G - ASARE')[0] }} <span>{{ implode(' ', array_slice(explode(' ', $profile->name ?? 'G - ASARE'), 1)) }}</span></span>
                 </div>
                 <p class="site-footer-tagline">Building modern application solutions with clean code, creativity, and a commitment to excellence.</p>
                 <div class="site-footer-social">
@@ -58,7 +58,7 @@
             </div>
         </div>
         <div class="site-footer-bottom">
-            <p class="site-footer-copyright">© {{ date('Y') }} <a href="{{ route('login') }}" class="site-footer-copyright-link">G-BASE</a>. All rights reserved.</p>
+            <p class="site-footer-copyright">© {{ date('Y') }} <a href="{{ route('login') }}" class="site-footer-copyright-link">G-ASARE</a>. All rights reserved.</p>
             <div class="site-footer-legal">
                 <a href="#">Privacy Policy</a>
                 <span class="site-footer-sep">·</span>

@@ -4,7 +4,7 @@
     <div class="nav-inner">
         <a href="{{ url('/') }}" class="nav-logo">
             <span class="logo-icon"><img src="{{ asset('images/logo.png') }}" alt="Logo" class="nav-logo-img" style="border-radius: 50%; object-fit: cover;"></span>
-            <span class="logo-text">{{ explode(' ', $profile->name ?? 'G - BASE')[0] }} <span>{{ implode(' ', array_slice(explode(' ', $profile->name ?? 'G - BASE'), 1)) }}</span></span>
+            <span class="logo-text">{{ explode(' ', $profile->name ?? 'G - ASARE')[0] }} <span>{{ implode(' ', array_slice(explode(' ', $profile->name ?? 'G - ASARE'), 1)) }}</span></span>
         </a>
         <ul class="nav-links" id="nav-links">
             <li><a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">Home</a></li>

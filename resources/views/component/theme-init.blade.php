@@ -14,7 +14,7 @@
 @php
         $webContent = \App\Models\WebContent::first();
         $siteUrl = url('/');
-        $siteName = $profile->name ?? 'G-BASE Portfolio';
+        $siteName = $profile->name ?? 'G-ASARE Portfolio';
         $metaDescription = $webContent->meta_description ?? ($profile->tagline ?? 'Software engineering portfolio showcasing projects, education, and professional certifications.');
         $ogImage = asset($webContent->hero_image_url ?? ($profile->image_url ?? 'images/og-image.png'));
         $sameAs = collect($profile->social_links ?? [])->filter()->values()->all();
@@ -49,7 +49,7 @@
             "sameAs": {{ json_encode($sameAs) }},
             "jobTitle": "{{ $profile->headline ?? 'Software Engineer' }}",
             "image": "{{ asset($profile->image_url ?? 'images/og-image.png') }}",
-            "worksFor": { "@@type": "Organization", "name": "G-BASE" }
+            "worksFor": { "@@type": "Organization", "name": "G-ASARE" }
         },
         {
             "@@type": "WebSite",

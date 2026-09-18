@@ -108,7 +108,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users|in:gasare5326@gmail.com',
+            'email' => 'required|string|email|max:255|unique:users|in:gasare5326@gmail.com,gai.dev.official@gmail.com',
             'password' => ['required', 'confirmed', Password::defaults()],
             'passcode' => 'required|string|size:6|regex:/^\d{6}$/',
         ], [

@@ -111,8 +111,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'noreply@g-base.com'),
-        'name' => env('MAIL_FROM_NAME', 'G-BASE'),
+        'address' => env('MAIL_FROM_ADDRESS', 'noreply@g-asare.com'),
+        'name' => env('MAIL_FROM_NAME', 'G-ASARE'),
     ],
 
 ];
