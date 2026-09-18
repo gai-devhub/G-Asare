@@ -9,22 +9,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ filemtime(public_path('css/style.css')) }}">
-    @include('component.theme-init')
 </head>
 <body>
     @include('component.nav')
 
     <!-- Services Hero -->
-    <section id="hero" class="welcome-hero hero-image-bg hero-bg-services">
+    <section id="hero" class="welcome-hero hero-image-bg page-hero-single hero-bg-services">
         <div class="container welcome-hero-inner">
-            <div class="hero-content-left">
+            <div class="hero-content-left hero-content-centered">
                 <h1>Software Engineering &<br>Cloud Architecture Services</h1>
                 <p>As a Software Engineering student and AWS Cloud Practitioner, I provide modern web development and cloud infrastructure solutions tailored to your needs. Combining clean code with scalable AWS architectures.</p>
-                <div class="hero-cta-row">
-                    <a href="{{ route('connect') }}" class="cta-button hero-cta">
-                        Get Started <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
             </div>
         </div>
     </section>
@@ -89,7 +83,7 @@
         <div class="container">
             <h2>Ready to Start Your Project?</h2>
             <p>Let's discuss how I can help bring your vision to life with modern, scalable web solutions.</p>
-            <a href="{{ route('connect') }}" class="cta-button cta-margin-top">Get In Touch</a>
+            <a href="{{ route('connect') }}" class="cta-button cta-margin-top"><i class="fas fa-envelope"></i> Get In Touch</a>
         </div>
     </section>
 

@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ filemtime(public_path('css/style.css')) }}">
-    @include('component.theme-init')
 </head>
 <body>
     @include('component.nav')
@@ -109,10 +108,10 @@
     @if($skills->isEmpty())
     <section class="edu-section welcome-solutions">
         <div class="container">
-            <div class="empty-state" style="text-align: center; padding: 4rem 2rem; background: #fff; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.05); width: 100%;">
+            <div class="empty-state">
                 <i class="fas fa-tools" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 1rem;"></i>
-                <h3 style="margin-bottom: 0.5rem; color: #1e293b;">No skills found</h3>
-                <p style="color: #64748b;">Check back later for updates!</p>
+                <h3>No skills found</h3>
+                <p>Check back later for updates!</p>
             </div>
         </div>
     </section>

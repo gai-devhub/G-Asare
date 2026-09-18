@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ filemtime(public_path('css/style.css')) }}">
-    @include('component.theme-init')
 </head>
 <body>
     <!-- Header -->
@@ -228,10 +227,10 @@
                         </div>
                     @endforeach
                 @else
-                    <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; background: #fff; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.05); width: 100%;">
+                    <div class="empty-state" style="grid-column: 1 / -1;">
                         <i class="fas fa-share-nodes" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 1rem;"></i>
-                        <h3 style="margin-bottom: 0.5rem; color: #1e293b;">No social media links yet</h3>
-                        <p style="color: #64748b;">Check back later to connect with me!</p>
+                        <h3>No social media links yet</h3>
+                        <p>Check back later to connect with me!</p>
                     </div>
                 @endif
             </div>

@@ -3,30 +3,6 @@
  * Handles all pages: welcome, project, about, connect, edu&certs, admin
  */
 
-// Theme toggle (works with both desktop and mobile dropdown toggles)
-(function initTheme() {
-    function setTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-        document.querySelectorAll('[data-icon-dark]').forEach(function(el) {
-            el.style.display = theme === 'dark' ? 'none' : 'inline-block';
-        });
-        document.querySelectorAll('[data-icon-light]').forEach(function(el) {
-            el.style.display = theme === 'dark' ? 'inline-block' : 'none';
-        });
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-        const saved = localStorage.getItem('theme') || 'light';
-        setTheme(saved);
-        document.querySelectorAll('[data-theme-trigger]').forEach(function(toggle) {
-            toggle.addEventListener('click', function() {
-                const current = document.documentElement.getAttribute('data-theme') || 'light';
-                setTheme(current === 'dark' ? 'light' : 'dark');
-            });
-        });
-    });
-})();
-
 document.addEventListener('DOMContentLoaded', function() {
     // ========== COMMON: Mobile menu, back to top, smooth scroll ==========
     const menuToggle = document.getElementById('menu-toggle');

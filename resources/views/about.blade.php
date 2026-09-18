@@ -9,22 +9,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ filemtime(public_path('css/style.css')) }}">
-    @include('component.theme-init')
 </head>
 <body>
     @include('component.nav')
 
     <!-- Hero About -->
-    <section id="about-hero" class="hero-image-bg hero-bg-about">
-        <div class="container">
-            <div class="hero-split">
-                <div>
-                    <h1>Discover My Story</h1>
-                </div>
-                <div>
-                    <p>{{ $profile->tagline ?? 'I am a Software Engineering student and aspiring Solutions Architect, blending academic knowledge with practical AWS cloud expertise.' }}</p>
-                    <a href="{{ route('connect') }}" class="cta-button">Get Started Now</a>
-                </div>
+    <section id="hero" class="welcome-hero hero-image-bg page-hero-single hero-bg-about">
+        <div class="container welcome-hero-inner">
+            <div class="hero-content-left hero-content-centered">
+                <h1>Discover My Story</h1>
+                <p>{{ $profile->tagline ?? 'I am a Software Engineering student and aspiring Solutions Architect, blending academic knowledge with practical AWS cloud expertise.' }}</p>
             </div>
         </div>
     </section>
@@ -45,9 +39,9 @@
                 </div>
                 <div class="about-me-image">
                     @if($webContent->hero_image_url)
-                        <img src="{{ asset($webContent->hero_image_url) }}" alt="Gilbert Asare" style="width: 100%; max-width: 500px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); object-fit: cover; aspect-ratio: 4/5;">
+                        <img src="{{ asset($webContent->hero_image_url) }}" alt="Gilbert Asare" style="width: 100%; max-width: 500px; object-fit: contain; aspect-ratio: 4/5;">
                     @else
-                    <img src="{{ asset('images/1783462869_file_00000000e6a4720a83f356bfb12d61a3.png') }}" alt="Gilbert at work - developer workspace" style="width: 100%; border-radius: 20px; object-fit: cover; aspect-ratio: 4/5;">
+                    <img src="{{ asset('images/1783462869_file_00000000e6a4720a83f356bfb12d61a3.png') }}" alt="Gilbert at work - developer workspace" style="width: 100%; object-fit: contain; aspect-ratio: 4/5;">
                     @endif
                 </div>
             </div>
@@ -316,15 +310,13 @@
     </section>
 
     <!-- Call to Action -->
-    <section id="cta">
+    <section class="statement-section">
         <div class="container">
-            <div class="cta-content">
-                <h2>Let's Work Together</h2>
-                <p>I'm always interested in new opportunities and exciting projects. Whether you need a website, web application, or consultation on your digital strategy, let's connect.</p>
-                <a href="mailto:hello@alexmorgan.com" class="cta-button">
-                    <i class="fas fa-envelope cta-icon"></i> Get In Touch
-                </a>
-            </div>
+            <h2>Let's Work Together</h2>
+            <p>I'm always interested in new opportunities and exciting projects. Whether you need a website, web application, or consultation on your digital strategy, let's connect.</p>
+            <a href="{{ route('connect') }}" class="cta-button cta-margin-top">
+                <i class="fas fa-envelope"></i> Get In Touch
+            </a>
         </div>
     </section>
 

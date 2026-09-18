@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ filemtime(public_path('css/style.css')) }}">
-    @include('component.theme-init')
 </head>
 
 <body>
@@ -20,24 +19,14 @@
     <section id="hero" class="welcome-hero hero-image-bg hero-bg-welcome">
         <div class="container welcome-hero-inner">
             <div class="hero-content-left">
-                <h1>Software Engineer &<br>Cloud Enthusiast</h1>
+                <h1>Software Engineer & Cloud Enthusiast</h1>
                 <p>Hi, I'm Gilbert Asare! I'm a Software Engineering student at Ghana Communication Technology University, an AWS Cloud Practitioner, and an Aspiring AWS Solutions Architect. Building scalable, secure, and modern digital experiences.</p>
-                <div class="hero-cta-row">
-                    <a href="{{ route('connect') }}" class="cta-button hero-cta">
-                        Explore Solutions <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <div class="hero-rating">
-                        <span class="rating-score">4.9</span>
-                        <i class="fas fa-star"></i>
-                        <span class="rating-text">1,458 reviews</span>
-                    </div>
-                </div>
             </div>
             <div class="hero-image-right" style="display: flex; align-items: center; justify-content: center;">
                 @if($webContent->hero_image_url)
-                <img src="{{ asset($webContent->hero_image_url) }}" alt="Gilbert Asare" style="width: 100%; max-width: 500px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); object-fit: cover; aspect-ratio: 4/5;">
+                <img src="{{ asset($webContent->hero_image_url) }}" alt="Gilbert Asare" style="width: 100%; max-width: 500px; object-fit: contain; aspect-ratio: 4/5;">
                 @else
-                <img src="{{ asset('images/1783462869_file_00000000e6a4720a83f356bfb12d61a3.png') }}" alt="Gilbert Asare" style="width: 100%; max-width: 500px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); object-fit: cover; aspect-ratio: 4/5;">
+                <img src="{{ asset('images/1783462869_file_00000000e6a4720a83f356bfb12d61a3.png') }}" alt="Gilbert Asare" style="width: 100%; max-width: 500px; object-fit: contain; aspect-ratio: 4/5;">
                 @endif
             </div>
         </div>
@@ -76,16 +65,47 @@
     <section class="welcome-showcasing">
         <div class="container">
             <div class="showcasing-header">
-                <h3 class="showcasing-subtitle">Innovative Development.</h3>
-                <h2 class="showcasing-title">Stunning Results.</h2>
+                <h2 class="showcasing-title">
+                    <span class="showcasing-bold">Innovative Development.</span>
+                    <span class="showcasing-normal">Stunning Results.</span>
+                </h2>
             </div>
             <style>
-                .showcasing-header { text-align: center; margin-bottom: 30px; padding: 0 10px; }
-                .showcasing-subtitle { font-size: 1.1rem; font-weight: 600; margin-bottom: 2px; opacity: 0.85; text-wrap: balance; }
-                .showcasing-title { font-size: 2.2rem; font-weight: 800; line-height: 1.2; margin: 0; text-wrap: balance; }
+                .showcasing-header { 
+                    text-align: center; 
+                    margin-bottom: 35px; 
+                    padding: 0 15px; 
+                }
+                .showcasing-title { 
+                    font-size: clamp(2rem, 4vw, 2.75rem); 
+                    line-height: 1.2; 
+                    letter-spacing: -0.5px;
+                    margin: 0; 
+                    color: var(--text, #111827);
+                    text-wrap: balance; 
+                }
+                .showcasing-bold {
+                    display: block;
+                    font-weight: 800;
+                }
+                .showcasing-normal {
+                    display: block;
+                    font-weight: 400;
+                    opacity: 0.85;
+                }
                 @media (max-width: 768px) {
-                    .showcasing-subtitle { font-size: 0.85rem; margin-bottom: 4px; }
-                    .showcasing-title { font-size: 1.25rem; }
+                    .showcasing-title { 
+                        font-size: 1.6rem; 
+                        line-height: 1.25; 
+                    }
+                    .showcasing-header { 
+                        margin-bottom: 25px; 
+                    }
+                }
+                @media (max-width: 480px) {
+                    .showcasing-title { 
+                        font-size: 1.35rem; 
+                    }
                 }
                 .bento-gallery {
                     display: grid;
@@ -296,31 +316,6 @@
         </div>
     </section>
 
-    <!-- Stay Updated - Image 2 news card -->
-    <!-- <section class="welcome-news">
-        <div class="container">
-            <div class="news-card">
-                <div class="news-content">
-                    <h2>Stay Updated with <span class="title-light">Portfolio</span> News</h2>
-
-                    <p>Get the latest insights on web development, design trends, and project updates. Join thousands of readers who stay ahead of the curve.</p>
-                    <p>Subscribe to receive articles, tips, and exclusive content delivered straight to your inbox.</p>
-                    <form id="news-subscribe-form" class="news-subscribe-form" action="{{ route('subscribe') }}" method="POST">
-                        @csrf
-                        <input type="email" name="email" placeholder="Your email address" required>
-                        <button type="submit" class="subscribe-btn">Subscribe Now</button>
-                    </form>
-                    <div id="subscribe-message" style="display: none; margin-top: 10px; font-size: 0.9rem;"></div>
-                </div>
-                <div class="news-images">
-                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Code" class="news-img-1">
-                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Workspace" class="news-img-2">
-                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Projects" class="news-img-3">
-                </div>
-            </div>
-        </div>
-    </section> -->
-
     <!-- Latest from the Blog - pulls from database -->
     @if(!empty($latestPosts))
     <section class="welcome-blog-posts">
@@ -373,7 +368,7 @@
             </div>
             <div class="journey-content">
                 <h2><span class="text-muted">Discover the Journey</span><br>That Built My Story</h2>
-                <p>My journey began at Ghana Communication Technology University, where my fascination with software engineering took root. Today, as an AWS Certified Cloud Practitioner, I'm constantly learning and building—merging robust software architecture with scalable cloud solutions as I work toward becoming a Solutions Architect.</p>
+                <p>My journey began at Ghana Communication Technology University, where my fascination with software engineering took root. Today, as an AWS Certified Cloud Practitioner, I'm constantly learning and building, merging robust software architecture with scalable cloud solutions as I work toward becoming a Solutions Architect.</p>
                 <div class="journey-stats">
                     <div class="journey-stat">
                         <div class="journey-stat-icon"><i class="fas fa-graduation-cap"></i></div>
@@ -396,7 +391,7 @@
         <div class="container commitment-grid">
             <div class="commitment-content">
                 <h2><span class="text-muted">My Dedication to</span><br>Continuous Innovation</h2>
-                <p>As a student and an upcoming Solutions Architect, I am deeply committed to pushing the boundaries of what's possible. I focus on combining academic theory with hands-on cloud engineering to deliver scalable, secure, and future-proof solutions.</p>
+                <p>As a student and an upcoming Solutions Architect, I am deeply committed to pushing the boundaries of what's possible. I focus on combining academic theory with hands-on cloud engineering to deliver scalable, secure, and future proof solutions.</p>
                 <div class="journey-stats">
                     <div class="journey-stat">
                         <div class="journey-stat-icon"><i class="fas fa-laptop-code"></i></div>
@@ -494,7 +489,6 @@
             </div>
             <div class="empowering-content">
                 <h2><span class="text-muted">Empowering Your Business With</span><br>Expert Solutions</h2>
-                <div class="empowering-rating"><span>4.9/5</span> <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                 <ul class="empowering-list">
                     <li><i class="fas fa-check"></i> Responsive, accessible design for all devices</li>
                     <li><i class="fas fa-check"></i> Performance optimization and SEO best practices</li>
