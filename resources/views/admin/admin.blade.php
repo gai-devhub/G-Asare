@@ -108,7 +108,7 @@
             <div class="header-middle">
                 <form action="{{ route('admin.search.page') }}" method="GET" class="search-box" id="admin-search-box">
                     <i class="fas fa-search search-icon"></i>
-                    <input type="text" name="q" id="admin-search-input" placeholder="Search in Drive..." autocomplete="off">
+                    <input type="text" name="q" id="admin-search-input" placeholder="Search portfolio..." autocomplete="off">
                 </form>
             </div>
             
