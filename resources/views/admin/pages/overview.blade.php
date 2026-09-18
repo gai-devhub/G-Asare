@@ -220,8 +220,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     label: 'Projects',
                     data: {!! json_encode($projectData) !!},
-                    backgroundColor: '#0F9D58',
-                    borderColor: 'var(--color-primary)',
+                    backgroundColor: '#16a34a',
+                    borderColor: '#15803d',
                     borderWidth: 1,
                     borderRadius: 4,
                     barPercentage: 0.6
@@ -229,8 +229,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     label: 'Skills',
                     data: {!! json_encode($skillData) !!},
-                    backgroundColor: '#4285F4',
-                    borderColor: 'var(--color-accent)',
+                    backgroundColor: '#22c55e',
+                    borderColor: '#16a34a',
                     borderWidth: 1,
                     borderRadius: 4,
                     barPercentage: 0.6
@@ -238,8 +238,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     label: 'Blog Posts',
                     data: {!! json_encode($blogData) !!},
-                    backgroundColor: '#EA4335',
-                    borderColor: 'var(--color-secondary)',
+                    backgroundColor: '#86efac',
+                    borderColor: '#4ade80',
                     borderWidth: 1,
                     borderRadius: 4,
                     barPercentage: 0.6
@@ -264,10 +264,10 @@ document.addEventListener('DOMContentLoaded', function() {
             plugins: {
                 legend: { position: 'top', labels: { color: '#888888' } },
                 tooltip: { 
-                    backgroundColor: 'rgba(10, 10, 15, 0.9)', 
-                    titleColor: 'var(--color-primary)', 
+                    backgroundColor: 'rgba(26, 29, 36, 0.95)', 
+                    titleColor: '#22c55e', 
                     bodyColor: '#fff',
-                    borderColor: 'rgba(0, 240, 255, 0.3)',
+                    borderColor: 'rgba(34, 197, 94, 0.3)',
                     borderWidth: 1
                 }
             }
@@ -283,11 +283,11 @@ document.addEventListener('DOMContentLoaded', function() {
             datasets: [{
                 data: {!! json_encode($pieData) !!},
                 backgroundColor: [
-                    '#0F9D58',
-                    '#4285F4',
-                    '#EA4335',
-                    '#FBBC05',
-                    '#34A853'
+                    '#16a34a',
+                    '#22c55e',
+                    '#4ade80',
+                    '#86efac',
+                    '#bbf7d0'
                 ],
                 borderColor: 'var(--bg-surface)',
                 borderWidth: 2,
@@ -301,10 +301,10 @@ document.addEventListener('DOMContentLoaded', function() {
             plugins: {
                 legend: { position: 'bottom', labels: { color: '#888888', padding: 20 } },
                 tooltip: { 
-                    backgroundColor: 'rgba(10, 10, 15, 0.9)', 
-                    titleColor: 'var(--color-primary)', 
+                    backgroundColor: 'rgba(26, 29, 36, 0.95)', 
+                    titleColor: '#22c55e', 
                     bodyColor: '#fff',
-                    borderColor: 'rgba(0, 240, 255, 0.3)',
+                    borderColor: 'rgba(34, 197, 94, 0.3)',
                     borderWidth: 1
                 }
             }
